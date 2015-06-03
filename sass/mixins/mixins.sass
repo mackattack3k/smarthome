@@ -1,0 +1,25 @@
+=border-radius($radius)
+  -webkit-border-radius: $radius
+  -moz-border-radius:    $radius
+  -ms-border-radius:     $radius
+  border-radius:         $radius
+
+=no-select 
+  -webkit-touch-callout:    none
+  -webkit-user-select:      none
+  -khtml-user-select:       none
+  -moz-user-select:         none
+  -ms-user-select:          none
+  user-select:              none
+
+=box-shadow($top, $left, $blur, $color, $inset: "")
+  -webkit-box-shadow: $top $left $blur $color #{$inset}
+  -moz-box-shadow: $top $left $blur $color #{$inset}
+  box-shadow: $top $left $blur $color #{$inset}
+
+=transition($transition-property, $transition-time, $method)
+  -webkit-transition: $transition-property $transition-time $method
+  -moz-transition: $transition-property $transition-time $method
+  -ms-transition: $transition-property $transition-time $method
+  -o-transition: $transition-property $transition-time $method
+  transition: $transition-property $transition-time $method
