@@ -5,6 +5,7 @@
 html
     font-size: $medium-font
     font-family: $default-font
+    +transition-ease(1s)
 
 body 
     margin: 0
@@ -25,12 +26,7 @@ a
 
     +flexbox
     
-    -webkit-flex-flow: row wrap
     flex-flow: row wrap
-
-.container > *
-    padding: 10px
-    flex: 1 100%
 
 .column
     padding: 5px 5px
@@ -43,8 +39,9 @@ a
     padding: 14px 14px
     max-width: 350px
     width: 350px
-.content
     
+.content
+    box-shadow: $material-shadow
     
 #time
     background-color: $bg-green
@@ -55,6 +52,19 @@ a
 #news
     background-color: $bg-blue
  
+#lights
+    background-color: yellow
+    
+.raised-item
+    padding: 10px 10px
+    background-color: white
+    box-shadow: $material-shadow
+    width: 50px
+    height: 50px
+    display: inline-block
+    
+    font-size: $medium-font
+    text-align: center
 
 @media all and (min-width: 600px)
     .column
@@ -66,6 +76,6 @@ a
     .column-1
         order: 1
     .column-2
-        order: 3
-    .column-3
         order: 2
+    .column-3
+        order: 3
