@@ -12,6 +12,8 @@
     
     <link rel="stylesheet" href="css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet' type='text/css'>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
 <body>
@@ -19,8 +21,12 @@
         <div class="column column-1">
             <div id="time" class="content">
                 <div class="header">
-                    12:00:31<br/>
-                    1 Juni 2035
+                    <div id="currenttime">
+                    </div>
+                    <div id="currentday">
+                    </div>
+                    <div id="currentdate">
+                    </div>                        
                 </div>
             </div>
             <div id="weather" class="content">
@@ -40,9 +46,24 @@
         </div>
         
         <div class="column column-3">
-            <div id="news" class="content">
+            <div id="lights" class="content">
                 <div class="header">
-                    News
+                    Lights
+                </div>
+                <div class="raised-item">
+                    1
+                </div>
+                <div class="raised-item">
+                    2
+                </div>
+                <div class="raised-item">
+                    3
+                </div>
+                <div class="raised-item">
+                    All on
+                </div>
+                <div class="raised-item">
+                    All off
                 </div>
             </div>  
         </div>
