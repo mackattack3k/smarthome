@@ -21,11 +21,11 @@
         <div class="column column-1">
             <div id="time" class="content">
                 <div class="header">
-                    <div id="currenttime">
+                    <div id="currenttime" class="super-duper-big-font">
                     </div>
-                    <div id="currentday">
+                    <div id="currentday" class="big-font">
                     </div>
-                    <div id="currentdate">
+                    <div id="currentdate" class="big-font">
                     </div>                        
                 </div>
             </div>
@@ -40,7 +40,16 @@
         <div class="column column-2">
             <div id="news" class="content">
                 <div class="header">
-                    News
+                    news
+                </div>
+                <div class="content-item">
+                    Lycklig årstabo vann eurojackpott denna fredag.
+                </div>
+                <div class="content-item">
+                    Lyckligaste människorna bor i Stockholm.
+                </div>
+                <div class="content-item">
+                    IT-Killar är bäst på att koda.
                 </div>
             </div>  
         </div>
@@ -48,7 +57,7 @@
         <div class="column column-3">
             <div id="lights" class="content">
                 <div class="header">
-                    Lights
+                    lights
                 </div>
                 <div class="raised-item">
                     1
