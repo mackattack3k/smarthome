@@ -5,7 +5,7 @@
 html
     font-size: $medium-font
     font-family: $default-font
-    +transition-ease(1s)
+    +transition(all, 0.5s, linear)
 
 body 
     margin: 0
@@ -28,17 +28,21 @@ a
     align-items: stretch
     align-content: space-between
     flex-wrap: wrap
+    
 
 .column
-    max-width: 560px
-    min-width: 350px
+    //max-width: 560px
     
     padding: 10px 19px
+    +transition(all, 0.2s, linear)
     
 .content
     box-shadow: $material-shadow
     border-top: 5px solid #fff
     background-color: white
+    
+    width: 560px
+    
     
 .header
     color: black
@@ -46,6 +50,20 @@ a
     text-align: center
     
     padding: 14px 14px
+    
+.raised-item
+    padding: 10px 10px
+    background-color: white
+    box-shadow: $material-shadow
+
+    display: inline-block
+    
+    font-size: $medium-font
+    text-align: center
+    
+.content-item
+    @extend .raised-item
+    
     
 .big-font
     font-size: $big-font
@@ -71,21 +89,12 @@ a
 #lights
     border-top-color: yellow
     
-.raised-item
-    padding: 10px 10px
-    background-color: white
-    box-shadow: $material-shadow
-    
-    width: 50px
-    height: 50px
-    display: inline-block
-    
-    font-size: $medium-font
-    text-align: center
 
-    width: 40px
-    display: inline-block
 
+@media all and (min-width: 600px)
+    .column
+        flex: 1 auto
+        
 @media all and (min-width: 600px)
     .column
         flex: 1 auto
