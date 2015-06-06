@@ -59,19 +59,19 @@
                 <div class="header">
                     lights
                 </div>
-                <div class="raised-item">
+                <div class="content-item">
                     1
                 </div>
-                <div class="raised-item">
+                <div class="content-item">
                     2
                 </div>
-                <div class="raised-item">
+                <div class="content-item">
                     3
                 </div>
-                <div class="raised-item">
+                <div class="content-item">
                     All on
                 </div>
-                <div class="raised-item">
+                <div class="content-item">
                     All off
                 </div>
             </div>  

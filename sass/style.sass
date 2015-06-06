@@ -3,70 +3,53 @@
 @import 'reset'
 
 html
-    font-size: $medium-font
+    font-size: $small-font
     font-family: $default-font
-    +transition(all, 0.5s, linear)
 
 body 
-    margin: 0
-    padding: 0
-    width: 100%
-    height: 100%
     background-color: $bg-grey
-
 a
     text-decoration: none
     
-.container 
-    width: 100%
-    height: 100%
-    //padding: 20px 20px
-    margin-top: 20px
-
+.container
     +flexbox
-    justify-content: center
-    align-items: stretch
-    align-content: space-between
+    justify-content: space-around
     flex-wrap: wrap
     
-
+    width: 100%
+    
 .column
-    //max-width: 560px
-    
-    padding: 10px 19px
+    width: 500px
     +transition(all, 0.2s, linear)
-    
+        
 .content
     box-shadow: $material-shadow
     border-top: 5px solid #fff
     background-color: white
+    width: 100%
     
-    width: 560px
-    
+    margin-top: 20px
+    +flexbox
+    justify-content: center
     
 .header
-    color: black
-    font-size: $super-big-font
+    @extend .big-font
     text-align: center
-    
-    padding: 14px 14px
     
 .raised-item
     padding: 10px 10px
     background-color: white
     box-shadow: $material-shadow
-
-    display: inline-block
-    
-    font-size: $medium-font
     text-align: center
-    
+
 .content-item
     @extend .raised-item
     
-    
 .big-font
     font-size: $big-font
+    
+.super-duper-big-font
+    font-size: $super-duper-big-font
 
 .medium-font
     font-size: $medium-font
@@ -74,8 +57,8 @@ a
 .small-font
     font-size: $small-font
     
-.super-duper-big-font
-    font-size: $super-duper-big-font
+.super-small-font
+    font-size: $super-small-font
     
 #time
     border-top-color: $bg-green
@@ -88,13 +71,13 @@ a
  
 #lights
     border-top-color: yellow
-    
+    .content-item
+        color: blue
 
-
-@media all and (min-width: 600px)
+@media all and (max-width: 1510px)
     .column
-        flex: 1 auto
+        width: 400px
         
-@media all and (min-width: 600px)
+@media all and (max-width: 850px)
     .column
-        flex: 1 auto
+        width: 300px
