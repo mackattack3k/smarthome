@@ -14,6 +14,7 @@
     <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet' type='text/css'>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    
 </head>
 
 <body>
@@ -38,18 +39,12 @@
         </div>
         
         <div class="column column-2">
-            <div id="news" class="content">
+            <div id="traffic" class="content">
                 <div class="header">
-                    news
+                    traffic
                 </div>
-                <div class="content-item">
-                    Lycklig årstabo vann eurojackpott denna fredag.
-                </div>
-                <div class="content-item">
-                    Lyckligaste människorna bor i Stockholm.
-                </div>
-                <div class="content-item">
-                    IT-Killar är bäst på att koda.
+                <div class="items">
+                
                 </div>
             </div>  
         </div>
@@ -59,22 +54,19 @@
                 <div class="header">
                     lights
                 </div>
-                <div class="content-item">
-                    1
+                <div class="items">
+ 
                 </div>
-                <div class="content-item">
-                    2
+
+            </div>
+            <div id="speakers" class="content">
+                <div class="header">
+                    speakers
                 </div>
-                <div class="content-item">
-                    3
+                <div class="items">
+                    
                 </div>
-                <div class="content-item">
-                    All on
-                </div>
-                <div class="content-item">
-                    All off
-                </div>
-            </div>  
+            </div>
         </div>
 
         

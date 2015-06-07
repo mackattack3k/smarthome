@@ -15,35 +15,31 @@ a
     +flexbox
     justify-content: space-around
     flex-wrap: wrap
-    
     width: 100%
     
 .column
     width: 500px
     +transition(all, 0.2s, linear)
         
-.content
-    box-shadow: $material-shadow
+.content    
     border-top: 5px solid #fff
     background-color: white
-    width: 100%
     
+    width: 100%
     margin-top: 20px
-    +flexbox
-    justify-content: center
     
 .header
     @extend .big-font
     text-align: center
+    padding: 8px
     
-.raised-item
-    padding: 10px 10px
-    background-color: white
-    box-shadow: $material-shadow
-    text-align: center
-
-.content-item
-    @extend .raised-item
+.items
+    +flexbox
+    justify-content: space-around 
+    flex-wrap: wrap
+    padding: 10px
+    a
+        margin-top: 8px
     
 .big-font
     font-size: $big-font
@@ -66,13 +62,11 @@ a
 #weather
     border-top-color: $bg-orange
     
-#news
+#traffic
     border-top-color: $bg-blue
  
 #lights
     border-top-color: yellow
-    .content-item
-        color: blue
 
 @media all and (max-width: 1510px)
     .column
