@@ -10,7 +10,9 @@ body
     background-color: $bg-grey
 a
     text-decoration: none
-    
+
+/* Classes */
+
 .container
     +flexbox
     justify-content: space-around
@@ -21,7 +23,7 @@ a
     width: 500px
     +transition(all, 0.2s, linear)
         
-.content    
+.column-content
     border-top: 5px solid #fff
     background-color: white
     
@@ -40,6 +42,26 @@ a
     padding: 10px
     a
         margin-top: 8px
+
+paper-button[raised].yellow
+    &.active
+        background-color: yellow
+        
+paper-toggle-button.red
+    --paper-toggle-button-checked-bar-color:  red
+    --paper-toggle-button-checked-button-color:  var(--paper-red-500)
+    --paper-toggle-button-checked-ink-color: var(--paper-red-500)
+    --paper-toggle-button-unchecked-bar-color:  var(--paper-red-900)
+    --paper-toggle-button-unchecked-button-color:  var(--paper-red-900)
+    --paper-toggle-button-unchecked-ink-color: var(--paper-red-900)
+
+paper-checkbox.blue
+    --paper-checkbox-checked-color: var(--paper-light-blue-500)
+    --paper-checkbox-checked-ink-color: var(--paper-light-blue-500)
+    --paper-checkbox-unchecked-color: var(--paper-light-blue-900)
+    --paper-checkbox-unchecked-ink-color: var(--paper-light-blue-900)
+    
+/* Font classes */
     
 .big-font
     font-size: $big-font
@@ -67,6 +89,9 @@ a
  
 #lights
     border-top-color: yellow
+
+#lights
+    border-top-color: var(--paper-red-900)
 
 @media all and (max-width: 1510px)
     .column
