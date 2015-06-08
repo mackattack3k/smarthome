@@ -15,9 +15,21 @@ function updateClock ( )
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
          
  }
+function getBus ()
+{
+    $.ajax({
+      url: "functions.php?function=getBusses&station=gullmarsplan",
+      cache: false
+    })
+      .done(function( html ) {
+        $( "#results" ).append( html );
+      });
+}
  
 $(document).ready(function()
 {  
     updateClock();
     setInterval('updateClock()', 1000);
+    getBus();
+    
 });
