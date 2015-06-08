@@ -12,8 +12,11 @@
     
     <link rel="stylesheet" href="css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet' type='text/css'>
+    <link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+    <link rel="import" href="/bower_components/paper-checkbox/index.html">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
     
 </head>
 
@@ -64,6 +67,7 @@
                     speakers
                 </div>
                 <div class="items">
+                    <paper-checkbox>Mute</paper-checkbox>
                     
                 </div>
             </div>
