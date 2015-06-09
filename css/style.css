@@ -18,7 +18,7 @@ a { text-decoration: none; }
 .items { display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex; justify-content: space-around; flex-wrap: wrap; padding: 10px; }
 .items a { margin-top: 8px; }
 
-paper-button[raised].yellow.active { background-color: yellow; }
+paper-button[raised].lights-yellow.active { background-color: yellow; }
 
 paper-toggle-button.red { --paper-toggle-button-checked-bar-color: red; --paper-toggle-button-checked-button-color: var(--paper-red-500); --paper-toggle-button-checked-ink-color: var(--paper-red-500); --paper-toggle-button-unchecked-bar-color: var(--paper-red-900); --paper-toggle-button-unchecked-button-color: var(--paper-red-900); --paper-toggle-button-unchecked-ink-color: var(--paper-red-900); }
 

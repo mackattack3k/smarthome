@@ -32,4 +32,10 @@ $(document).ready(function()
     setInterval('updateClock()', 1000);
     getBus();
     
+    
+    //Toggle the class when a lights button is clicked (this changes the bg-color)
+    $( ".lights-yellow" ).click(function() {
+        $(this).toggleClass('active');
+    });
+    
 });

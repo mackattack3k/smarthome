@@ -61,11 +61,11 @@
                     lights
                 </div>
                 <div class="items">
-                    <paper-button tabindex="0" raised class="yellow active blue ripple">1</paper-button>
-                    <paper-button raised class="yellow">2</paper-button>
-                    <paper-button raised class="yellow">3</paper-button>
-                    <paper-button disabled class="yellow">All on</paper-button>
-                    <paper-button raised class="yellow">All off</paper-button>
+                    <paper-button tabindex="0" raised class="lights-yellow active blue ripple">1</paper-button>
+                    <paper-button raised class="lights-yellow">2</paper-button>
+                    <paper-button raised class="lights-yellow">3</paper-button>
+                    <paper-button disabled class="lights-yellow">All on</paper-button>
+                    <paper-button raised class="">All off</paper-button>
  
                 </div>
 
