@@ -9,9 +9,18 @@ ini_set('display_errors', 1);
 $getFunction    = (isset($_GET["function"]))? ($_GET["function"]) : '';
 $getVar1        = (isset($_GET["var1"]))? ($_GET["var1"]) : '';
 $getVar2        = (isset($_GET["var2"]))? ($_GET["var2"]) : '';
-return $getFunction($getVar1, $getVar2);
+if ( isset($getFunction) ){
+    if ( $getFunction == ''){
+        $getFunction = 'resetthingy';
+    }
+    return $getFunction($getVar1, $getVar2);
+}
 
-/* */
+/* Functions */
+
+function resetthingy() {
+    //This function is only here so that the getFunction works even if there is no function called
+}
 
 function getLamps() {
     //echo 'Called function getLamps'; //Used for the debugging -- check if the function was called :)
@@ -30,38 +39,81 @@ function getLamps() {
 }
 
 function editLamps($lamp , $newState) {
-    $currentLamps  =   getLamps();
-    print_r($currentLamps);
+    $currentLamps   =   getLamps();
     
     //Check to see if a lamp is inputted
     if ($lamp){
-        //print_r(getLamps()); --debugging
         
-        //Check to see if all the lamps should be changed
-        if (strtolower($lamp) == 'all'){
+        //Check to see if the new state of the lamp is set or not
+        if ($newState != ''){
             
-            //Loop through each lamp and put it to the value
-            foreach ($currentLamps['lamps'] as $key => $val) {
-                $currentLamps['lamps'][$key] = $newState;
-            }
-            echo "<br>New array:<br>";
-            print_r($currentLamps);
-            file_put_contents('lamps.jsons', print_r($currentLamps, true));
-            //Send the 433 mhz signal to the Pi
-            
-            
+            //Check to see if the new state is On or Off - otherwise error
+            if (strtolower($newState) == 'on' or strtolower($newState) == 'off' ){
+                
+                //Check to see if all the lamps should be changed
+                if (strtolower($lamp) == 'all'){
+                    
+                    
+                    //Loop through each lamp and put it to the value
+                    foreach ($currentLamps['lamps'] as $key => $val) {
+                        $currentLamps['lamps'][$key] = strtolower($newState);
+                    }
+                    //Write the new lamps.json file with all the lamps
+                    $fp = fopen('public_files/lamps.json', 'w');
+                    fwrite($fp, json_encode($currentLamps));
+                    fclose($fp);
+                    
+                    //Send the 433 mhz signal to the Pi
+                    echo "Changed all the lamps to: ".strtolower($newState);
+
+                }else{
+                    
+                    //Turn only one lamp off or on
+                    //Check to see if the lamp exist in the json file                    
+                    if (array_key_exists($lamp, $currentLamps['lamps'])) {
+                        $currentLamps['lamps'][$lamp] = $newState;
+                        
+                        //Write to lamps.json with the change
+                        $fp = fopen('public_files/lamps.json', 'w');
+                        fwrite($fp, json_encode($currentLamps));
+                        fclose($fp);
+                        
+                        echo $lamp." is now set to: ".$newState;
+                    }else{
+                        echo $lamp." could not be found in the json file";
+                    }
+                }
+            }else{
+                echo "The new state must be set to ON or OFF";
+            }            
         }else{
-            //Turn only one lamp off or on
-        }
-        
+            echo "The new state must be set to a value (ON/OFF)";
+        }        
     }else{
         echo "No lamp was selected";
-    }
-    
+    }    
 }
 
 function htmlLamps(){
     //output the current lamps to html for the frontpage
+    $currentLamps   =   getLamps();
+    
+    //Check if there actually is lamps =)
+    if ( $currentLamps ){
+        
+        //Print a button element for each lamp
+        foreach ($currentLamps['lamps'] as $key => $val) {
+            
+            //Check the state of the lamp and append the class Active if its on
+            if ( strtolower($val) == 'on'){
+                echo "<paper-button raised class='lights-yellow active' id='".$key."'>".$key."</paper-button>";
+            }else{
+                echo "<paper-button raised class='lights-yellow' id='".$key."'>".$key."</paper-button>";
+            }
+        }        
+    }else{
+        echo "No lamps file was found";
+    }
 }
 
 function fileExists($filename){

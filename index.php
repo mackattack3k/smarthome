@@ -1,7 +1,8 @@
 <?php
-
+include 'functions.php';
 
 ?>
+
 <!DOCTYPE html>
 <html lang="">
 <head>
@@ -16,7 +17,6 @@
     <link rel="import" href="bower_components/paper-button/paper-button.html">
     <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
     <link rel="import" href="bower_components/paper-styles/paper-styles.html">
-    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
@@ -61,11 +61,9 @@
                     lights
                 </div>
                 <div class="items">
-                    <paper-button tabindex="0" raised class="lights-yellow active blue ripple">1</paper-button>
-                    <paper-button raised class="lights-yellow">2</paper-button>
-                    <paper-button raised class="lights-yellow">3</paper-button>
-                    <paper-button disabled class="lights-yellow">All on</paper-button>
-                    <paper-button raised class="">All off</paper-button>
+                    <?php echo htmlLamps(); ?>
+                    <paper-button disabled class="lights-all" id="all-on">All on</paper-button>
+                    <paper-button raised class="lights-all" id="all-off">All off</paper-button>
  
                 </div>
 
@@ -75,8 +73,6 @@
                     speakers
                 </div>
                 <div class="items">
-                    <paper-icon-button icon="menu"></paper-icon-button>
-                    <paper-icon-button icon="menu"></paper-icon-button>
                     <paper-toggle-button class="red" label="mute">Mute</paper-toggle-button>
                     <paper-checkbox class="white" checked>Calcium</paper-checkbox>
                     
