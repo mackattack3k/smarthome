@@ -129,6 +129,9 @@ function fileExists($filename){
 
 }
 
-
+function shellcommand(){
+    shell_exec('sudo /tmp/maha/433Utils/RPi_utils/codesend 123');
+    
+}
 
 ?>
