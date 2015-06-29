@@ -3,6 +3,7 @@
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+header('Content-Type: text/html; charset=utf-8');
 //echo exec('whoami'); 
 
 /*GET variables */
@@ -21,6 +22,8 @@ if ( isset($getFunction) ){
 function resetthingy() {
     //This function is only here so that the getFunction works even if there is no function called
 }
+
+/* Lamps start */
 
 function getLamps() {
     //echo 'Called function getLamps'; //Used for the debugging -- check if the function was called :)
@@ -133,5 +136,64 @@ function shellcommand(){
     shell_exec('sudo /tmp/maha/433Utils/RPi_utils/codesend 123');
     
 }
+
+/* Lamps end */
+
+/* Busses start */
+
+function getBusStop($station){
+    $station = isset($station) ? $station : 'Åmänningevägen';
+    $searchTrip           =     "DubDBSMx349tzJyhg1MvwomgFu8fTtQP";
+
+    if($station){
+        //Convert the searched site to URL so the API can handle the name
+        $stationNameURL           =   rawurlencode($station);
+        //echo "<h1>Du sökte på: ".$stationNameURL."</h1>";
+        /*
+        /   This wil get the names that match the entered site and the siteID
+        */
+        $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationNameURL&coordSys=RT90&key=$searchTrip";            
+        $findByNameResult       =   file_get_contents($findByName);
+        $findByNameResultJson   =   (json_decode($findByNameResult, true));
+        $findByNameResultStops  =   $findByNameResultJson['findlocationresult']['from']['location'];
+        
+        if (array_key_exists('bestmatch', $findByNameResultStops) && $findByNameResultStops['bestmatch'] == 'true') {
+            echo "Station: ".$findByNameResultStops['displayname'];
+            echo " med locationid: ".$findByNameResultStops['locationid']."<br><br>";
+            getBusTime($findByNameResultStops['locationid']);
+        }else{
+            //Check if it exists one layer deeper in the array
+            foreach($findByNameResultStops as $stationIdKey => $stationIdVal){
+                echo "<br>Station: ".$stationIdVal['displayname'];
+                echo " med locationid: ".$stationIdVal['locationid'];
+            }
+        }
+        //echo "<pre>";
+        //print_r($findByNameResultStops);
+        //echo "</pre>";
+    }
+}
+
+function getBusTime($busStop){
+    $stationID            =     '7453026';
+    $stolpTidtabeller     =     '1z2g6LAZ4diBFyrPj86k0LaNFsHP0QEy';
+    
+    if($busStop){
+        $findByStationID        = "https://api.trafiklab.se/samtrafiken/resrobotstops/GetDepartures.json?apiVersion=2.1&coordSys=RT90&locationId=$stationID&key=$stolpTidtabeller";
+        $findByStationResult       =   file_get_contents($findByStationID);
+        $findByStationResultJson   =   (json_decode($findByStationResult, true));
+        $busArr                       =    $findByStationResultJson['getdeparturesresult']['departuresegment'];
+
+        foreach($busArr as $busKey => $busVal){
+            echo "<div class='bus-result'>".$busVal['segmentid']['mot']['#text']." från ".$busVal['departure']['location']['name']." mot ".$busVal['direction']." ".substr($busVal['departure']['datetime'],11,5)."</div>";
+            //echo "<pre>";
+            //print_r($busVal);
+            //echo "</pre>";
+        }
+    }
+    
+}
+
+/* Busses end */
 
 ?>

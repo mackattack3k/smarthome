@@ -63,7 +63,12 @@ include 'functions.php';
                     traffic
                 </div>
                 <div class="items">
-                
+                <div id="traffic-search">
+                    <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen"></input>
+                </div>
+                <div id="traffic-result">
+                </div>
+                    
                 </div>
             </div>  
         </div>
@@ -86,8 +91,8 @@ include 'functions.php';
                     speakers
                 </div>
                 <div class="items">
-                    <paper-toggle-button class="red" label="mute">Mute</paper-toggle-button>
-                    <paper-checkbox class="white" checked>Calcium</paper-checkbox>
+                    <paper-toggle-button disabled class="red" label="mute">Mute</paper-toggle-button>
+                    <paper-checkbox disabled class="white" checked>Checkbox</paper-checkbox>
                     
                 </div>
             </div>

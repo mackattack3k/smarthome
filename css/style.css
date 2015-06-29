@@ -19,6 +19,8 @@ a { text-decoration: none; }
 .items a { margin-top: 8px; }
 .items paper-button { margin-top: 12px; }
 
+.traffic-input { min-width: 299px; outline: none; border: none; border-bottom: 1px solid #595959; text-align: center; font-size: 16px; color: #595959; }
+
 paper-button[raised].lights-yellow.active { background-color: yellow; }
 
 paper-toggle-button.red { --paper-toggle-button-checked-bar-color: red; --paper-toggle-button-checked-button-color: var(--paper-red-500); --paper-toggle-button-checked-ink-color: var(--paper-red-500); --paper-toggle-button-unchecked-bar-color: var(--paper-red-900); --paper-toggle-button-unchecked-button-color: var(--paper-red-900); --paper-toggle-button-unchecked-ink-color: var(--paper-red-900); }

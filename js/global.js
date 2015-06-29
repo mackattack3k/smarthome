@@ -17,12 +17,23 @@ function updateClock ( )
  }
 function getBus ()
 {
+    //Check if the value of traffi-search is set and use it
+    var getStation      =       $('#traffic-search-input').val();
+    if (getStation == ''){
+        var station     =       'Åmänningevägen';
+    }else{
+        var station     =       getStation;
+    }
+    
+    console.log(getStation);
+    
+    
     $.ajax({
-      url: "functions.php?function=getBusses&station=gullmarsplan",
+      url: "functions.php?function=getBusStop&var1=" + getStation,
       cache: false
     })
       .done(function( html ) {
-        $( "#results" ).append( html );
+        $( "#traffic-result" ).html( html );
       });
 }
  
