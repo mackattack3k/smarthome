@@ -347,4 +347,39 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 
 /* Busses end */
 
+/* Weather start */
+
+function getWeather(){
+  /* Establish some global variables for the weather functions */
+  $apikey         =   "d99fe917166e9602ed87f6ca3d629469";
+  $lat            =   "59.288112";
+  $lon            =   "18.011338";
+  $units          =   "metric";
+  $lang           =   "se";
+  $days           =   "3";
+
+  $debug          = 'false';
+
+  $weatherstring  =   "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$apikey";
+  $weatherstringResult       =   file_get_contents($weatherstring);
+  $weatherstringResultJson   =   (json_decode($weatherstringResult, true));
+  file_put_contents('weather.json', json_encode($weatherstringResult));
+
+
+  $forecaststring    =   "http://api.openweathermap.org/data/2.5/find?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$apikey";
+  $forecaststringResult       =   file_get_contents($forecaststring);
+  $forecaststringJson   =   (json_decode($forecaststringResult, true));
+
+  if($debug == 'true'){
+      echo "<pre>";
+      print_r($weatherstringResultJson);
+      print_r($forecaststringJson);
+      echo "</pre>";
+  }
+
+}
+
+
+/* Weather end */
+
 ?>
