@@ -4,7 +4,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 header('Content-Type: text/html; charset=utf-8');
-//echo exec('whoami'); 
+//echo exec('whoami');
 
 /*GET variables */
 $getFunction    = (isset($_GET["function"]))? ($_GET["function"]) : '';
@@ -28,7 +28,7 @@ function resetthingy() {
 function getLamps() {
     //echo 'Called function getLamps'; //Used for the debugging -- check if the function was called :)
     $lampsFileName = 'public_files/lamps.json';
-    
+
     //Check if the file exists and output its contents
     if (fileExists($lampsFileName) === true ){
         //echo 'The lamps file exists, yay!';
@@ -43,20 +43,20 @@ function getLamps() {
 
 function editLamps($lamp , $newState) {
     $currentLamps   =   getLamps();
-    
+
     //Check to see if a lamp is inputted
     if ($lamp){
-        
+
         //Check to see if the new state of the lamp is set or not
         if ($newState != ''){
-            
+
             //Check to see if the new state is On or Off - otherwise error
             if (strtolower($newState) == 'on' or strtolower($newState) == 'off' ){
-                
+
                 //Check to see if all the lamps should be changed
                 if (strtolower($lamp) == 'all'){
-                    
-                    
+
+
                     //Loop through each lamp and put it to the value
                     foreach ($currentLamps['lamps'] as $key => $val) {
                         $currentLamps['lamps'][$key] = strtolower($newState);
@@ -65,22 +65,22 @@ function editLamps($lamp , $newState) {
                     $fp = fopen('public_files/lamps.json', 'w');
                     fwrite($fp, json_encode($currentLamps));
                     fclose($fp);
-                    
+
                     //Send the 433 mhz signal to the Pi
                     echo "Changed all the lamps to: ".strtolower($newState);
 
                 }else{
-                    
+
                     //Turn only one lamp off or on
-                    //Check to see if the lamp exist in the json file                    
+                    //Check to see if the lamp exist in the json file
                     if (array_key_exists($lamp, $currentLamps['lamps'])) {
                         $currentLamps['lamps'][$lamp] = $newState;
-                        
+
                         //Write to lamps.json with the change
                         $fp = fopen('public_files/lamps.json', 'w');
                         fwrite($fp, json_encode($currentLamps));
                         fclose($fp);
-                        
+
                         echo $lamp." is now set to: ".$newState;
                     }else{
                         echo $lamp." could not be found in the json file";
@@ -88,32 +88,32 @@ function editLamps($lamp , $newState) {
                 }
             }else{
                 echo "The new state must be set to ON or OFF";
-            }            
+            }
         }else{
             echo "The new state must be set to a value (ON/OFF)";
-        }        
+        }
     }else{
         echo "No lamp was selected";
-    }    
+    }
 }
 
 function htmlLamps(){
     //output the current lamps to html for the frontpage
     $currentLamps   =   getLamps();
-    
+
     //Check if there actually is lamps =)
     if ( $currentLamps ){
-        
+
         //Print a button element for each lamp
         foreach ($currentLamps['lamps'] as $key => $val) {
-            
+
             //Check the state of the lamp and append the class Active if its on
             if ( strtolower($val) == 'on'){
                 echo "<paper-button raised class='lights-yellow active' id='".$key."'>".$key."</paper-button>";
             }else{
                 echo "<paper-button raised class='lights-yellow' id='".$key."'>".$key."</paper-button>";
             }
-        }        
+        }
     }else{
         echo "No lamps file was found";
     }
@@ -134,7 +134,7 @@ function fileExists($filename){
 
 function shellcommand(){
     shell_exec('sudo /tmp/maha/433Utils/RPi_utils/codesend 123');
-    
+
 }
 
 /* Lamps end */
@@ -142,30 +142,38 @@ function shellcommand(){
 /* Busses start */
 
 function getBusStop($station){
+    //echo "Nu körs 'hitta stationsid från namn'";
     $station = isset($station) ? $station : 'Åmänningevägen';
     $searchTrip           =     "DubDBSMx349tzJyhg1MvwomgFu8fTtQP";
+
 
     if($station){
         //Convert the searched site to URL so the API can handle the name
         $stationNameURL           =   rawurlencode($station);
         //echo "<h1>Du sökte på: ".$stationNameURL."</h1>";
         /*
-        /   This wil get the names that match the entered site and the siteID
+        /   This will get the names that match the entered site and the siteID
         */
-        $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationNameURL&coordSys=RT90&key=$searchTrip";            
+        $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationNameURL&coordSys=RT90&key=$searchTrip";
         $findByNameResult       =   file_get_contents($findByName);
         $findByNameResultJson   =   (json_decode($findByNameResult, true));
         $findByNameResultStops  =   $findByNameResultJson['findlocationresult']['from']['location'];
-        
+
         if (array_key_exists('bestmatch', $findByNameResultStops) && $findByNameResultStops['bestmatch'] == 'true') {
-            echo "Station: ".$findByNameResultStops['displayname'];
+            /*echo "Station: ".$findByNameResultStops['displayname'];
             echo " med locationid: ".$findByNameResultStops['locationid']."<br><br>";
+            */
             getBusTime($findByNameResultStops['locationid']);
+
         }else{
             //Check if it exists one layer deeper in the array
             foreach($findByNameResultStops as $stationIdKey => $stationIdVal){
+                /*
                 echo "<br>Station: ".$stationIdVal['displayname'];
                 echo " med locationid: ".$stationIdVal['locationid'];
+                */
+                //Output station name to the stolpTidtabeller
+                getBusTime($stationIdVal['locationid']);
             }
         }
         //echo "<pre>";
@@ -175,23 +183,166 @@ function getBusStop($station){
 }
 
 function getBusTime($busStop){
-    $stationID            =     '7453026';
+    //echo "<br>Nu körs travelplanner<br/>";
+    //echo $busStop;
+    $amanningevagen       =     '7453026'; //Åmänningevägen
+    $arstaberg            =     '7424920'; //Årstaberg station
     $stolpTidtabeller     =     '1z2g6LAZ4diBFyrPj86k0LaNFsHP0QEy';
-    
+
+
+
     if($busStop){
-        $findByStationID        = "https://api.trafiklab.se/samtrafiken/resrobotstops/GetDepartures.json?apiVersion=2.1&coordSys=RT90&locationId=$stationID&key=$stolpTidtabeller";
+        $findByStationID        = "https://api.trafiklab.se/samtrafiken/resrobotstops/GetDepartures.json?apiVersion=2.1&coordSys=RT90&locationId=$busStop&key=$stolpTidtabeller";
         $findByStationResult       =   file_get_contents($findByStationID);
         $findByStationResultJson   =   (json_decode($findByStationResult, true));
-        $busArr                       =    $findByStationResultJson['getdeparturesresult']['departuresegment'];
+        $busArr                    =    $findByStationResultJson['getdeparturesresult']['departuresegment'];
+        $trafficTypesArr           =    array('buss' => 'bus', 'tåg' => 'train');
+
+        $debug = 0;
+
+        if($debug == 1){
+            echo "<div class='debug' style='display:block;'><pre>";
+            print_r($findByStationResultJson);
+            echo "</div></pre>";
+        }else{
+            //echo "<div class='debug'><pre>";
+            //print_r($findByStationResultJson);
+            //echo "</div></pre>";
+        }
+
 
         foreach($busArr as $busKey => $busVal){
-            echo "<div class='bus-result'>".$busVal['segmentid']['mot']['#text']." från ".$busVal['departure']['location']['name']." mot ".$busVal['direction']." ".substr($busVal['departure']['datetime'],11,5)."</div>";
-            //echo "<pre>";
+
+            $getTrafficType            =    strtolower($busVal['segmentid']['mot']['#text']);
+            //var_dump($busVal);
+
+            //Check if the traffic type exists in the swedish translation array - trafficTypesArr
+            if(isset($trafficTypesArr[$getTrafficType])){
+                $trafficType    =    $trafficTypesArr[$getTrafficType];
+            }else{
+                $trafficType    =   'unkown';
+            }
+
             //print_r($busVal);
-            //echo "</pre>";
+            getTravelPlanner($busVal['departure']['location']['name'], $busVal['direction'], substr($busVal['departure']['datetime'], 0, 10), substr($busVal['departure']['datetime'], 11, 5));
+            /*
+            echo "
+            <div class='traffic-result'><div class='traffic-time'>"
+                .substr($busVal['departure']['datetime'],11,5).
+                "</div><div class='traffic-destinations'><div class='traffic-main traffic-from'>"
+                .$busVal['departure']['location']['name'].
+                "</div><div class='traffic-main traffic-to'>"
+                .$busVal['direction'].
+                "</div></div><div class='traffic-type icon icon-".$trafficType." icon-2x'></div></div>";
+            */
+
         }
     }
-    
+
+
+}
+
+function getTravelPlanner($getOrigin, $getDestination, $date, $time){
+    //echo "<br>Nu körs realtidsinfo 3<br>";
+    //echo $getOrigin."<br>".$getDestination."<br>".$date."<br>".$time."<br>";
+    $realtidsinformation    =   '3b445284c77a46d08b5a300fc902534c';
+    $origin                 =   rawurlencode($getOrigin);
+    $destination            =   rawurlencode($getDestination);
+
+    if($getDestination == 'Årstaberg station'){
+      $destination = rawurlencode('Årstaberg');
+    }
+
+    if($origin && $destination){
+        $findByStationID        = "http://api.sl.se/api2/TravelplannerV2/trip.json?key=".$realtidsinformation."&originId=".$origin."&destId=".$destination."&date=".$date."&time=".$time."&numTrips=1";
+        $findByStationResult       =   file_get_contents($findByStationID);
+        $findByStationResultJson   =   (json_decode($findByStationResult, true));
+        $trips                     =    $findByStationResultJson;
+
+        $debug = 0;
+
+        if($debug == 1){
+            echo "<div class='debug' style='display:block;'><pre>";
+            print_r($findByStationResultJson['TripList']['Trip'][0]);
+            echo "</div></pre>";
+        }else{
+            //echo "<div class='debug'><pre>";
+            //print_r($findByStationResultJson);
+            //echo "</div></pre>";
+        }
+        //var_dump($trips);
+
+        foreach($trips as $tripKey => $tripValue){
+
+            $finalTrips     =   $tripValue['Trip']['LegList']['Leg'];
+            $duration       =   $tripValue['Trip']['dur'];
+            $trip             =   $tripValue['Trip'];
+            $finalDestination = preg_replace('/( [(]terminalen)[)]/', '', $finalTrips['Destination']['name']);
+            /*
+            echo "<pre>";
+            var_dump($trip);
+            echo "</pre>";
+            */
+            //echo "<i class='icon icon-bus'></i>";
+
+
+            echo "
+                <div class='traffic-result'>
+                  <div class='traffic-first'>
+                    <div class='icon icon-".strtolower($finalTrips['type'])." icon-2x'></div>
+                    <div class='traffic-line'>".$finalTrips['line']."</div>
+                  </div>
+                  <div class='traffic-second'>
+                    <div class='traffic-destination'>".$finalDestination."</div>
+                    <!--<div class='traffic-duration'>".$duration." minuter</div>-->
+                  </div>
+                  <div class='traffic-third'>
+                    <div class='traffic-time'>avgår ".$finalTrips['Origin']['time']."</div>
+                    <div class='traffic-time'>framme ".$finalTrips['Destination']['time']."</div>
+                  </div>
+                </div>
+            ";
+
+            /* -- Old way to get out the values from the travel planner... not working
+            foreach($finalTrips as $finalTripsKey => $finalTripsValue){
+
+                var_dump($finalTripsValue);
+                echo "
+                    <div class='traffic-result'><div class='traffic-time'>"
+                    .$finalTripsValue['Origin']['time'].
+                    " "
+                    .$finalTripsValue['Destination']['time'].
+                    "</div><div class='traffic-destinations'><div class='traffic-main traffic-from'>"
+                    .$finalTripsValue['Origin']['name'].
+                    "</div><div class='traffic-main traffic-to'>"
+                    .$finalTripsValue['Destination']['name'].
+                    "</div></div><div class='traffic-type icon icon-"
+                    .$finalTripsValue['Origin']['type'].
+                    " icon-2x'></div></div>";
+
+            }
+            */
+
+
+            /*
+            echo "
+            <div class='traffic-result'><div class='traffic-time'>"
+                .$tripValue['LegList']['Leg']['Origin']['time']
+                .$tripValue['LegList']['Leg']['Destination']['time'].
+                "</div><div class='traffic-destinations'><div class='traffic-main traffic-from'>"
+                .$tripValue['LegList']['Leg']['Origin']['name'].
+                "</div><div class='traffic-main traffic-to'>"
+                .$tripValue['LegList']['Leg']['Destination']['name'].
+                "</div></div><div class='traffic-type icon icon-"
+                .$tripValue['LegList']['Leg']['Origin']['type'].
+                " icon-2x'></div></div>";
+            */
+        }
+
+
+    }
+
+
 }
 
 /* Busses end */

@@ -4,7 +4,7 @@
   -ms-border-radius:     $radius
   border-radius:         $radius
 
-=no-select 
+=no-select
   -webkit-touch-callout:    none
   -webkit-user-select:      none
   -khtml-user-select:       none
@@ -30,3 +30,38 @@
   display: -moz-flex
   display: -ms-flexbox
   display: flex
+
+=flex($flex)
+  -webkit-flex: $flex
+  -ms-flex: $flex
+  flex: $flex
+
+=flexwrap($type)
+  -webkit-flex-wrap: $type
+  -ms-flex-wrap: $type
+  flex-wrap: $type
+
+=flexflow($wrap)
+  -webkit-flex-flow: $wrap
+  -ms-flex-flow: $wrap
+  flex-flow: $wrap
+
+=alignitems($type)
+  -webkit-align-items: $type
+  -ms-flex-align: $type
+  align-items: $type
+
+=justifycontent($type)
+  -webkit-justify-content: $type
+  -ms-flex-pack: $type
+  justify-content: $type
+
+=order($order)
+  -webkit-order: $order
+  -ms-flex-order: $order
+  order: $order
+
+=flexdirection($direction)
+  -webkit-flex-direction: $direction
+  -ms-flex-direction: $direction
+  flex-direction: $direction

@@ -6,7 +6,7 @@ html
     font-size: $small-font
     font-family: $default-font
 
-body 
+body
     background-color: $bg-grey
 a
     text-decoration: none
@@ -15,49 +15,94 @@ a
 
 .container
     +flexbox
-    justify-content: space-around
-    flex-wrap: wrap
+    +justifycontent(space-around)
+    +flexwrap(wrap)
     width: 100%
-    
+
 .column
     width: 500px
     +transition(all, 0.2s, linear)
-        
+
 .column-content
     border-top: 5px solid #fff
     background-color: white
-    
+
     width: 100%
     margin-top: 20px
-    
+
 .header
     @extend .big-font
     text-align: center
     padding: 8px
-    
+
 .items
     +flexbox
-    justify-content: space-around 
-    flex-wrap: wrap
+    +justifycontent(space-around)
+    +flexwrap(wrap)
     padding: 10px
     a
         margin-top: 8px
     paper-button
         margin-top: 12px
-        
+
+.traffic-items
+    +flexbox
+    +justifycontent(space-around)
+    +alignitems(center)
+    +flexwrap(wrap)
+    +flexdirection(column)
+
 .traffic-input
     min-width: 299px
     outline: none
     border: none
-    border-bottom: 1px solid #595959
+    //border-bottom: 1px solid #595959
     text-align: center
     font-size: $medium-font
     color: #595959
 
+.icon
+    display: -webkit-box !important
+    display: -webkit-flex !important
+    display: -moz-flex !important
+    display: -ms-flexbox !important
+    display: flex !important
+
+#traffic-results
+    margin-top: 20px
+
+.traffic-result
+    +no-select
+    +flexbox
+    +alignitems(center)
+    +justifycontent(space-around)
+    +flexdirection(row)
+    +flexflow(nowrap)
+
+    box-shadow: $material-shadow
+    margin-bottom: 8px
+    height: 60px
+    width: 360px
+    &:hover
+        cursor: pointer
+
+.traffic-first
+    +flexbox
+    +alignitems(center)
+    +justifycontent(center)
+    +flexdirection(column)
+
 paper-button[raised].lights-yellow
     &.active
         background-color: yellow
-        
+
+.debug
+    display: none
+    position: absolute
+    top: 0
+    left: 0
+    background-color: rgba(245, 222, 179, 0.9)
+
 paper-toggle-button.red
     --paper-toggle-button-checked-bar-color:  red
     --paper-toggle-button-checked-button-color:  var(--paper-red-500)
@@ -71,12 +116,12 @@ paper-checkbox.blue
     --paper-checkbox-checked-ink-color: var(--paper-light-blue-500)
     --paper-checkbox-unchecked-color: var(--paper-light-blue-900)
     --paper-checkbox-unchecked-ink-color: var(--paper-light-blue-900)
-    
+
 /* Font classes */
-    
+
 .big-font
     font-size: $big-font
-    
+
 .super-duper-big-font
     font-size: $super-duper-big-font
 
@@ -85,20 +130,20 @@ paper-checkbox.blue
 
 .small-font
     font-size: $small-font
-    
+
 .super-small-font
     font-size: $super-small-font
-    
+
 #time
     border-top-color: $bg-green
-    
+
 #weather
     border-top-color: $bg-orange
-    
+
 #traffic
     border-top-color: $bg-blue
-    
- 
+
+
 #lights
     border-top-color: yellow
 
@@ -108,7 +153,9 @@ paper-checkbox.blue
 @media all and (max-width: 1510px)
     .column
         width: 400px
-        
+    .traffic-result
+        width: 260px
+
 @media all and (max-width: 850px)
     .column
         width: 300px

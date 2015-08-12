@@ -10,9 +10,9 @@ include 'functions.php';
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#ffffff">
-    
+
     <title>Smart home - Kebab edition</title>
-    
+
     <link rel="stylesheet" href="css/style.css">
     <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet' type='text/css'>
     <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
@@ -30,10 +30,11 @@ include 'functions.php';
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="manifest" href="/manifest.json">
 
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    
+    <script src="https://use.fonticons.com/03ff41d1.js"></script>
+
 </head>
 
 <body>
@@ -46,7 +47,7 @@ include 'functions.php';
                     <div id="currentday" class="big-font">
                     </div>
                     <div id="currentdate" class="big-font">
-                    </div>                        
+                    </div>
                 </div>
             </div>
             <div id="weather" class="column-content">
@@ -54,25 +55,25 @@ include 'functions.php';
                     35 grader<br/>
                     Sol hela dagen
                 </div>
-            </div>          
+            </div>
         </div>
-        
+
         <div class="column column-2">
             <div id="traffic" class="column-content">
                 <div class="header">
                     traffic
                 </div>
-                <div class="items">
+                <div class="traffic-items">
                 <div id="traffic-search">
                     <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen"></input>
                 </div>
-                <div id="traffic-result">
+                <div id="traffic-results">
                 </div>
-                    
+
                 </div>
-            </div>  
+            </div>
         </div>
-        
+        <!---
         <div class="column column-3">
             <div id="lights" class="column-content">
                 <div class="header">
@@ -82,7 +83,7 @@ include 'functions.php';
                     <?php echo htmlLamps(); ?>
                     <paper-button disabled class="lights-all" id="all-on">All on</paper-button>
                     <paper-button raised class="lights-all" id="all-off">All off</paper-button>
- 
+
                 </div>
 
             </div>
@@ -93,14 +94,15 @@ include 'functions.php';
                 <div class="items">
                     <paper-toggle-button disabled class="red" label="mute">Mute</paper-toggle-button>
                     <paper-checkbox disabled class="white" checked>Checkbox</paper-checkbox>
-                    
+
                 </div>
             </div>
         </div>
+      --->
 
-        
+
     </div>
-    
+
     <script src="js/global.js"></script>
 </body>
 </html>

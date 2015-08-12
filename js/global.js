@@ -33,7 +33,7 @@ function getBus ()
       cache: false
     })
       .done(function( html ) {
-        $( "#traffic-result" ).html( html );
+        $( "#traffic-results" ).html( html );
       });
 }
  
