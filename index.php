@@ -29,6 +29,7 @@ include 'functions.php';
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -52,14 +53,24 @@ include 'functions.php';
             </div>
             <div id="weather" class="column-content">
                 <div class="header">
-                    35 grader<br/>
-                    Sol hela dagen
+                  weather
                 </div>
+                <div class="weather-items">
+                  <div class="weather-degrees">
+
+                  </div>
+                  <div class="weather-text">
+
+                  </div>
+                </div>
+
             </div>
         </div>
 
         <div class="column column-2">
             <div id="traffic" class="column-content">
+                <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
+                </div>
                 <div class="header">
                     traffic
                 </div>

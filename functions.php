@@ -297,8 +297,8 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
                     <!--<div class='traffic-duration'>".$duration." minuter</div>-->
                   </div>
                   <div class='traffic-third'>
-                    <div class='traffic-time'>avgår ".$finalTrips['Origin']['time']."</div>
-                    <div class='traffic-time'>framme ".$finalTrips['Destination']['time']."</div>
+                    <div class='traffic-time departure-time' value='".$finalTrips['Origin']['time']."'>avgår ".$finalTrips['Origin']['time']."</div>
+                    <div class='traffic-time arrival-time'>framme ".$finalTrips['Destination']['time']."</div>
                   </div>
                 </div>
             ";
@@ -349,32 +349,45 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 
 /* Weather start */
 
-function getWeather(){
+function getWeather($type){
   /* Establish some global variables for the weather functions */
   $apikey         =   "d99fe917166e9602ed87f6ca3d629469";
-  $lat            =   "59.288112";
-  $lon            =   "18.011338";
+  $lat            =   "59.298604";
+  $lon            =   "18.047111";
   $units          =   "metric";
   $lang           =   "se";
   $days           =   "3";
 
-  $debug          = 'false';
+  $debug          = 'true';
 
   $weatherstring  =   "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$apikey";
   $weatherstringResult       =   file_get_contents($weatherstring);
   $weatherstringResultJson   =   (json_decode($weatherstringResult, true));
-  file_put_contents('weather.json', json_encode($weatherstringResult));
+  //file_put_contents('weather.json', json_encode($weatherstringResult));
 
+  //Get forecast - not used
   $forecaststring    =   "http://api.openweathermap.org/data/2.5/find?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$apikey";
-  $forecaststringResult       =   file_get_contents($forecaststring);
-  $forecaststringJson   =   (json_decode($forecaststringResult, true));
+  //$forecaststringResult       =   file_get_contents($forecaststring);
+  //$forecaststringJson   =   (json_decode($forecaststringResult, true));
 
   if($debug == 'true'){
       echo "<pre>";
       print_r($weatherstringResultJson);
-      print_r($forecaststringJson);
+      //print_r($forecaststringJson);
       echo "</pre>";
   }
+
+  $icon = $weatherstringResultJson['weather']['0']['description'];
+
+  echo($weatherstringResultJson['main']['temp']);
+  echo($weatherstringResultJson['weather']['0']['description']);
+  echo "
+  <div>
+
+  </div>
+
+
+  ";
 
 }
 

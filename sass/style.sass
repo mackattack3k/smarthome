@@ -45,10 +45,17 @@ a
     paper-button
         margin-top: 12px
 
+.traffic-refresh-manually
+    position: absolute
+    right: 20px
+    top: 20px
+    &:hover
+        cursor: pointer
+
 #traffic-loading
     //display: none
     margin-top: 20px
-    color: #595959
+    color: #595959    
 
 .traffic-loading-no-before
     &::before
@@ -155,7 +162,7 @@ paper-checkbox.blue
 
 #traffic
     border-top-color: $bg-blue
-
+    position: relative
 
 #lights
     border-top-color: yellow

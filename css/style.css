@@ -80,6 +80,15 @@ a {
   margin-top: 12px;
 }
 
+.traffic-refresh-manually {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+.traffic-refresh-manually:hover {
+  cursor: pointer;
+}
+
 #traffic-loading {
   margin-top: 20px;
   color: #595959;
@@ -243,6 +252,7 @@ paper-checkbox.blue {
 
 #traffic {
   border-top-color: #2196F3;
+  position: relative;
 }
 
 #lights {
