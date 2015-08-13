@@ -365,7 +365,6 @@ function getWeather(){
   $weatherstringResultJson   =   (json_decode($weatherstringResult, true));
   file_put_contents('weather.json', json_encode($weatherstringResult));
 
-
   $forecaststring    =   "http://api.openweathermap.org/data/2.5/find?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$apikey";
   $forecaststringResult       =   file_get_contents($forecaststring);
   $forecaststringJson   =   (json_decode($forecaststringResult, true));

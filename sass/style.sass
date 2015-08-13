@@ -45,6 +45,18 @@ a
     paper-button
         margin-top: 12px
 
+#traffic-loading
+    //display: none
+    margin-top: 20px
+    color: #595959
+
+.traffic-loading-no-before
+    &::before
+        content: '' !important
+
+.traffic-loading-before
+    content: '\f015'
+
 .traffic-items
     +flexbox
     +justifycontent(space-around)
@@ -53,7 +65,7 @@ a
     +flexdirection(column)
 
 .traffic-input
-    min-width: 299px
+    //min-width: 299px
     outline: none
     border: none
     //border-bottom: 1px solid #595959
@@ -70,6 +82,7 @@ a
 
 #traffic-results
     margin-top: 20px
+    margin-bottom: 20px
 
 .traffic-result
     +no-select

@@ -9,11 +9,11 @@ function updateClock ( )
     weekday[4] = "Torsdag";
     weekday[5] = "Fredag";
     weekday[6] = "Lördag";
-    
+
     $("#currenttime").html(currentTime.toLocaleTimeString('sv-SE'));
-    $("#currentday").html(weekday[currentTime.getDay()]); 
+    $("#currentday").html(weekday[currentTime.getDay()]);
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
-         
+
  }
 function getBus ()
 {
@@ -24,34 +24,42 @@ function getBus ()
     }else{
         var station     =       getStation;
     }
-    
+
     console.log(getStation);
-    
-    
+
+
+    $('#traffic-loading').addClass("traffic-loading-before");
+    $('#traffic-loading').removeClass("traffic-loading-no-before");
+    $('#traffic-loading').show();
+    $( "#traffic-results" ).html( '' );
     $.ajax({
       url: "functions.php?function=getBusStop&var1=" + getStation,
-      cache: false
+      cache: false,
     })
       .done(function( html ) {
+        $('#traffic-loading').addClass("traffic-loading-no-before");
+        $('#traffic-loading').removeClass("traffic-loading-before");
+        $('#traffic-loading').hide();
+        console.log('Done with new busses');
         $( "#traffic-results" ).html( html );
       });
 }
- 
+
 $(document).ready(function()
-{  
+{
     updateClock();
     setInterval('updateClock()', 1000);
     getBus();
-    
-    
+
+
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
     $( ".lights-yellow" ).click(function() {
         $(this).toggleClass('active');
-        
+
         //Variables to post to the changelamp function
         var id      =   $(this).attr('id')
         var state   =   ($(this).hasClass('active'))? 'on' : 'off';
-            
+
         $.ajax({ url: 'functions.php',
          data: {function: 'editLamps',var1: id, var2: state},
          type: 'get',
@@ -60,14 +68,14 @@ $(document).ready(function()
                   }
         });
     });
-    
+
     //Toggle all the lights buttons and change them in the json file
     $( ".lights-all" ).click(function() {
         $(".lights-yellow").removeClass('active');
-        
+
         //Variables to post to the changelamp function
         var state   =   $(this).attr('id').substring(4,this.length);
-            
+
         $.ajax({ url: 'functions.php',
          data: {function: 'editLamps',var1: 'all', var2: state},
          type: 'get',
@@ -76,6 +84,6 @@ $(document).ready(function()
                   }
         });
     });
-    
-    
+
+
 });

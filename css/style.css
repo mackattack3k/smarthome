@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html,
 body,
 ul,
@@ -79,6 +80,19 @@ a {
   margin-top: 12px;
 }
 
+#traffic-loading {
+  margin-top: 20px;
+  color: #595959;
+}
+
+.traffic-loading-no-before::before {
+  content: "" !important;
+}
+
+.traffic-loading-before {
+  content: "";
+}
+
 .traffic-items {
   display: -webkit-box;
   display: -webkit-flex;
@@ -100,7 +114,6 @@ a {
 }
 
 .traffic-input {
-  min-width: 299px;
   outline: none;
   border: none;
   text-align: center;
@@ -118,6 +131,7 @@ a {
 
 #traffic-results {
   margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .traffic-result {

@@ -67,6 +67,7 @@ include 'functions.php';
                 <div id="traffic-search">
                     <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen"></input>
                 </div>
+                <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
                 <div id="traffic-results">
                 </div>
 
