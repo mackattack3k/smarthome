@@ -44,27 +44,73 @@ function getBus (){
         $( "#traffic-results" ).html( html );
       });
 }
-function getWeather(type) {
-  console.log('getting weather');
+function getWeather() {
+  //View spinning icon and hide the previous weather results
+  $('#weather-loading').addClass('weather-loading-before').removeClass('.weather-loading-no-before');
+  $('.weather-current').hide();
 
-  $.ajax({
-    url: "functions.php?function=getWeather",
-    cache: false,
-    success: function () {
-      console.log('got weather');
-    }
-  })
-    .done(function( html ) {
-      $( ".weather-items").html( html );
-      console.log(html);
+  //All the types we want to see
+  var weatherArray = [
+    'icon',
+    'desc',
+    'temp'
+   ];
+  var weatherResultObj = {};
+  var i = 0;
+
+  //fetch all the values woohoo
+  $.each(weatherArray, function(index, el) {
+    //console.log(weatherArray[i]);
+    var type = weatherArray[i];
+
+    $.ajax({
+      url: "functions.php?function=getWeather&var1=" + type,
+      cache: false,
+      datatype: 'html',
+      success: function (data) {
+        weatherResultObj[type] = data; //Add the result to new array
+
+        if (Object.keys(weatherResultObj).length == weatherArray.length) {//When the whole weatherarray has been looped :)
+          //console.log(weatherResultObj);
+          //Remove spinning icon
+          $('#weather-loading').addClass('weather-loading-no-before').removeClass('.weather-loading-before');
+          //View the result
+          $('#weather-current-icon').html( weatherResultObj.icon );
+          $('.weather-current-details').empty().append( weatherResultObj.temp ).append( weatherResultObj.desc );
+          $('.weather-current').show();
+
+
+        }
+
+        /*
+        if(Object.keys(weatherResultObj).length == weatherArray.length){ // When the ajax for each value in the array is done
+          $('#weather-icon-container').html(weatherResultObj['icon']); //display the weather icon
+          $('.weather-items').empty();
+          $('.weather-items').append(weatherResultObj['desc']);
+          $('.weather-items').append(weatherResultObj.temp);
+          console.log(weatherResultObj);
+          for ( property in weatherResultObj ) {
+            console.log( property );
+          }
+        }
+        */
+
+      }
     });
+    //Ajax over
+    i++;
+
+  });
+  //Each over
+
 
 }
+
 $(document).ready(function()
 {
     updateClock();
     setInterval('updateClock()', 1000);
-    //getBus();
+    getBus();
     getWeather();
 
     $('departure-time').each(function() {

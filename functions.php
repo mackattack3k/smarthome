@@ -358,7 +358,7 @@ function getWeather($type){
   $lang           =   "se";
   $days           =   "3";
 
-  $debug          = 'true';
+  $debug          = 'false';
 
   $weatherstring  =   "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$apikey";
   $weatherstringResult       =   file_get_contents($weatherstring);
@@ -377,17 +377,23 @@ function getWeather($type){
       echo "</pre>";
   }
 
-  $icon = $weatherstringResultJson['weather']['0']['description'];
+  $icon   = $weatherstringResultJson['weather']['0']['id'];
+  $temp   = round($weatherstringResultJson['main']['temp'], 1);
+  $desc   = $weatherstringResultJson['weather']['0']['description'];
 
-  echo($weatherstringResultJson['main']['temp']);
-  echo($weatherstringResultJson['weather']['0']['description']);
-  echo "
-  <div>
-
-  </div>
-
-
-  ";
+  if($type){
+    if ($type == 'icon') {
+      echo "<div class='weather-icon wi wi-owm-".$icon."'></div>";
+    }elseif ($type == 'temp') {
+      echo "<div class='weather-temp'>".$temp."°</div>";
+    }elseif ($type == 'desc') {
+      echo "<div class='weather-desc'>".$desc."</div>";
+    }else {
+      echo "Didnt find type: ".$type;
+    }
+  }else {
+    echo "No weather type defined";
+  }
 
 }
 

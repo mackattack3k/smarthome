@@ -55,7 +55,7 @@ a
 #traffic-loading
     //display: none
     margin-top: 20px
-    color: #595959    
+    color: #595959
 
 .traffic-loading-no-before
     &::before
@@ -107,10 +107,58 @@ a
         cursor: pointer
 
 .traffic-first
+    +flex(1)
     +flexbox
     +alignitems(center)
     +justifycontent(center)
     +flexdirection(column)
+
+.traffic-second
+    +flex(1)
+
+.traffic-third
+    +flex(1)
+
+.weather-items
+    +flexbox
+    +justifycontent(space-around)
+    +alignitems(center)
+    +flexwrap(wrap)
+    +flexdirection(column)
+
+#weather-loading
+    margin-top: 20px
+    margin-bottom: 20px
+    color: #595959
+
+.weather-loading-no-before
+    &::before
+        content: '' !important
+
+.weather-loading-before
+    content: '\f015'
+
+.weather-current
+    width: 240px
+    box-shadow: $material-shadow
+    +flexbox
+    +flexdirection(row)
+    +alignitems(center)
+    +justifycontent(center)
+    padding: 10px
+    margin-bottom: 20px
+    margin-top: 20px
+
+#weather-current-icon
+    +flex(1)
+    font-size: 44px
+    +flexbox
+    +alignitems(center)
+    +justifycontent(center)
+
+.weather-current-details
+    +flex(1)
+    font-size: 16px
 
 paper-button[raised].lights-yellow
     &.active
@@ -159,6 +207,7 @@ paper-checkbox.blue
 
 #weather
     border-top-color: $bg-orange
+    position: relative
 
 #traffic
     border-top-color: $bg-blue
