@@ -46,8 +46,9 @@ function getBus (){
 }
 function getWeather() {
   //View spinning icon and hide the previous weather results
-  $('#weather-loading').addClass('weather-loading-before').removeClass('.weather-loading-no-before');
+  $('#weather-loading').addClass('weather-loading-before').removeClass('.weather-loading-no-before').css('margin', '20px');
   $('.weather-current').hide();
+  $('.weather-current-header').hide();
 
   //All the types we want to see
   var weatherArray = [
@@ -73,8 +74,9 @@ function getWeather() {
         if (Object.keys(weatherResultObj).length == weatherArray.length) {//When the whole weatherarray has been looped :)
           //console.log(weatherResultObj);
           //Remove spinning icon
-          $('#weather-loading').addClass('weather-loading-no-before').removeClass('.weather-loading-before');
+          $('#weather-loading').addClass('weather-loading-no-before').removeClass('.weather-loading-before').css('margin', '0px');
           //View the result
+          $('.weather-current-header').show();
           $('#weather-current-icon').html( weatherResultObj.icon );
           $('.weather-current-details').empty().append( weatherResultObj.temp ).append( weatherResultObj.desc );
           $('.weather-current').show();
@@ -112,6 +114,7 @@ $(document).ready(function()
     setInterval('updateClock()', 1000);
     getBus();
     getWeather();
+    setInterval('getWeather()', 1800000); //Call getWeather every 30 minutes
 
     $('departure-time').each(function() {
         console.log($(this).attr('value'));

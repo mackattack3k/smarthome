@@ -1,4 +1,7 @@
 <?php
+/* API Keys */
+require_once('apikeys.php');
+
 /* Global vars */
 
 error_reporting(E_ALL);
@@ -144,7 +147,7 @@ function shellcommand(){
 function getBusStop($station){
     //echo "Nu körs 'hitta stationsid från namn'";
     $station = isset($station) ? $station : 'Åmänningevägen';
-    $searchTrip           =     "DubDBSMx349tzJyhg1MvwomgFu8fTtQP";
+    global $searchTrip; //Get the api key from apikeys.php
 
 
     if($station){
@@ -187,7 +190,7 @@ function getBusTime($busStop){
     //echo $busStop;
     $amanningevagen       =     '7453026'; //Åmänningevägen
     $arstaberg            =     '7424920'; //Årstaberg station
-    $stolpTidtabeller     =     '1z2g6LAZ4diBFyrPj86k0LaNFsHP0QEy';
+    global $stolpTidtabeller; //Get the api key from apikeys.php
 
 
 
@@ -245,7 +248,7 @@ function getBusTime($busStop){
 function getTravelPlanner($getOrigin, $getDestination, $date, $time){
     //echo "<br>Nu körs realtidsinfo 3<br>";
     //echo $getOrigin."<br>".$getDestination."<br>".$date."<br>".$time."<br>";
-    $realtidsinformation    =   '3b445284c77a46d08b5a300fc902534c';
+    global $realtidsinformation; //Get the api key from apikeys.php
     $origin                 =   rawurlencode($getOrigin);
     $destination            =   rawurlencode($getDestination);
 
@@ -351,7 +354,7 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 
 function getWeather($type){
   /* Establish some global variables for the weather functions */
-  $apikey         =   "d99fe917166e9602ed87f6ca3d629469";
+  global $weatherApiKey; //Get the api key from apikeys.php
   $lat            =   "59.298604";
   $lon            =   "18.047111";
   $units          =   "metric";
@@ -360,13 +363,13 @@ function getWeather($type){
 
   $debug          = 'false';
 
-  $weatherstring  =   "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$apikey";
+  $weatherstring  =   "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$weatherApiKey";
   $weatherstringResult       =   file_get_contents($weatherstring);
   $weatherstringResultJson   =   (json_decode($weatherstringResult, true));
   //file_put_contents('weather.json', json_encode($weatherstringResult));
 
   //Get forecast - not used
-  $forecaststring    =   "http://api.openweathermap.org/data/2.5/find?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$apikey";
+  $forecaststring    =   "http://api.openweathermap.org/data/2.5/find?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$weatherApiKey";
   //$forecaststringResult       =   file_get_contents($forecaststring);
   //$forecaststringJson   =   (json_decode($forecaststringResult, true));
 

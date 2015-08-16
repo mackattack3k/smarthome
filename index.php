@@ -68,14 +68,46 @@ include 'functions.php';
                   <div id="weather-loading" class="icon icon-refresh icon-4x icon-spin">
 
                   </div>
-                  <div class="weather-current">
-                    <div id="weather-current-icon">
-
+                  <div class="weather-item-container">
+                    <div class="weather-item-header">
+                      Just nu
                     </div>
-                    <div class="weather-current-details">
+                    <div class="weather-current">
+                      <div id="weather-current-icon">
 
+                      </div>
+                      <div class="weather-current-details">
+
+                      </div>
                     </div>
                   </div>
+                  <div class="weather-item-container">
+                    <div class="weather-item-header">
+                      Under dagen
+                    </div>
+                    <div class="weather-during">
+                      <div id="weather-during-icon">
+
+                      </div>
+                      <div class="weather-during-details">
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="weather-item-container">
+                    <div class="weather-item-header">
+                      Imorgon
+                    </div>
+                    <div class="weather-during">
+                      <div id="weather-tomorrow-icon">
+
+                      </div>
+                      <div class="weather-tomorrow-details">
+
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
             </div>

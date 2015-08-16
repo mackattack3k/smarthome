@@ -5,6 +5,7 @@
 html
     font-size: $small-font
     font-family: $default-font
+    font-weight: lighter
 
 body
     background-color: $bg-grey
@@ -26,6 +27,7 @@ a
 .column-content
     border-top: 5px solid #fff
     background-color: white
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26)
 
     width: 100%
     margin-top: 20px
@@ -46,11 +48,15 @@ a
         margin-top: 12px
 
 .traffic-refresh-manually
+    color: rgba(0, 0, 0, 0.4)
     position: absolute
     right: 20px
     top: 20px
     &:hover
         cursor: pointer
+        //text-shadow: 2px 2px 2px rgba(150, 150, 150, 1)
+        +transition(all, .3s, ease-in)
+        color: rgba(0, 0, 0, 0.9)
 
 #traffic-loading
     //display: none
@@ -138,9 +144,22 @@ a
 .weather-loading-before
     content: '\f015'
 
+.weather-item-container
+    +flexbox
+    +justifycontent(center)
+    +alignitems(center)
+    +flexdirection(column)
+    box-shadow: $material-shadow
+    margin-bottom: 20px
+
+.weather-item-header
+    display: none
+    font-size: 16px
+    margin-top: 6px
+
 .weather-current
     width: 240px
-    box-shadow: $material-shadow
+    //box-shadow: $material-shadow
     +flexbox
     +flexdirection(row)
     +alignitems(center)
@@ -203,14 +222,15 @@ paper-checkbox.blue
     font-size: $super-small-font
 
 #time
-    border-top-color: $bg-green
+    border-top-color: #C2185B
 
 #weather
-    border-top-color: $bg-orange
+    border-top-color: #C2185B
     position: relative
 
 #traffic
-    border-top-color: $bg-blue
+    border-top-color:  #C2185B
+
     position: relative
 
 #lights
