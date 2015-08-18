@@ -17,6 +17,7 @@ include 'functions.php';
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/weather-icons.css" charset="utf-8">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet' type='text/css'>
@@ -42,8 +43,10 @@ include 'functions.php';
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
     <script src="https://use.fonticons.com/03ff41d1.js"></script>
+    <script src="js/xdomainajax.js" charset="utf-8"></script>
 
 </head>
 
@@ -81,6 +84,7 @@ include 'functions.php';
                       </div>
                     </div>
                   </div>
+                <!--
                   <div class="weather-item-container">
                     <div class="weather-item-header">
                       Under dagen
@@ -107,6 +111,7 @@ include 'functions.php';
                       </div>
                     </div>
                   </div>
+                -->
 
                 </div>
 

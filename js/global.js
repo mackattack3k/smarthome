@@ -1,5 +1,5 @@
 function updateClock ( ){
-    var currentTime = new Date ( );
+    var currentTime = new Date ();
     var weekday = new Array(7);
     weekday[0] = "Söndag";
     weekday[1] = "Måndag";
@@ -13,6 +13,45 @@ function updateClock ( ){
     $("#currentday").html(weekday[currentTime.getDay()]);
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
 
+    //Check if the time is the same as a bus and remove it
+    $('.traffic-result').each(function(index, el) {
+        //Busses current hour and minute
+        var busTime           = $(this)
+                                  .children('.traffic-third')
+                                  .children('.departure-time')
+                                  .attr('value');
+        var currentMinute = currentTime.getMinutes();
+        if (currentMinute < 10) { //Add a 0 to the minutes if its less than 10
+          currentMinute = '0'+currentMinute;
+        }
+
+        //Current hour and minute
+        var currentHourMinute = currentTime.getHours()+':'+currentMinute;
+        //console.log(currentHourMinute + ' ' + busTime); //Used for debugging when the busses arent removed...
+        //If the bus is leaving now
+        if (busTime == currentHourMinute) {
+          $(this).animate( //Animate a fade and remove
+            {
+              bottom: '0px',
+              opacity: 0.25,
+              height: 'toggle',
+              padding: '0px',
+              margin: '0px'
+            },
+            1500,
+            'easeInQuart',
+            function () {
+            $(this).remove();
+          });
+        }
+    });
+
+    //Check if there are less than 2 busses left
+    console.log(  );
+    if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length > 0 ) {
+      getBus();
+      console.log('Too few buses, getting busses');
+    }
  }
 function getBus (){
     //Check if the value of traffi-search is set and use it
@@ -47,8 +86,7 @@ function getBus (){
 function getWeather() {
   //View spinning icon and hide the previous weather results
   $('#weather-loading').addClass('weather-loading-before').removeClass('.weather-loading-no-before').css('margin', '20px');
-  $('.weather-current').hide();
-  $('.weather-current-header').hide();
+  $('.weather-item-container').hide();
 
   //All the types we want to see
   var weatherArray = [
@@ -76,10 +114,9 @@ function getWeather() {
           //Remove spinning icon
           $('#weather-loading').addClass('weather-loading-no-before').removeClass('.weather-loading-before').css('margin', '0px');
           //View the result
-          $('.weather-current-header').show();
           $('#weather-current-icon').html( weatherResultObj.icon );
           $('.weather-current-details').empty().append( weatherResultObj.temp ).append( weatherResultObj.desc );
-          $('.weather-current').show();
+          $('.weather-item-container').show();
 
 
         }
@@ -108,8 +145,7 @@ function getWeather() {
 
 }
 
-$(document).ready(function()
-{
+$(document).ready(function(){
     updateClock();
     setInterval('updateClock()', 1000);
     getBus();
@@ -166,7 +202,16 @@ $(document).ready(function()
       }
     }, '#refresh-traffic');
 
-
+/*
+    $.ajax({
+        url: 'https://minasidor.jamtkraft.se/Api/ServiceProxy/Login',
+        type: 'POST',
+        success: function(res) {
+            var headline = $(res.responseText).find('a.tsh').text();
+            console.log(res);
+        }
+    });
+*/
 
 
 });
