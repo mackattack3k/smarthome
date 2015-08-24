@@ -9,7 +9,7 @@ function updateClock ( ){
     weekday[5] = "Fredag";
     weekday[6] = "Lördag";
 
-    $("#currenttime").html(currentTime.toLocaleTimeString('sv-SE'));
+    $("#currenttime").html(getTime(currentTime));
     $("#currentday").html(weekday[currentTime.getDay()]);
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
 
@@ -149,6 +149,18 @@ function newNotification(outputText) {
     </div>\
     "
   ).children('.notification').delay(5000).fadeOut(1500);
+}
+function getTime(dateInput) {
+    var day = dateInput.getDate();
+    var month = dateInput.getMonth() + 1; // Note the `+ 1` -- months start at zero.
+    var year = dateInput.getFullYear();
+    var hour = dateInput.getHours();
+    var min = dateInput.getMinutes();
+    var sec = dateInput.getSeconds();
+    if (sec < 10) {
+      sec = "0" + sec;
+    }
+    return hour+":"+min+":"+sec;
 }
 
 $(document).ready(function(){
