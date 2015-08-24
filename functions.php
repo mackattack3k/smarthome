@@ -1,6 +1,10 @@
 <?php
 /* API Keys */
-require_once('apikeys.php');
+if (!fileExists('apikeys.php')){
+  echo "No api keys";
+}else {
+  require_once('apikeys.php');
+}
 
 /* Global vars */
 
@@ -196,7 +200,7 @@ function getBusTime($busStop){
 
     if($busStop){
         $findByStationID        = "https://api.trafiklab.se/samtrafiken/resrobotstops/GetDepartures.json?apiVersion=2.1&coordSys=RT90&locationId=$busStop&key=$stolpTidtabeller";
-        $findByStationResult       =   file_get_contents($findByStationID);
+        $findByStationResult       =   @file_get_contents($findByStationID);
         $findByStationResultJson   =   (json_decode($findByStationResult, true));
         $busArr                    =    $findByStationResultJson['getdeparturesresult']['departuresegment'];
         $trafficTypesArr           =    array('buss' => 'bus', 'tåg' => 'train');
@@ -258,7 +262,7 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 
     if($origin && $destination){
         $findByStationID        = "http://api.sl.se/api2/TravelplannerV2/trip.json?key=".$realtidsinformation."&originId=".$origin."&destId=".$destination."&date=".$date."&time=".$time."&numTrips=1";
-        $findByStationResult       =   file_get_contents($findByStationID);
+        $findByStationResult       =   @file_get_contents($findByStationID);
         $findByStationResultJson   =   (json_decode($findByStationResult, true));
         $trips                     =    $findByStationResultJson;
 
@@ -355,6 +359,7 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 function getWeather($type){
   /* Establish some global variables for the weather functions */
   global $weatherApiKey; //Get the api key from apikeys.php
+  date_default_timezone_set('Europe/Stockholm');
   $lat            =   "59.298604";
   $lon            =   "18.047111";
   $units          =   "metric";
@@ -364,7 +369,7 @@ function getWeather($type){
   $debug          = 'false';
 
   $weatherstring  =   "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$weatherApiKey";
-  $weatherstringResult       =   file_get_contents($weatherstring);
+  $weatherstringResult       =   @file_get_contents($weatherstring);
   $weatherstringResultJson   =   (json_decode($weatherstringResult, true));
   //file_put_contents('weather.json', json_encode($weatherstringResult));
 
@@ -380,13 +385,29 @@ function getWeather($type){
       echo "</pre>";
   }
 
+  //Check if its day or night
+  $now = time();
+  $gmt = new DateTimeZone('Europe/Stockholm');
+  $timeInStockholm = new DateTime('now', $gmt);
+  $gmtOffset = $gmt->getOffset( $timeInStockholm )/3600;
+
+  $sunDown = date_sunset($now, SUNFUNCS_RET_TIMESTAMP, $lat, $lon, 90+(50/60), $gmtOffset);
+  $sunRise = date_sunrise($now, SUNFUNCS_RET_TIMESTAMP, $lat, $lon, 90+(50/60), $gmtOffset);
+
+  if ($now > $sunRise && $now < $sunDown) {
+    $dayOrNight = 'day';
+  } else {
+    $dayOrNight = 'night';
+  }
+
+
   $icon   = $weatherstringResultJson['weather']['0']['id'];
   $temp   = round($weatherstringResultJson['main']['temp'], 1);
   $desc   = $weatherstringResultJson['weather']['0']['description'];
 
   if($type){
     if ($type == 'icon') {
-      echo "<div class='weather-icon wi wi-owm-".$icon."'></div>";
+      echo "<div class='weather-icon wi wi-owm-".$dayOrNight."-".$icon."'></div>";
     }elseif ($type == 'temp') {
       echo "<div class='weather-temp'>".$temp."°</div>";
     }elseif ($type == 'desc') {

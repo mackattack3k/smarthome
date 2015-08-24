@@ -140,7 +140,7 @@ include 'functions.php';
         <div class="column column-3">
             <div id="lights" class="column-content">
                 <div class="header">
-                    lights
+                    Lights
                 </div>
                 <div class="items">
                     <?php echo htmlLamps(); ?>
@@ -152,7 +152,7 @@ include 'functions.php';
             </div>
             <div id="speakers" class="column-content">
                 <div class="header">
-                    speakers
+                    Speakers
                 </div>
                 <div class="items">
                     <paper-toggle-button disabled class="red" label="mute">Mute</paper-toggle-button>
@@ -163,9 +163,8 @@ include 'functions.php';
         </div>
       --->
 
-
     </div>
-
+    <div class="notifications-container"></div>
     <script src="js/global.js"></script>
 </body>
 </html>

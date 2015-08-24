@@ -43,14 +43,15 @@ function updateClock ( ){
     });
 
     //Check if there are less than 2 busses left
-    console.log(  );
     if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length > 0 ) {
       getBus();
       console.log('Too few buses, getting busses');
+      newNotification('Too few bus departures. <br/>Getting new ones');
     }
  }
 function getBus (){
-    //Check if the value of traffi-search is set and use it
+    newNotification('Fetching the buses');
+    //Check if the value of traffic-search is set and use it
     var getStation      =       $('#traffic-search-input').val();
     if (getStation == ''){
         var station     =       'Åmänningevägen';
@@ -75,11 +76,12 @@ function getBus (){
         $('#traffic-loading').addClass("traffic-loading-no-before");
         $('#traffic-loading').removeClass("traffic-loading-before");
         $('#traffic-loading').hide();
-        console.log('Done with new busses');
+        newNotification('New buses added');
         $( "#traffic-results" ).html( html );
       });
 }
 function getWeather() {
+  newNotification('Fetching the weather');
   //View spinning icon and hide the previous weather results
   $('#weather-loading').addClass('weather-loading-before').removeClass('.weather-loading-no-before').css('margin', '20px');
   $('.weather-item-container').hide();
@@ -113,8 +115,7 @@ function getWeather() {
           $('#weather-current-icon').html( weatherResultObj.icon );
           $('.weather-current-details').empty().append( weatherResultObj.temp ).append( weatherResultObj.desc );
           $('.weather-item-container').show();
-
-
+          newNotification('Weather updated');
         }
 
         /*
@@ -140,6 +141,15 @@ function getWeather() {
 
 
 }
+function newNotification(outputText) {
+  $('.notifications-container').append(
+    "<div class='notification'>\
+      <div class='remove-notification icon icon-times'></div>\
+      " + outputText + "\
+    </div>\
+    "
+  ).children('.notification').delay(5000).fadeOut(1500);
+}
 
 $(document).ready(function(){
     updateClock();
@@ -147,6 +157,7 @@ $(document).ready(function(){
     getBus();
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
+
 
     $('departure-time').each(function() {
         console.log($(this).attr('value'));
@@ -164,7 +175,7 @@ $(document).ready(function(){
          data: {function: 'editLamps',var1: id, var2: state},
          type: 'get',
          success: function(output) {
-                      console.log(output);
+                      newNotification(output);
                   }
         });
     });
@@ -180,7 +191,7 @@ $(document).ready(function(){
          data: {function: 'editLamps',var1: 'all', var2: state},
          type: 'get',
          success: function(output) {
-                      console.log(output);
+                      newNotification(output);
                   }
         });
     });
@@ -197,6 +208,34 @@ $(document).ready(function(){
         getBus();
       }
     }, '#refresh-traffic');
+
+    /*
+    * Control notifications
+    */
+
+    $(".notifications-container").on({
+      mouseenter: function () {//Mouse enters the notification
+        $(this).children('.notification').stop(true, false).fadeIn(500);
+      },
+      mouseleave: function () {//Mouse leaves the notification
+        $(this).children('.notification').fadeOut(3000, function(){
+            $(this).remove()
+        });
+      }
+    });
+    $(".notifications-container").on({
+      click: function () {//Mouse clicks the remove button
+        $(this).parent('.notification').animate( //Animate a fade and remove
+          {
+            opacity: 0
+          },
+          500,
+          'easeInQuart',
+          function () {
+          $(this).remove();
+        });
+      }
+    }, '.remove-notification');
 
 /*
     $.ajax({
