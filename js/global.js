@@ -16,20 +16,16 @@ function updateClock ( ){
     //Check if the time is the same as a bus and remove it
     $('.traffic-result').each(function(index, el) {
         //Busses current hour and minute
-        var busTime           = $(this)
+        var busTime          = $(this)
                                   .children('.traffic-third')
                                   .children('.departure-time')
                                   .attr('value');
-        var currentMinute = currentTime.getMinutes();
-        if (currentMinute < 10) { //Add a 0 to the minutes if its less than 10
-          currentMinute = '0'+currentMinute;
-        }
+        var busDate = new Date (busTime);
 
-        //Current hour and minute
-        var currentHourMinute = currentTime.getHours()+':'+currentMinute;
-        //console.log(currentHourMinute + ' ' + busTime); //Used for debugging when the busses arent removed...
-        //If the bus is leaving now
-        if (busTime == currentHourMinute) {
+
+        //console.log(currentTime + ' ' + busDate); //Used for debugging when the busses arent removed...
+        //If the bus is leaving now -- or -- the browser was idle and the bus has already left
+        if (busDate <= currentTime) {
           $(this).animate( //Animate a fade and remove
             {
               bottom: '0px',
@@ -150,7 +146,7 @@ $(document).ready(function(){
     setInterval('updateClock()', 1000);
     getBus();
     getWeather();
-    setInterval('getWeather()', 1800000); //Call getWeather every 30 minutes
+    setInterval('getWeather()', 1800000); //getWeather every 30 minutes
 
     $('departure-time').each(function() {
         console.log($(this).attr('value'));

@@ -300,7 +300,7 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
                     <!--<div class='traffic-duration'>".$duration." minuter</div>-->
                   </div>
                   <div class='traffic-third'>
-                    <div class='traffic-time departure-time' value='".$finalTrips['Origin']['time']."'>avgår ".$finalTrips['Origin']['time']."</div>
+                    <div class='traffic-time departure-time' value='".$finalTrips['Origin']['date'].' '.$finalTrips['Origin']['time']."'>avgår ".$finalTrips['Origin']['time']."</div>
                     <div class='traffic-time arrival-time'>framme ".$finalTrips['Destination']['time']."</div>
                   </div>
                 </div>
