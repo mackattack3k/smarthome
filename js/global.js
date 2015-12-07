@@ -160,6 +160,12 @@ function getTime(dateInput) {
     if (sec < 10) {
       sec = "0" + sec;
     }
+    if (min < 10) {
+      min = "0" + min;
+    }
+    if (hour < 10) {
+      hour = "0" + hour;
+    }
     return hour+":"+min+":"+sec;
 }
 

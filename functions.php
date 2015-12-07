@@ -1,8 +1,8 @@
 <?php
 /* API Keys */
 if (!fileExists('apikeys.php')){
-  echo "No api keys";
-}else {
+  return "No api keys";
+} else {
   require_once('apikeys.php');
 }
 
@@ -151,7 +151,7 @@ function shellcommand(){
 function getBusStop($station){
     //echo "Nu körs 'hitta stationsid från namn'";
     $station = isset($station) ? $station : 'Åmänningevägen';
-    global $searchTrip; //Get the api key from apikeys.php
+    global $searchTripApiKey; //Get the api key from apikeys.php
 
 
     if($station){
@@ -161,7 +161,7 @@ function getBusStop($station){
         /*
         /   This will get the names that match the entered site and the siteID
         */
-        $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationNameURL&coordSys=RT90&key=$searchTrip";
+        $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationNameURL&coordSys=RT90&key=$searchTripApiKey";
         $findByNameResult       =   file_get_contents($findByName);
         $findByNameResultJson   =   (json_decode($findByNameResult, true));
         $findByNameResultStops  =   $findByNameResultJson['findlocationresult']['from']['location'];
@@ -353,6 +353,54 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 }
 
 /* Busses end */
+
+/* Busses 1.1 start */
+
+function findStation($inputStationName){
+  if ($inputStationName == '') {
+    echo "No station name entered";
+    return;
+  }
+
+  echo "Finding station that matches: ".$inputStationName."<br/>";
+  $urlStationName = rawurlencode($inputStationName);
+  //Get json result from SL
+  $stations = getStationsFromSL($urlStationName);
+}
+
+function getStationsFromSL($stationName){
+  global $searchTripApiKey;
+  $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationName&coordSys=RT90&key=$searchTripApiKey";
+  $findByNameResult       =   file_get_contents($findByName);
+  $findByNameResultJson   =   json_decode($findByNameResult, true);
+  $SLresult               =   $findByNameResultJson['findlocationresult']['from'];
+
+  //Check if there isnt any results for the station
+  if (count($SLresult) < 1) {
+    echo "No results";
+    return;
+  }
+
+  $station = $SLresult['location'];
+  /*echo "<pre>";
+  print_r(($station));
+  echo "</pre>";
+  */
+
+  //Return the results
+  if ( !array_key_exists(0, $station) ) {
+    echo $station['displayname']." - ".$station['locationid'];
+    return;
+  }
+  foreach ($station as $key => $stationInfo) {
+    echo $stationInfo['displayname']." - ".$stationInfo['locationid']."<br/>";
+  }
+  return;
+
+
+}
+
+/* Busses 1.1 end */
 
 /* Weather start */
 
