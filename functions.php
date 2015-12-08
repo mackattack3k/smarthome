@@ -154,6 +154,7 @@ function getBusStop($station){
     global $searchTripApiKey; //Get the api key from apikeys.php
 
 
+
     if($station){
         //Convert the searched site to URL so the API can handle the name
         $stationNameURL           =   rawurlencode($station);
@@ -162,6 +163,7 @@ function getBusStop($station){
         /   This will get the names that match the entered site and the siteID
         */
         $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationNameURL&coordSys=RT90&key=$searchTripApiKey";
+
         $findByNameResult       =   file_get_contents($findByName);
         $findByNameResultJson   =   (json_decode($findByNameResult, true));
         $findByNameResultStops  =   $findByNameResultJson['findlocationresult']['from']['location'];
@@ -370,30 +372,32 @@ function findStation($inputStationName){
 
 function getStationsFromSL($stationName){
   global $searchTripApiKey;
-  $findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationName&coordSys=RT90&key=$searchTripApiKey";
+  global $platsuppslagKey;
+  //$findByName             =   "https://api.trafiklab.se/samtrafiken/resrobot/FindLocation.json?apiVersion=2.1&from=$stationName&coordSys=RT90&key=$searchTripApiKey";
+  $findByName             =   "https://api.sl.se/api2/typeahead.json?key=$platsuppslagKey&searchstring=$stationName&stationsonly=TRUE&maxresults=5";
   $findByNameResult       =   file_get_contents($findByName);
   $findByNameResultJson   =   json_decode($findByNameResult, true);
-  $SLresult               =   $findByNameResultJson['findlocationresult']['from'];
+  print_r($findByNameResultJson);
+  $stations               =   $findByNameResultJson['ResponseData'];
 
   //Check if there isnt any results for the station
-  if (count($SLresult) < 1) {
+  if (count($stations) < 1) {
     echo "No results";
     return;
   }
-
-  $station = $SLresult['location'];
   /*echo "<pre>";
   print_r(($station));
   echo "</pre>";
   */
 
   //Return the results
-  if ( !array_key_exists(0, $station) ) {
-    echo $station['displayname']." - ".$station['locationid'];
+  /*if ( !array_key_exists(0, $stations) ) {
+    echo $stations['Name']." - ".$stations['SiteId'];
     return;
   }
-  foreach ($station as $key => $stationInfo) {
-    echo $stationInfo['displayname']." - ".$stationInfo['locationid']."<br/>";
+  */
+  foreach ($stations as $key => $station) {
+    echo $station['Name']." - ".$station['SiteId']."<br/>";
   }
   return;
 
