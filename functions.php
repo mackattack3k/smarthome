@@ -196,6 +196,7 @@ function getBusTime($busStop){
     //echo $busStop;
     $amanningevagen       =     '7453026'; //Åmänningevägen
     $arstaberg            =     '7424920'; //Årstaberg station
+    $gullmarsplan         =     '7421705'; //Gullmarsplan
     global $stolpTidtabeller; //Get the api key from apikeys.php
 
 
@@ -207,7 +208,7 @@ function getBusTime($busStop){
         $busArr                    =    $findByStationResultJson['getdeparturesresult']['departuresegment'];
         $trafficTypesArr           =    array('buss' => 'bus', 'tåg' => 'train');
 
-        $debug = 0;
+        $debug = 1;
 
         if($debug == 1){
             echo "<div class='debug' style='display:block;'><pre>";
@@ -378,7 +379,7 @@ function getStationsFromSL($stationName){
   $findByNameResult       =   file_get_contents($findByName);
   $findByNameResultJson   =   json_decode($findByNameResult, true);
   print_r($findByNameResultJson);
-  $stations               =   $findByNameResultJson['ResponseData'];
+  $stations               =   $findByNameResultJson->ResponseData;
 
   //Check if there isnt any results for the station
   if (count($stations) < 1) {
@@ -403,6 +404,86 @@ function getStationsFromSL($stationName){
 
 
 }
+
+function getDepartures($inputSiteID){
+    //echo $getOrigin."<br>".$getDestination."<br>".$date."<br>".$time."<br>";
+    global $realtidsInformation3; //Get the api key from apikeys.php
+    global $resrobotKey;
+    $amanningevagen       =     '7453026'; //Åmänningevägen
+    $arstaberg            =     '7424920'; //Årstaberg station
+    $gullmarsplan         =     '7421705'; //Gullmarsplan
+    /*
+    * ULT = Tunnelbana, BLT = Buss, SLT = Tvärbana
+    */
+
+    if($inputSiteID){
+        $findByStationIDOLD        = "https://api.sl.se/api2/realtimedepartures.json?key=".$realtidsInformation3."&siteid=".$inputSiteID."&timewindow=30";
+        $findByStationID       = "https://api.resrobot.se/departureBoard?key=".$resrobotKey."&id=7453026&maxJourneys=10&format=json";
+        $debug = 0;
+
+        $departsResultJson = json_decode(@file_get_contents($findByStationID));
+        $departsResult = $departsResultJson->Departure;
+
+        if($debug == 1){
+            echo "<div class='debug' style='display:block;'><pre>";
+            //var_dump($response);
+            print_r($response);
+            echo "</div></pre>";
+        }
+
+        foreach ($departsResult as $departureArrayKey => $departureInfo) {
+          //var_dump($departureInfo);
+          //exit this departure loop if the bus is going to the same station as we are going from (Weird bug from api call)
+          if ($departureInfo->Product->num == '') {
+            continue;
+          }
+
+          $stops = $departureInfo->Stops->Stop;
+          end($stops);         // move the internal pointer to the end of the array
+          $lastStopObject = current($stops);
+
+          $lineFullName = $departureInfo->Product->name;
+          $arrivalStopName = preg_replace('/\s\(.*\)?/', '', $departureInfo->direction);
+          $arrivalTime = substr($lastStopObject->arrTime, 0,5); //Cutting string since I only need HH:MM
+          $departTime = substr($departureInfo->time, 0,5);
+
+          $line = substr($lineFullName, 4, strlen($arrivalStopName));
+
+          echo "
+              <div class='traffic-result'>
+                <div class='traffic-first'>
+                  <div class='icon icon-".strtolower($departureInfo->transportCategory)." icon-2x'></div>
+                  <div class='traffic-line'>".$line."</div>
+                </div>
+                <div class='traffic-second'>
+                  <div class='traffic-destination'>".$arrivalStopName."</div>
+                </div>
+                <div class='traffic-third'>
+                  <div class='traffic-time departure-time' value='".$departTime."'>avgår ".$departTime."</div>
+                  <div class='traffic-time arrival-time'>framme ".$arrivalTime."</div>
+                </div>
+              </div>
+          ";
+
+
+        }
+
+
+
+
+      }
+
+    }
+
+function put_in_time_table($departure){
+
+}
+
+function outputDepartures(){
+
+}
+
+
 
 /* Busses 1.1 end */
 
