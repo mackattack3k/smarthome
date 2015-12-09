@@ -68,7 +68,7 @@ function getBus (){
     $('#traffic-loading').show();
     $( "#traffic-results" ).html( '' );
     $.ajax({
-      url: "functions.php?function=getBusStop&var1=" + getStation,
+      url: "functions.php?function=getDepartures&var1=" + getStation,
       cache: false,
     })
       .done(function( html ) {
