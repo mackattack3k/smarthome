@@ -418,18 +418,15 @@ function getDepartures($inputSiteID){
 
     if($inputSiteID){
         $findByStationIDOLD        = "https://api.sl.se/api2/realtimedepartures.json?key=".$realtidsInformation3."&siteid=".$inputSiteID."&timewindow=30";
-        $findByStationID       = "https://api.resrobot.se/departureBoard?key=".$resrobotKey."&id=7453026&maxJourneys=10&format=json";
+        $findByStationID       = "https://api.resrobot.se/departureBoard?key=".$resrobotKey."&id=7421705&maxJourneys=10&format=json";
         $debug = 0;
+        $transportTypeTranslationArray = new stdClass();
+        $transportTypeTranslationArray->ULT = 'train'; //Tunnelbana
+        $transportTypeTranslationArray->SLT = 'train'; //Tvärbana
+        $transportTypeTranslationArray->BLT = 'bus'; //Buss
 
         $departsResultJson = json_decode(@file_get_contents($findByStationID));
         $departsResult = $departsResultJson->Departure;
-
-        if($debug == 1){
-            echo "<div class='debug' style='display:block;'><pre>";
-            //var_dump($response);
-            print_r($response);
-            echo "</div></pre>";
-        }
 
         foreach ($departsResult as $departureArrayKey => $departureInfo) {
           //var_dump($departureInfo);
@@ -442,17 +439,32 @@ function getDepartures($inputSiteID){
           end($stops);         // move the internal pointer to the end of the array
           $lastStopObject = current($stops);
 
-          $lineFullName = $departureInfo->Product->name;
+          $transportationCategory = $departureInfo->transportCategory;
+
+          /*
+          * Final values
+          */
+
           $arrivalStopName = preg_replace('/\s\(.*\)?/', '', $departureInfo->direction);
           $arrivalTime = substr($lastStopObject->arrTime, 0,5); //Cutting string since I only need HH:MM
           $departTime = substr($departureInfo->time, 0,5);
-
+          $lineFullName = $departureInfo->Product->name;
           $line = substr($lineFullName, 4, strlen($arrivalStopName));
 
+          //Check if the transportation type exists in our translation array and then translate it
+          if(isset($transportTypeTranslationArray->$transportationCategory)){
+            $translatedTransportType = $transportTypeTranslationArray->$transportationCategory;
+          } else {
+            $translatedTransportType = 'rocket';
+          }
+
+          /*
+          * Output the HTML
+          */
           echo "
               <div class='traffic-result'>
                 <div class='traffic-first'>
-                  <div class='icon icon-".strtolower($departureInfo->transportCategory)." icon-2x'></div>
+                  <div class='icon icon-".strtolower($translatedTransportType)." icon-2x'></div>
                   <div class='traffic-line'>".$line."</div>
                 </div>
                 <div class='traffic-second'>
