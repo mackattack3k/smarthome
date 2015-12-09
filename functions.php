@@ -265,6 +265,7 @@ function getTravelPlanner($getOrigin, $getDestination, $date, $time){
 
     if($origin && $destination){
         $findByStationID        = "http://api.sl.se/api2/TravelplannerV2/trip.json?key=".$realtidsinformation."&originId=".$origin."&destId=".$destination."&date=".$date."&time=".$time."&numTrips=1";
+        echo $findByStationID;
         $findByStationResult       =   @file_get_contents($findByStationID);
         $findByStationResultJson   =   (json_decode($findByStationResult, true));
         $trips                     =    $findByStationResultJson;
@@ -448,6 +449,7 @@ function getDepartures($inputSiteID){
           $arrivalStopName = preg_replace('/\s\(.*\)?/', '', $departureInfo->direction);
           $arrivalTime = substr($lastStopObject->arrTime, 0,5); //Cutting string since I only need HH:MM
           $departTime = substr($departureInfo->time, 0,5);
+          $departDate = $departureInfo->date;
           $lineFullName = $departureInfo->Product->name;
           $line = substr($lineFullName, 4, strlen($arrivalStopName));
 
@@ -471,7 +473,7 @@ function getDepartures($inputSiteID){
                   <div class='traffic-destination'>".$arrivalStopName."</div>
                 </div>
                 <div class='traffic-third'>
-                  <div class='traffic-time departure-time' value='".$departTime."'>avgår ".$departTime."</div>
+                  <div class='traffic-time departure-time' value='".$departDate." ".$departTime."'>avgår ".$departTime."</div>
                   <div class='traffic-time arrival-time'>framme ".$arrivalTime."</div>
                 </div>
               </div>
