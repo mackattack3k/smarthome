@@ -13,19 +13,19 @@ function updateClock ( ){
     $("#currentday").html(weekday[currentTime.getDay()]);
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
 
-    //Check if the time is the same as a bus and remove it
+    //Check if the time is the same as a departure and remove it
     $('.traffic-result').each(function(index, el) {
-        //Busses current hour and minute
-        var busTime          = $(this)
+        //Departureses current hour and minute
+        var departureTime          = $(this)
                                   .children('.traffic-third')
                                   .children('.departure-time')
                                   .attr('value');
-        var busDate = new Date (busTime);
+        var departureDate = new Date (departureTime);
 
 
-        //console.log(currentTime + ' ' + busDate); //Used for debugging when the busses arent removed...
-        //If the bus is leaving now -- or -- the browser was idle and the bus has already left
-        if (busDate <= currentTime) {
+        //console.log(currentTime + ' ' + departureDate); //Used for debugging when the departures arent removed...
+        //If the departure is leaving now -- or -- the browser was idle and the departure has already left
+        if (departureDate <= currentTime) {
           $(this).animate( //Animate a fade and remove
             {
               bottom: '0px',
@@ -42,15 +42,18 @@ function updateClock ( ){
         }
     });
 
-    //Check if there are less than 2 busses left
-    if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length > 0 ) {
-      getBus();
-      console.log('Too few buses, getting busses');
-      newNotification('Too few bus departures. <br/>Getting new ones');
+    //Check if there are less than 2 departures left
+    //console.log('Checking if we should get new departures.');
+    //console.log('currentlyUpdatingTrafic; ' + currentlyUpdatingTrafic);
+    if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length >= 0 && !currentlyUpdatingTrafic) {
+      currentlyUpdatingTrafic = true;
+      getDeparture();
+      //console.log('Too few departures, getting departures');
+      newNotification('Too few departure departures. <br/>Getting new ones');
     }
  }
-function getBus (){
-    newNotification('Fetching the buses');
+function getDepartures (){
+    newNotification('Fetching the departures');
     //Check if the value of traffic-search is set and use it
     var getStation      =       $('#traffic-search-input').val();
     if (getStation == ''){
@@ -62,7 +65,7 @@ function getBus (){
     console.log(getStation);
 
 
-    //Adda spinning refresh icon before loading the bus times. Also removes previous bus times.
+    //Adda spinning refresh icon before loading the departure times. Also removes previous departure times.
     $('#traffic-loading').addClass("traffic-loading-before");
     $('#traffic-loading').removeClass("traffic-loading-no-before");
     $('#traffic-loading').show();
@@ -72,12 +75,13 @@ function getBus (){
       cache: false,
     })
       .done(function( html ) {
-        //Remove spinning refresh icon and output the bus times.
+        //Remove spinning refresh icon and output the departure times.
         $('#traffic-loading').addClass("traffic-loading-no-before");
         $('#traffic-loading').removeClass("traffic-loading-before");
         $('#traffic-loading').hide();
-        newNotification('New buses added');
+        newNotification('New departures added');
         $( "#traffic-results" ).html( html );
+        currentlyUpdatingTrafic = false;
       });
 }
 function getWeather() {
@@ -148,7 +152,9 @@ function newNotification(outputText) {
       " + outputText + "\
     </div>\
     "
-  ).children('.notification').delay(5000).fadeOut(1500);
+  ).children('.notification').delay(5000).fadeOut(1500, function(){
+            $(this).remove()
+        });
 }
 function getTime(dateInput) {
     var day = dateInput.getDate();
@@ -169,17 +175,23 @@ function getTime(dateInput) {
     return hour+":"+min+":"+sec;
 }
 
+/*
+* Global scope variables
+*/
+
+var currentlyUpdatingTrafic = true;
+
+/*
+* End of global variable scope
+*/
+
 $(document).ready(function(){
+
     updateClock();
     setInterval('updateClock()', 1000);
-    getBus();
+    getDepartures();
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
-
-
-    $('departure-time').each(function() {
-        console.log($(this).attr('value'));
-    });
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
     $( ".lights-yellow" ).click(function() {
@@ -214,7 +226,7 @@ $(document).ready(function(){
         });
     });
 
-    //When the refresh on traffic column is pressed. Update bus and animate it for a short while
+    //When the refresh on traffic column is pressed. Update departure and animate it for a short while
     $(".column-content").on({
       mouseenter: function () {//Mouse enters the refresh icon
         $('#refresh-traffic').addClass('icon-spin');
@@ -223,7 +235,7 @@ $(document).ready(function(){
         $('#refresh-traffic').removeClass('icon-spin');
       },
       click: function () {//Clicking the refresh icon
-        getBus();
+        getDeparture();
       }
     }, '#refresh-traffic');
 
