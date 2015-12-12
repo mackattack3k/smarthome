@@ -99,13 +99,13 @@ function getWeather() {
   var weatherResultObj = {};
   var i = 0;
 
-  //fetch all the values woohoo
+  //fetch all the values for todays forecast
   $.each(weatherArray, function(index, el) {
     //console.log(weatherArray[i]);
     var type = weatherArray[i];
 
     $.ajax({
-      url: "functions.php?function=getWeather&var1=" + type,
+      url: "functions.php?function=getWeatherToday&var1=" + type,
       cache: false,
       datatype: 'html',
       success: function (data) {
@@ -119,7 +119,6 @@ function getWeather() {
           $('#weather-current-icon').html( weatherResultObj.icon );
           $('.weather-current-details').empty().append( weatherResultObj.temp ).append( weatherResultObj.desc );
           $('.weather-item-container').show();
-          newNotification('Weather updated');
         }
 
         /*
@@ -141,18 +140,35 @@ function getWeather() {
     i++;
 
   });
+
+  //fetch coming days forecast
+  var days = 3;
+  $.ajax({
+    url: "functions.php?function=getWeatherComingDays&var1=" + days,
+    cache: false,
+    datatype: 'html',
+    success: function (data) {
+      $('#weather-coming-items').html( data );
+    }
+  });
+
+
+  newNotification('Weather updated');
   //Each over
 
 
 }
-function newNotification(outputText) {
+function newNotification(outputText, type, duration) {
+  type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
+  duration = typeof duration !== 'undefined' ? duration : 5000;
+
   $('.notifications-container').append(
-    "<div class='notification'>\
+    "<div class='notification "+ type +"'>\
       <div class='remove-notification icon icon-times'></div>\
       " + outputText + "\
     </div>\
     "
-  ).children('.notification').delay(5000).fadeOut(1500, function(){
+  ).children('.notification').delay(duration).fadeOut(1500, function(){
             $(this).remove()
         });
 }
