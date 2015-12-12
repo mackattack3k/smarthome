@@ -84,6 +84,14 @@ include 'functions.php';
                       </div>
                     </div>
                   </div>
+                  <div class="weather-item-coming-container">
+                    <div class="weather-item-header">
+                      Kommande
+                    </div>
+                    <div id="weather-coming-items">
+
+                    </div>
+                  </div>
                 <!--
                   <div class="weather-item-container">
                     <div class="weather-item-header">

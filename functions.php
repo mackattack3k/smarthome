@@ -419,7 +419,7 @@ function getDepartures($inputSiteID){
 
     if($inputSiteID){
         $findByStationIDOLD        = "https://api.sl.se/api2/realtimedepartures.json?key=".$realtidsInformation3."&siteid=".$inputSiteID."&timewindow=30";
-        $findByStationID       = "https://api.resrobot.se/departureBoard?key=".$resrobotKey."&id=7421705&maxJourneys=10&format=json";
+        $findByStationID       = "https://api.resrobot.se/departureBoard?key=".$resrobotKey."&id=7453026&maxJourneys=10&format=json";
         $debug = 0;
         $transportTypeTranslationArray = new stdClass();
         $transportTypeTranslationArray->ULT = 'train'; //Tunnelbana
@@ -503,7 +503,7 @@ function outputDepartures(){
 
 /* Weather start */
 
-function getWeather($type){
+function getWeatherToday($type, $days){
   /* Establish some global variables for the weather functions */
   global $weatherApiKey; //Get the api key from apikeys.php
   date_default_timezone_set('Europe/Stockholm');
@@ -520,11 +520,6 @@ function getWeather($type){
   $weatherstringResultJson   =   (json_decode($weatherstringResult, true));
   //file_put_contents('weather.json', json_encode($weatherstringResult));
 
-  //Get forecast - not used
-  $forecaststring    =   "http://api.openweathermap.org/data/2.5/find?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$weatherApiKey";
-  //$forecaststringResult       =   file_get_contents($forecaststring);
-  //$forecaststringJson   =   (json_decode($forecaststringResult, true));
-
   if($debug == 'true'){
       echo "<pre>";
       print_r($weatherstringResultJson);
@@ -533,19 +528,7 @@ function getWeather($type){
   }
 
   //Check if its day or night
-  $now = time();
-  $gmt = new DateTimeZone('Europe/Stockholm');
-  $timeInStockholm = new DateTime('now', $gmt);
-  $gmtOffset = $gmt->getOffset( $timeInStockholm )/3600;
-
-  $sunDown = date_sunset($now, SUNFUNCS_RET_TIMESTAMP, $lat, $lon, 90+(50/60), $gmtOffset);
-  $sunRise = date_sunrise($now, SUNFUNCS_RET_TIMESTAMP, $lat, $lon, 90+(50/60), $gmtOffset);
-
-  if ($now > $sunRise && $now < $sunDown) {
-    $dayOrNight = 'day';
-  } else {
-    $dayOrNight = 'night';
-  }
+  $dayOrNight = getDayOrNight($lat, $lon);
 
 
   $icon   = $weatherstringResultJson['weather']['0']['id'];
@@ -568,7 +551,76 @@ function getWeather($type){
 
 }
 
+function getWeatherComingDays($days='3'){
+  if (!fileExists('apikeys.php')) {
+    echo "Error (functions.php->getWeatherforecast): apikeys.php doesnt exist";
+    return;
+  }
+  global $weatherApiKey; //Get the api key from apikeys.php
+  date_default_timezone_set('Europe/Stockholm');
+  $lat            =   "59.298604";
+  $lon            =   "18.047111";
+  $units          =   "metric";
+  $lang           =   "se";
+  $debug          =   "false";
+
+  //Get forecast from openweathermap
+  $forecaststring    =   "http://api.openweathermap.org/data/2.5/forecast/daily?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$weatherApiKey";
+  //echo $forecaststring;
+  $forecaststringResult =   @file_get_contents($forecaststring);
+  $forecaststringJson   =   (json_decode($forecaststringResult));
+  $forecastDay          =   $forecaststringJson->list;
+
+  //header('Content-Type: application/json');
+  //print_r($forecaststringJson->list);
+  //print_r($forecaststringJson);
+  foreach ($forecastDay as $dayType => $dayInfo) {
+
+    $dayTemp = round($dayInfo->temp->day, 1);
+    $description = strtolower($dayInfo->weather{0}->description);
+    $icon = $dayInfo->weather{0}->id;
+
+    //var_dump($description);
+
+    $dayOrNight = getDayOrNight($lat, $lon);
+
+    echo "<div id='weather-'>";
+    echo "<div class='weather-coming-icon'>";
+    echo "<div class='weather-icon wi wi-owm-day-".$icon."'></div></div>";
+    echo "<div class='weather-coming-details'>";
+    echo "<div class='weather-temp'>".$dayTemp."°</div>";
+    echo "<div class='weather-desc'>".$description."</div></div></div>";
+
+
+  }
+
+
+}
+
+function getDayOrNight($lat, $lon){
+  $now = time();
+  $gmt = new DateTimeZone('Europe/Stockholm');
+  $timeInStockholm = new DateTime('now', $gmt);
+  $gmtOffset = $gmt->getOffset( $timeInStockholm )/3600;
+
+  $sunDown = date_sunset($now, SUNFUNCS_RET_TIMESTAMP, $lat, $lon, 90+(50/60), $gmtOffset);
+  $sunRise = date_sunrise($now, SUNFUNCS_RET_TIMESTAMP, $lat, $lon, 90+(50/60), $gmtOffset);
+
+  if ($now > $sunRise && $now < $sunDown) {
+    return 'day';
+  } else {
+    return 'night';
+  }
+}
 
 /* Weather end */
+
+/* Stocks start */
+//https://query.yahooapis.com/v1/public/yql?q=select * from yahoo.finance.quotes where symbol in ("FB","AAPL","GOOG","TSLA")&format=json&env=http://datatables.org/alltables.env
+
+/* Stocks end */
+
+
+
 
 ?>

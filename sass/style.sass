@@ -163,6 +163,7 @@ a
     margin-bottom: 20px
     margin-top: 20px
     //display: none
+    width: 240px
 
 .weather-item-header
     //display: none
@@ -170,7 +171,6 @@ a
     margin-top: 6px
 
 .weather-current
-    width: 240px
     //box-shadow: $material-shadow
     +flexbox
     +flexdirection(row)
@@ -190,6 +190,24 @@ a
 .weather-current-details
     +flex(1)
     font-size: 16px
+
+
+.weather-item-coming-container
+    +flexbox
+    +justifycontent(center)
+    +alignitems(center)
+    +flexdirection(column)
+    box-shadow: $material-shadow
+    margin-bottom: 20px
+    margin-top: 20px
+    //display: none
+    width: 240px
+
+#weather-coming-items
+    +flexbox
+    +justifycontent(center)
+    +alignitems(center)
+    +flexdirection(row)
 
 .notifications-container
     position: fixed
