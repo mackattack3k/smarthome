@@ -47,7 +47,7 @@ function updateClock ( ){
     //console.log('currentlyUpdatingTrafic; ' + currentlyUpdatingTrafic);
     if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length >= 0 && !currentlyUpdatingTrafic) {
       currentlyUpdatingTrafic = true;
-      getDeparture();
+      getDepartures();
       //console.log('Too few departures, getting departures');
       newNotification('Too few departure departures. <br/>Getting new ones');
     }
