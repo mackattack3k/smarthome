@@ -1,9 +1,9 @@
 <?php
 /* API Keys */
-if (!fileExists('apikeys.php')){
+if (!fileExists('../api_keys.php')) {
   return "No api keys";
 } else {
-  require_once('apikeys.php');
+    require_once('../api_keys.php');
 }
 
 /* Global vars */
@@ -552,8 +552,8 @@ function getWeatherToday($type, $days){
 }
 
 function getWeatherComingDays($days='3'){
-  if (!fileExists('apikeys.php')) {
-    echo "Error (functions.php->getWeatherforecast): apikeys.php doesnt exist";
+    if (!fileExists('../api_keys.php')) {
+        echo "Error (functions.php->getWeatherforecast): api_keys.php doesnt exist";
     return;
   }
   global $weatherApiKey; //Get the api key from apikeys.php

@@ -1,5 +1,5 @@
 <?php
-include 'functions.php';
+//include 'functions.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -84,10 +84,12 @@ require_once 'php/weather.php';
                     <div class="weather-current">
                         <?php
                         $weather = new Weather;
-                        $weather->setAllUnits("59.298604", "18.047111", "metric", "se", false);
+                        $weather->setAllUnits("59.298604", "18.047111", "metric", "se", true);
                         //var_dump($weather->getAllUnits());
-                        $todaysweather = $weather->getWeatherToday();
-                        echo $todaysweather;
+                        $todaysweather = $weather->getCurrentWeather();
+                        $htmlWeather = $weather->getCurrentWeatherHtml($todaysweather);
+
+                        echo $htmlWeather;
                         ?>
                     </div>
                 </div>

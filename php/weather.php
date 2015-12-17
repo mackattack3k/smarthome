@@ -6,43 +6,117 @@
 class Weather
 {
 
+    public $lat;
+
     /*
      * Units
      */
-    public $lat;
     public $lon;
     public $measurements;
     public $lang;
     public $debug;
     public $allUnits = array();
+    public $API_KEYS = array();
 
-    public function getAllUnits()
+    public function __construct()
     {
-        return $this->allUnits;
+        $htmlCall = isset($_GET['htmlCall']) ? $_GET['htmlCall'] : false;
+        $debug = isset($_GET['debug']) ? $_GET['debug'] : false;
+
+        $this->setDebug($debug);
+
+        if (file_exists(__DIR__ . '/../../api_keys.php')) {
+            global $GlobalAPI_Keys;
+            require_once(__DIR__ . '/../../api_keys.php');
+            $this->setAPIKEYS($GlobalAPI_Keys);
+        } else {
+            return "Error: No api keys. Exiting!";
+        }
+
+        if ($htmlCall == "true") {
+            //echo "starting html version";
+            $htmlOutput = $this->startHTMLAutomaticVersion();
+            //echo $htmlOutput; //TODO: remove this from prod
+            return $htmlOutput;
+        }
+
     }
 
-    /**
-     * @param $newLat
-     * @param $newLon
-     * @param $newMeasurements
-     * @param $newLang
-     * @param string $newDebug
-     */
-    public function setAllUnits($newLat, $newLon, $newMeasurements, $newLang, $newDebug = "off")
+    private function startHTMLAutomaticVersion()
     {
-        $this->setLat($newLat);
-        $this->setLon($newLon);
-        $this->setMeasurements($newMeasurements);
-        $this->setLang($newLang);
-        $this->setDebug($newDebug);
+        /*
+         * Get the variables
+         */
 
-        $this->allUnits = [
-            "lat" => $this->getLat(),
-            "lon" => $this->getLon(),
-            "measurements" => $this->getMeasurements(),
-            "lang" => $this->getLang(),
-            "debug" => $this->getDebug(),
-        ];
+        $lat = isset($_GET['lat']) ? $_GET['lat'] : "59.298604";
+        $lon = isset($_GET['lon']) ? $_GET['lon'] : "18.047111";
+        $measurements = isset($_GET['measurements']) ? $_GET['measurements'] : 'metric';
+        $lang = isset($_GET['lang']) ? $_GET['lang'] : 'se';
+
+
+        /*
+         * Set the variables
+         */
+
+        $this->setAllUnits($lat, $lon, $measurements, $lang);
+
+        /*
+         * Get current weather
+         */
+
+        $currentWeatherData = $this->getCurrentWeather();
+        $currentWeatherHTML = $this->getCurrentWeatherHtml($currentWeatherData);
+
+        $htmlOutput = $currentWeatherHTML;
+
+        /*
+         * Get coming weather
+         */
+
+        $comingWeatherData = $this->getWeatherComingDays();
+        $htmlOutput .= $comingWeatherData;
+
+        return $htmlOutput;
+
+    }
+
+    public function getCurrentWeather()
+    {
+        /* Establish some global variables for the weather functions */
+        $weatherApiKey = $this->getAPIKEYS()['weatherApiKey'];
+        date_default_timezone_set('Europe/Stockholm');
+        $lat = $this->getLat();
+        $lon = $this->getLon();
+        $units = $this->getMeasurements();
+        $lang = $this->getLang();
+
+        $debug = $this->getDebug();
+
+        $weatherString = "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$weatherApiKey";
+        $weatherstringResult = file_get_contents($weatherString);
+        $weatherstringResultJson = (json_decode($weatherstringResult, true));
+        //file_put_contents('weather.json', json_encode($weatherstringResult));
+
+        if ($debug == "true") {
+            echo "<pre>";
+            print_r($weatherstringResultJson);
+            //print_r($forecaststringJson);
+            echo "</pre>";
+        }
+
+        return $weatherstringResultJson;
+
+
+    }
+
+    public function getAPIKEYS()
+    {
+        return $this->API_KEYS;
+    }
+
+    public function setAPIKEYS($API_KEYS)
+    {
+        $this->API_KEYS = $API_KEYS;
     }
 
     public function getLat()
@@ -97,6 +171,7 @@ class Weather
                 error_reporting(E_ALL);
                 ini_set('display_errors', 1);
                 $this->debug = "true";
+                echo "<br/>Setting debug to True<br/>";
                 break;
             case "on":
                 $this->setDebug("true");
@@ -107,39 +182,17 @@ class Weather
 
     }
 
-    public function getWeatherToday()
+    public function getCurrentWeatherHtml($weather)
     {
-        /* Establish some global variables for the weather functions */
-        global $weatherApiKey; //Get the api key from apikeys.php
-        $weatherApiKey = "d99fe917166e9602ed87f6ca3d629469";
-        date_default_timezone_set('Europe/Stockholm');
         $lat = $this->getLat();
         $lon = $this->getLon();
-        $units = $this->getMeasurements();
-        $lang = $this->getLang();
 
-        $debug = $this->getDebug();
-
-        $weatherstring = "http://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&units=$units&lang=$lang&APPID=$weatherApiKey";
-        $weatherstringResult = @file_get_contents($weatherstring);
-        $weatherstringResultJson = (json_decode($weatherstringResult, true));
-        //file_put_contents('weather.json', json_encode($weatherstringResult));
-
-        if ($debug == "true") {
-            echo "<pre>";
-            print_r($weatherstringResultJson);
-            //print_r($forecaststringJson);
-            echo "</pre>";
-        }
-        //echo $this->getDebug();
-
-        //Check if its day or night
         $dayOrNight = $this->getDayOrNight($lat, $lon);
 
 
-        $icon = $weatherstringResultJson['weather']['0']['id'];
-        $temp = round($weatherstringResultJson['main']['temp'], 1);
-        $desc = strtolower($weatherstringResultJson['weather']['0']['description']);
+        $icon = $weather['weather']['0']['id'];
+        $temp = round($weather['main']['temp'], 1);
+        $desc = strtolower($weather['weather']['0']['description']);
 
 
         $output = "<div id=\"weather-current-icon\"><div class='weather-icon wi wi-owm-" . $dayOrNight . "-" . $icon . "'></div></div>";
@@ -147,7 +200,6 @@ class Weather
         $output .= "<div class='weather-desc'>" . $desc . "</div></div>";
 
         return $output;
-
     }
 
     private function getDayOrNight($lat, $lon)
@@ -169,49 +221,78 @@ class Weather
 
     function getWeatherComingDays($days = '3')
     {
-        if (!fileExists('apikeys.php')) {
-            echo "Error (functions.php->getWeatherforecast): apikeys.php doesnt exist";
-            return;
-        }
-        global $weatherApiKey; //Get the api key from apikeys.php
+        $weatherApiKey = $this->getAPIKEYS()['weatherApiKey'];
         date_default_timezone_set('Europe/Stockholm');
-        $lat = "59.298604";
-        $lon = "18.047111";
-        $units = "metric";
-        $lang = "se";
-        $debug = "false";
+        $lat = $this->getLat();
+        $lon = $this->getLon();
+        $units = $this->getMeasurements();
+        $lang = $this->getLang();
+        $debug = $this->getDebug();
+        $output = null;
 
         //Get forecast from openweathermap
         $forecaststring = "http://api.openweathermap.org/data/2.5/forecast/daily?lat=$lat&lon=$lon&cnt=$days&units=$units&lang=$lang&APPID=$weatherApiKey";
         //echo $forecaststring;
-        $forecaststringResult = @file_get_contents($forecaststring);
+        $forecaststringResult = file_get_contents($forecaststring);
         $forecaststringJson = (json_decode($forecaststringResult));
         $forecastDay = $forecaststringJson->list;
 
         //header('Content-Type: application/json');
         //print_r($forecaststringJson->list);
         //print_r($forecaststringJson);
+
+
         foreach ($forecastDay as $dayType => $dayInfo) {
 
             $dayTemp = round($dayInfo->temp->day, 1);
             $description = strtolower($dayInfo->weather{0}->description);
             $icon = $dayInfo->weather{0}->id;
 
-            //var_dump($description);
-
-            
-            echo "<div id='weather-'>";
-            echo "<div class='weather-coming-icon'>";
-            echo "<div class='weather-icon wi wi-owm-day-" . $icon . "'></div></div>";
-            echo "<div class='weather-coming-details'>";
-            echo "<div class='weather-temp'>" . $dayTemp . "°</div>";
-            echo "<div class='weather-desc'>" . $description . "</div></div></div>";
-
+            $output .= "<div id='weather-'>";
+            $output .= "<div class='weather-coming-icon'>";
+            $output .= "<div class='weather-icon wi wi-owm-day-" . $icon . "'></div></div>";
+            $output .= "<div class='weather-coming-details'>";
+            $output .= "<div class='weather-temp'>" . $dayTemp . "°</div>";
+            $output .= "<div class='weather-desc'>" . $description . "</div></div></div>";
 
         }
+        return $output;
 
 
     }
 
+    public function getAllUnits()
+    {
+        return $this->allUnits;
+    }
+
+    /**
+     * @param $newLat
+     * @param $newLon
+     * @param $newMeasurements
+     * @param $newLang
+     * @param string $newDebug
+     */
+    public function setAllUnits($newLat, $newLon, $newMeasurements, $newLang, $newDebug = "false")
+    {
+        $this->setLat($newLat);
+        $this->setLon($newLon);
+        $this->setMeasurements($newMeasurements);
+        $this->setLang($newLang);
+
+        if ($newDebug != $this->getDebug()) {
+            $this->setDebug($newDebug);
+        }
+
+        $this->allUnits = [
+            "lat" => $this->getLat(),
+            "lon" => $this->getLon(),
+            "measurements" => $this->getMeasurements(),
+            "lang" => $this->getLang(),
+            "debug" => $this->getDebug(),
+        ];
+    }
 
 }
+
+new Weather();
