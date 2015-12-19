@@ -70,7 +70,7 @@ a {
 }
 
 .header {
-  font-size: 34px;
+  font-size: 46px;
   text-align: center;
   padding: 8px;
 }
@@ -96,6 +96,7 @@ a {
   margin-top: 12px;
 }
 
+/*  Traffic start */
 .traffic-refresh-manually {
   color: rgba(0, 0, 0, 0.4);
   position: absolute;
@@ -231,6 +232,8 @@ a {
   flex: 1;
 }
 
+/*  Traffic end */
+/*  Weather start */
 .weather-items {
   display: -webkit-box;
   display: -webkit-flex;
@@ -265,30 +268,27 @@ a {
   content: "";
 }
 
-.weather-item-container {
+#weather-data {
+  width: 70%;
+}
+
+.weather-items-header {
+  font-size: 22px;
+  margin-top: 6px;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  margin-bottom: 20px;
-  margin-top: 20px;
-  width: 240px;
-}
-
-.weather-item-header {
-  font-size: 16px;
-  margin-top: 6px;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .weather-current {
@@ -311,11 +311,11 @@ a {
   margin-top: 20px;
 }
 
-#weather-current-icon {
+.weather-current-icon {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  font-size: 44px;
+  font-size: 48px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -moz-flex;
@@ -333,28 +333,7 @@ a {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  font-size: 16px;
-}
-
-.weather-item-coming-container {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  margin-bottom: 20px;
-  margin-top: 20px;
-  width: 240px;
+  font-size: 18px;
 }
 
 #weather-coming-items {
@@ -363,9 +342,9 @@ a {
   display: -moz-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
   -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
@@ -374,6 +353,33 @@ a {
   flex-direction: row;
 }
 
+.weather-coming-item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  font-size: 16px;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.weather-coming-icon {
+  font-size: 28px;
+  padding: 6px;
+}
+
+/*  Weather end */
 .notifications-container {
   position: fixed;
   bottom: 0;

@@ -47,7 +47,7 @@ function updateClock ( ){
     //console.log('currentlyUpdatingTrafic; ' + currentlyUpdatingTrafic);
     if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length >= 0 && !currentlyUpdatingTrafic) {
       currentlyUpdatingTrafic = true;
-      getDepartures();
+      //getDepartures();
       //console.log('Too few departures, getting departures');
       newNotification('Too few departure departures. <br/>Getting new ones');
     }
@@ -85,90 +85,42 @@ function getDepartures (){
       });
 }
 function getWeather() {
-  newNotification('Fetching the weather');
-  //View spinning icon and hide the previous weather results
-  $('#weather-loading').addClass('weather-loading-before').removeClass('.weather-loading-no-before').css('margin', '20px');
-  $('.weather-item-container').hide();
-
-  //All the types we want to see
-  var weatherArray = [
-    'icon',
-    'desc',
-    'temp'
-   ];
-  var weatherResultObj = {};
-  var i = 0;
-
-  //fetch all the values for todays forecast
-  $.each(weatherArray, function(index, el) {
-    //console.log(weatherArray[i]);
-    var type = weatherArray[i];
+    newNotification('Fetching the weather');
+    //View spinning icon and hide the previous weather results
+    $('#weather-loading')
+        .addClass('weather-loading-before')
+        .removeClass('.weather-loading-no-before')
+        .css('margin', '20px');
+    $('.weather-item-container').hide();
 
     $.ajax({
-      url: "functions.php?function=getWeatherToday&var1=" + type,
-      cache: false,
-      datatype: 'html',
-      success: function (data) {
-        weatherResultObj[type] = data; //Add the result to new array
-
-        if (Object.keys(weatherResultObj).length == weatherArray.length) {//When the whole weatherarray has been looped :)
-          //console.log(weatherResultObj);
-          //Remove spinning icon
-          $('#weather-loading').addClass('weather-loading-no-before').removeClass('.weather-loading-before').css('margin', '0px');
-          //View the result
-          $('#weather-current-icon').html( weatherResultObj.icon );
-          $('.weather-current-details').empty().append( weatherResultObj.temp ).append( weatherResultObj.desc );
-          $('.weather-item-container').show();
+        url: "php/weather.php?htmlCall=true&debug=false",
+        cache: false,
+        datatype: 'html',
+        success: function (data) {
+            $('#weather-loading')
+                .addClass('weather-loading-no-before')
+                .removeClass('.weather-loading-before').css('margin', '0px');
+            //View the result
+            $('#weather-data').html(data);
         }
-
-        /*
-        if(Object.keys(weatherResultObj).length == weatherArray.length){ // When the ajax for each value in the array is done
-          $('#weather-icon-container').html(weatherResultObj['icon']); //display the weather icon
-          $('.weather-items').empty();
-          $('.weather-items').append(weatherResultObj['desc']);
-          $('.weather-items').append(weatherResultObj.temp);
-          console.log(weatherResultObj);
-          for ( property in weatherResultObj ) {
-            console.log( property );
-          }
-        }
-        */
-
-      }
     });
-    //Ajax over
-    i++;
-
-  });
-
-  //fetch coming days forecast
-  var days = 3;
-  $.ajax({
-    url: "functions.php?function=getWeatherComingDays&var1=" + days,
-    cache: false,
-    datatype: 'html',
-    success: function (data) {
-      $('#weather-coming-items').html( data );
-    }
-  });
-
 
   newNotification('Weather updated');
-  //Each over
-
-
 }
 function newNotification(outputText, type, duration) {
   type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
   duration = typeof duration !== 'undefined' ? duration : 5000;
 
-  $('.notifications-container').append(
-    "<div class='notification "+ type +"'>\
+    $('.notifications-container').append(
+        "<div class='notification " + type + "'>\
       <div class='remove-notification icon icon-times'></div>\
       " + outputText + "\
     </div>\
     "
-  ).children('.notification').delay(duration).fadeOut(1500, function(){
+  ).children('.notification')
+        .delay(duration)
+        .fadeOut(1500, function(){
             $(this).remove()
         });
 }
@@ -191,6 +143,21 @@ function getTime(dateInput) {
     return hour+":"+min+":"+sec;
 }
 
+function getWeather2(){
+    $.ajax({
+        url: "php/weather.php?htmlCall=true&debug=false",
+        cache: false,
+        datatype: 'html',
+        success: function (data) {
+            $('#weather-loading')
+                .addClass('weather-loading-no-before')
+                .removeClass('.weather-loading-before').css('margin', '0px');
+            //View the result
+            $('#weather-data').html(data);
+        }
+    });
+}
+
 /*
 * Global scope variables
 */
@@ -205,9 +172,13 @@ $(document).ready(function(){
 
     updateClock();
     setInterval('updateClock()', 1000);
-    getDepartures();
+
+    //getDepartures();
+
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
+
+
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
     $( ".lights-yellow" ).click(function() {
@@ -260,28 +231,26 @@ $(document).ready(function(){
     */
 
     $(".notifications-container").on({
-      mouseenter: function () {//Mouse enters the notification
-        $(this).children('.notification').stop(true, false).fadeIn(500);
-      },
-      mouseleave: function () {//Mouse leaves the notification
-        $(this).children('.notification').fadeOut(3000, function(){
-            $(this).remove()
-        });
-      }
+        mouseleave: function () {//Mouse leaves the notification
+            $(this).children('.notification').fadeOut(3000, function () {
+                $(this).remove()
+            });
+        },
+        mouseenter: function () {//Mouse enters the notification
+            $(this).children('.notification').stop(true, false).fadeIn(500);
+        },
+        click: function () {//Mouse clicks the remove button
+            $(this).parent('.notification').animate( //Animate a fade and remove
+                {
+                    opacity: 0
+                },
+                500,
+                'easeInQuart',
+                function () {
+                    $(this).remove();
+                }, '.remove-notification');
+        }
     });
-    $(".notifications-container").on({
-      click: function () {//Mouse clicks the remove button
-        $(this).parent('.notification').animate( //Animate a fade and remove
-          {
-            opacity: 0
-          },
-          500,
-          'easeInQuart',
-          function () {
-          $(this).remove();
-        });
-      }
-    }, '.remove-notification');
 
 /*
     $.ajax({
