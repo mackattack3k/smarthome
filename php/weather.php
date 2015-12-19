@@ -36,8 +36,8 @@ class Weather
         if ($htmlCall == "true") {
             //echo "starting html version";
             $htmlOutput = $this->startHTMLAutomaticVersion();
-            //echo $htmlOutput; //TODO: remove this from prod
-            return $htmlOutput;
+            echo $htmlOutput; //TODO: remove this from prod
+            //return $htmlOutput;
         }
 
     }
@@ -52,13 +52,14 @@ class Weather
         $lon = isset($_GET['lon']) ? $_GET['lon'] : "18.047111";
         $measurements = isset($_GET['measurements']) ? $_GET['measurements'] : 'metric';
         $lang = isset($_GET['lang']) ? $_GET['lang'] : 'se';
+        $debug = $this->getDebug();
 
 
         /*
          * Set the variables
          */
 
-        $this->setAllUnits($lat, $lon, $measurements, $lang);
+        $this->setAllUnits($lat, $lon, $measurements, $lang, $debug);
 
         /*
          * Get current weather
@@ -73,7 +74,7 @@ class Weather
          * Get coming weather
          */
 
-        $comingWeatherData = $this->getWeatherComingDays();
+        $comingWeatherData = $this->getWeatherComingDays(4);
         $htmlOutput .= $comingWeatherData;
 
         return $htmlOutput;
@@ -98,7 +99,7 @@ class Weather
         //file_put_contents('weather.json', json_encode($weatherstringResult));
 
         if ($debug == "true") {
-            echo "<pre>";
+            echo "Todays weather: <pre>";
             print_r($weatherstringResultJson);
             //print_r($forecaststringJson);
             echo "</pre>";
@@ -194,10 +195,16 @@ class Weather
         $temp = round($weather['main']['temp'], 1);
         $desc = strtolower($weather['weather']['0']['description']);
 
-
-        $output = "<div id=\"weather-current-icon\"><div class='weather-icon wi wi-owm-" . $dayOrNight . "-" . $icon . "'></div></div>";
-        $output .= "<div class=\"weather-current-details\"><div class='weather-temp'>" . $temp . "°</div>";
-        $output .= "<div class='weather-desc'>" . $desc . "</div></div>";
+        $output = "<div class='weather-items-header'>Just nu</div>";
+        $output .= "<div id=\"weather-current-item\">";
+            $output .= "<div class='weather-current'>";
+                $output .= "<div class=\"weather-current-icon\">";
+                    $output .= "<div class='weather-icon wi wi-owm-$dayOrNight-$icon'></div>";
+                $output .= "</div>";
+                $output .= "<div class=\"weather-current-details\"><div class='weather-temp'>" . $temp . "°</div>";
+                $output .= "<div class='weather-desc'>" . $desc . "</div></div>";
+            $output .= "</div>";
+        $output .= "</div>";
 
         return $output;
     }
@@ -239,27 +246,52 @@ class Weather
 
         //header('Content-Type: application/json');
         //print_r($forecaststringJson->list);
-        //print_r($forecaststringJson);
+        if ($this->getDebug() == "true"){
+            $output .= "Coming weather: <pre>";
+            $output .= print_r($forecaststringJson);
+            $output .= "</pre>";
+        }
 
-
+        $output .= "<div class='weather-items-header'>Kommande</div>";
+        $output .= "<div id='weather-coming-items'>";
         foreach ($forecastDay as $dayType => $dayInfo) {
 
             $dayTemp = round($dayInfo->temp->day, 1);
             $description = strtolower($dayInfo->weather{0}->description);
             $icon = $dayInfo->weather{0}->id;
+            $date = $dayInfo->dt;
+            $dayAndMonth = gmdate("d/m", $date);
 
-            $output .= "<div id='weather-'>";
-            $output .= "<div class='weather-coming-icon'>";
-            $output .= "<div class='weather-icon wi wi-owm-day-" . $icon . "'></div></div>";
-            $output .= "<div class='weather-coming-details'>";
-            $output .= "<div class='weather-temp'>" . $dayTemp . "°</div>";
-            $output .= "<div class='weather-desc'>" . $description . "</div></div></div>";
-
+            if ( $this->isToday($date) ){
+                //we could get todays weather and output it somewhere
+            } else {
+                $output .= "<div class='weather-coming-item'>";
+                    $output .= "<div class='weather-coming-icon'>";
+                        $output .= "<div class='weather-icon wi wi-owm-day-$icon'></div>";
+                    $output .= "</div>";
+                    $output .= "<div class='weather-coming-details'>";
+                        $output .= "<div class='weather-temp'>$dayTemp °</div>";
+                        $output .= "<div class='weather-date'>$dayAndMonth</div>";
+                        //$output .= "<div class='weather-desc'>" . $description . "</div>";
+                    $output .= "</div>";
+                $output .= "</div>";
+            }
         }
+        $output .= "</div>";
         return $output;
 
 
     }
+
+    private function isToday($time) // midnight second
+    {
+        $todayObj = New DateTime();
+        $inputTime = gmdate("Y-m-d", $time);
+        $today = $todayObj->format('Y-m-d');
+
+        return ($today == $inputTime);
+    }
+
 
     public function getAllUnits()
     {

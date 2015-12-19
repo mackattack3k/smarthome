@@ -1,6 +1,5 @@
 <?php
-include 'functions.php';
-
+require_once 'php/weather.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +19,8 @@ include 'functions.php';
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet'
+          type='text/css'>
 
     <!-- Polymer -->
     <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
@@ -51,89 +51,40 @@ include 'functions.php';
 </head>
 
 <body>
-    <div class="container">
-        <div class="column column-1">
-            <div id="time" class="column-content">
-                <div class="header">
-                    <div id="currenttime" class="super-duper-big-font">
-                    </div>
-                    <div id="currentday" class="big-font">
-                    </div>
-                    <div id="currentdate" class="big-font">
-                    </div>
+<div class="container">
+    <div class="column column-1">
+        <div id="time" class="column-content">
+            <div class="header">
+                <div id="currenttime" class="super-duper-big-font">
                 </div>
-            </div>
-            <div id="weather" class="column-content">
-                <div class="header">
-                  Väder
+                <div id="currentday" class="big-font">
                 </div>
-                <div class="weather-items">
-                  <div id="weather-loading" class="icon icon-refresh icon-4x icon-spin">
-
-                  </div>
-                  <div class="weather-item-container">
-                    <div class="weather-item-header">
-                      Just nu
-                    </div>
-                    <div class="weather-current">
-                      <div id="weather-current-icon">
-
-                      </div>
-                      <div class="weather-current-details">
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="weather-item-coming-container">
-                    <div class="weather-item-header">
-                      Kommande
-                    </div>
-                    <div id="weather-coming-items">
-
-                    </div>
-                  </div>
-                <!--
-                  <div class="weather-item-container">
-                    <div class="weather-item-header">
-                      Under dagen
-                    </div>
-                    <div class="weather-during">
-                      <div id="weather-during-icon">
-
-                      </div>
-                      <div class="weather-during-details">
-
-                      </div>
-                    </div>
-                  </div>
-                  <div class="weather-item-container">
-                    <div class="weather-item-header">
-                      Imorgon
-                    </div>
-                    <div class="weather-during">
-                      <div id="weather-tomorrow-icon">
-
-                      </div>
-                      <div class="weather-tomorrow-details">
-
-                      </div>
-                    </div>
-                  </div>
-                -->
-
+                <div id="currentdate" class="big-font">
                 </div>
-
             </div>
         </div>
+        <div id="weather" class="column-content">
+            <div class="header">
+                Väder
+            </div>
+            <div class="weather-items">
+                <div id="weather-loading" class="icon icon-refresh icon-4x icon-spin"></div>
+                <div id="weather-data">
 
-        <div class="column column-2">
-            <div id="traffic" class="column-content">
-                <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
                 </div>
-                <div class="header">
-                    Trafik
-                </div>
-                <div class="traffic-items">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="column column-2">
+        <div id="traffic" class="column-content">
+            <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
+            </div>
+            <div class="header">
+                Trafik
+            </div>
+            <div class="traffic-items">
                 <div id="traffic-search">
                     <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen"></input>
                 </div>
@@ -141,17 +92,17 @@ include 'functions.php';
                 <div id="traffic-results">
                 </div>
 
-                </div>
             </div>
         </div>
-        <!---
+    </div>
+    <!---
         <div class="column column-3">
             <div id="lights" class="column-content">
                 <div class="header">
                     Lights
                 </div>
                 <div class="items">
-                    <?php echo htmlLamps(); ?>
+                    <?php //echo htmlLamps(); ?>
                     <paper-button disabled class="lights-all" id="all-on">All on</paper-button>
                     <paper-button raised class="lights-all" id="all-off">All off</paper-button>
 
@@ -171,8 +122,8 @@ include 'functions.php';
         </div>
       --->
 
-    </div>
-    <div class="notifications-container"></div>
-    <script src="js/global.js"></script>
+</div>
+<div class="notifications-container"></div>
+<script src="js/global.js"></script>
 </body>
 </html>

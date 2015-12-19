@@ -43,7 +43,7 @@ a
     margin-top: 20px
 
 .header
-    font-size: 34px
+    font-size: 46px
     text-align: center
     padding: 8px
 
@@ -56,6 +56,9 @@ a
         margin-top: 8px
     paper-button
         margin-top: 12px
+
+
+/*  Traffic start */
 
 .traffic-refresh-manually
     color: rgba(0, 0, 0, 0.4)
@@ -135,6 +138,10 @@ a
 .traffic-third
     +flex(1)
 
+/*  Traffic end */
+
+/*  Weather start */
+
 .weather-items
     +flexbox
     +justifycontent(space-around)
@@ -153,22 +160,18 @@ a
 
 .weather-loading-before
     content: '\f015'
+#weather-data
+    width: 70%
 
-.weather-item-container
-    +flexbox
-    +justifycontent(center)
-    +alignitems(center)
-    +flexdirection(column)
-    box-shadow: $material-shadow
-    margin-bottom: 20px
-    margin-top: 20px
+.weather-items-header
     //display: none
-    width: 240px
-
-.weather-item-header
-    //display: none
-    font-size: 16px
+    font-size: 22px
     margin-top: 6px
+    +flex(2)
+    +flexbox
+    +alignitems(center)
+    +justifycontent(center)
+
 
 .weather-current
     //box-shadow: $material-shadow
@@ -180,34 +183,40 @@ a
     margin-bottom: 20px
     margin-top: 20px
 
-#weather-current-icon
+.weather-current-icon
     +flex(1)
-    font-size: 44px
+    font-size: 48px
     +flexbox
     +alignitems(center)
     +justifycontent(center)
 
 .weather-current-details
     +flex(1)
-    font-size: 16px
+    font-size: 18px
 
-
-.weather-item-coming-container
-    +flexbox
-    +justifycontent(center)
-    +alignitems(center)
-    +flexdirection(column)
-    box-shadow: $material-shadow
-    margin-bottom: 20px
-    margin-top: 20px
-    //display: none
-    width: 240px
 
 #weather-coming-items
     +flexbox
-    +justifycontent(center)
+    +justifycontent(space-around)
     +alignitems(center)
     +flexdirection(row)
+
+.weather-coming-item
+    +flexbox
+    +justifycontent(space-around)
+    +alignitems(center)
+    +flexdirection(row)
+    font-size: 16px
+    padding: 10px
+    margin-bottom: 20px
+    margin-top: 20px
+
+.weather-coming-icon
+    font-size: 28px
+    padding: 6px
+
+
+/*  Weather end */
 
 .notifications-container
     position: fixed
