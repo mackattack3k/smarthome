@@ -149,20 +149,6 @@ function getTime(dateInput) {
     return hour+":"+min+":"+sec;
 }
 
-function getWeather2(){
-    $.ajax({
-        url: "php/weather.php?htmlCall=true&debug=false",
-        cache: false,
-        datatype: 'html',
-        success: function (data) {
-            $('#weather-loading')
-                .addClass('weather-loading-no-before')
-                .removeClass('.weather-loading-before').css('margin', '0px');
-            //View the result
-            $('#weather-data').html(data);
-        }
-    });
-}
 
 /*
 * Global scope variables
