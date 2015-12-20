@@ -44,10 +44,10 @@ function updateClock ( ){
 
     //Check if there are less than 2 departures left
     //console.log('Checking if we should get new departures.');
-    //console.log('currentlyUpdatingTrafic; ' + currentlyUpdatingTrafic);
+    //console.log('currentlyUpdatingTraffic; ' + currentlyUpdatingTraffic);
     var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
-    if (numberOfDepartures <= 2 && !currentlyUpdatingTrafic) {
-      currentlyUpdatingTrafic = true;
+    if (numberOfDepartures <= 2 && !currentlyUpdatingTraffic) {
+      currentlyUpdatingTraffic = true;
       console.log('Too few departures, getting departures');
       getDepartures();
     }
@@ -82,10 +82,10 @@ function getDepartures() {
 
             if (regexContainsErrorText.test(trafficData)) {
                 newNotification('Error updating public transport', "error", 10000);
-                currentlyUpdatingTrafic = true; //Changing it to true so that it doesnt continue to update traffic
+                currentlyUpdatingTraffic = true; //Changing it to true so that it doesnt continue to update traffic
             } else {
                 newNotification('Public transport updated', "success");
-                currentlyUpdatingTrafic = true;
+                currentlyUpdatingTraffic = true;
             }
             var date = new Date();
             $('#traffic-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
@@ -185,7 +185,7 @@ function getTime(dateInput, format) {
 * Global scope variables
 */
 
-var currentlyUpdatingTrafic = true;
+var currentlyUpdatingTraffic = true;
 var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 
 /*
