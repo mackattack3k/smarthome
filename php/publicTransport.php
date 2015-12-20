@@ -182,6 +182,7 @@ class publicTransport
         $transportTypeTranslationArray = new stdClass();
         $transportTypeTranslationArray->ULT = 'train'; //Tunnelbana
         $transportTypeTranslationArray->SLT = 'train'; //Tvärbana
+        //$transportTypeTranslationArray->JLT = 'train'; //SJ
         $transportTypeTranslationArray->BLT = 'bus'; //Buss
 
         foreach ($departsResult as $departureArrayKey => $departureInfo) {
@@ -211,13 +212,13 @@ class publicTransport
             if (isset($transportTypeTranslationArray->$transportationCategory)) {
                 $translatedTransportType = $transportTypeTranslationArray->$transportationCategory;
             } else {
-                $translatedTransportType = 'rocket';
+                $translatedTransportType = 'rocket purple-icon';
             }
 
             /*
             * Output the HTML
             */
-            $output .=  "<div class='traffic-result'>";
+            $output .=  "<div class='traffic-result $transportationCategory'>";
             $output .=  "<div class='traffic-first'>";
             $output .=  "<div class='icon icon-".strtolower($translatedTransportType)." icon-2x'></div>";
             $output .=  "<div class='traffic-line'>$line</div>";
