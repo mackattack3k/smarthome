@@ -225,6 +225,7 @@ a
     font-size: 90%
 
 /*  Weather end */
+
 /*  Notifications start */
 
 .notifications-container
@@ -232,7 +233,7 @@ a
     bottom: 0
     left: 0
     width: 250px
-    word-break: break-all
+    word-wrap: break-word
 
 .notification
     position: relative
@@ -260,6 +261,10 @@ a
 
 .notification-icon
     +flex(1)
+    +flexbox
+    +alignitems(center)
+    +justifycontent(center)
+    margin-right: 5px
 
 .notification-text
     +flex(9)
@@ -312,6 +317,7 @@ paper-checkbox.blue
     --paper-checkbox-unchecked-color: var(--paper-light-blue-900)
     --paper-checkbox-unchecked-ink-color: var(--paper-light-blue-900)
 
+
 /* Font classes */
 
 .big-font
@@ -329,6 +335,10 @@ paper-checkbox.blue
 .super-small-font
     font-size: $super-small-font
 
+/* Font classes end */
+
+/* Column specific things */
+
 #time
     border-top-color: $lilly-purple
 
@@ -338,14 +348,15 @@ paper-checkbox.blue
 
 #traffic
     border-top-color:  $lilly-purple
-
     position: relative
 
 #lights
-    border-top-color: yellow
+    border-top-color:  $lilly-purple
+    position: relative
 
-#lights
-    border-top-color: var(--paper-red-900)
+/* Column specific end */
+
+/* Media queries */
 
 @media all and (max-width: 1510px)
     .column
@@ -362,3 +373,4 @@ paper-checkbox.blue
         +flexdirection(column)
 
 
+/* Media queries end */
