@@ -53,11 +53,11 @@ function updateClock ( ){
     }
  }
 function getDepartures() {
-    newNotification('Fetching the departures', 'info');
+    newNotification('Updating public transport', 'info');
     //Check if the value of traffic-search is set and use it
     var getStation = $('#traffic-search-input').val();
     var stationID = 7424920; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
-    var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
+
 
     console.log("Getting departures for: " + getStation + " id: " + stationID);
 
@@ -81,10 +81,10 @@ function getDepartures() {
             $("#traffic-results").html(trafficData);
 
             if (regexContainsErrorText.test(trafficData)) {
-                newNotification('Error getting new departures', "error", 10000);
+                newNotification('Error updating public transport', "error", 10000);
                 currentlyUpdatingTrafic = true; //Changing it to true so that it doesnt continue to update traffic
             } else {
-                newNotification('New departures added', "success");
+                newNotification('Public transport updated', "success");
                 currentlyUpdatingTrafic = true;
             }
 
@@ -92,7 +92,7 @@ function getDepartures() {
     })
 }
 function getWeather() {
-    newNotification('Fetching the weather', 'info');
+    newNotification('Updating weather', 'info');
     //View spinning icon and hide the previous weather results
     $('#weather-loading')
         .addClass('weather-loading-before')
@@ -101,19 +101,24 @@ function getWeather() {
     $('.weather-item-container').hide();
 
     $.ajax({
-        url: "php/weather.php?htmlCall=true&debug=false",
+        url: "php/weather.php?htmlCall",
+        data: {htmlCall: "true"},
         cache: false,
         datatype: 'html',
-        success: function (data) {
+        success: function (trafficData) {
             $('#weather-loading')
                 .addClass('weather-loading-no-before')
                 .removeClass('.weather-loading-before').css('margin', '0px');
             //View the result
-            $('#weather-data').html(data);
+            $('#weather-data').html(trafficData);
+
+            if (regexContainsErrorText.test(trafficData)) {
+                newNotification('Error getting weather', "error", 10000);
+            } else {
+                newNotification('Weather updated', "success");
+            }
         }
     });
-
-  newNotification('Weather updated', 'success');
 }
 function newNotification(outputText, type, duration) {
   type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
@@ -173,6 +178,7 @@ function getTime(dateInput) {
 */
 
 var currentlyUpdatingTrafic = true;
+var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 
 /*
 * End of global variable scope

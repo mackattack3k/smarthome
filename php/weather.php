@@ -66,6 +66,9 @@ class Weather
          */
 
         $currentWeatherData = $this->getCurrentWeather();
+        if (!$currentWeatherData){
+            return "Error: no current weather data";
+        }
         $currentWeatherHTML = $this->getCurrentWeatherHtml($currentWeatherData);
 
         $htmlOutput = $currentWeatherHTML;
@@ -75,6 +78,9 @@ class Weather
          */
 
         $comingWeatherData = $this->getWeatherComingDays(4);
+        if (!$comingWeatherData){
+            return "Error: no coming weather data";
+        }
         $htmlOutput .= $comingWeatherData;
 
         return $htmlOutput;
@@ -97,6 +103,11 @@ class Weather
         $weatherstringResult = file_get_contents($weatherString);
         $weatherstringResultJson = (json_decode($weatherstringResult, true));
         //file_put_contents('weather.json', json_encode($weatherstringResult));
+
+        if( empty( $weatherstringResultJson ) )
+        {
+            return false;
+        }
 
         if ($debug == "true") {
             echo "Todays weather: <pre>";
@@ -242,6 +253,12 @@ class Weather
         //echo $forecaststring;
         $forecaststringResult = file_get_contents($forecaststring);
         $forecaststringJson = (json_decode($forecaststringResult));
+        $forecaststringJsonArray = json_decode($forecaststringResult, true);
+        if( empty( $forecaststringJsonArray ) )
+        {
+            return false;
+        }
+
         $forecastDay = $forecaststringJson->list;
 
         //header('Content-Type: application/json');

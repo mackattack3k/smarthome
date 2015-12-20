@@ -182,7 +182,7 @@ class publicTransport
         $transportTypeTranslationArray = new stdClass();
         $transportTypeTranslationArray->ULT = 'train'; //Tunnelbana
         $transportTypeTranslationArray->SLT = 'train'; //Tvärbana
-        //$transportTypeTranslationArray->JLT = 'train'; //SJ
+        $transportTypeTranslationArray->JLT = 'train'; //SJ
         $transportTypeTranslationArray->BLT = 'bus'; //Buss
 
         foreach ($departsResult as $departureArrayKey => $departureInfo) {
