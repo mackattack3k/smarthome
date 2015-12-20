@@ -59,6 +59,7 @@ a {
   -ms-transition: all 0.2s linear;
   -o-transition: all 0.2s linear;
   transition: all 0.2s linear;
+  animation-direction: alternate;
 }
 
 .column-content {
@@ -232,6 +233,10 @@ a {
   flex: 1;
 }
 
+.icon-rocket {
+  color: #C2185B;
+}
+
 /*  Traffic end */
 /*  Weather start */
 .weather-items {
@@ -379,11 +384,22 @@ a {
   padding: 6px;
 }
 
+.weather-temp {
+  font-weight: 500;
+}
+
+.weather-date {
+  font-size: 90%;
+}
+
 /*  Weather end */
+/*  Notifications start */
 .notifications-container {
   position: fixed;
   bottom: 0;
   left: 0;
+  width: 250px;
+  word-break: break-all;
 }
 
 .notification {
@@ -405,16 +421,59 @@ a {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
 .notification:hover {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   cursor: default;
+}
+
+.notification-data {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+  width: 100%;
+}
+
+.notification-icon {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.notification-text {
+  -webkit-flex: 9;
+  -ms-flex: 9;
+  flex: 9;
+}
+
+.info {
+  background-color: #448aab;
+}
+
+.success {
+  background-color: #67ab33;
+}
+
+.error {
+  background-color: #993333;
+}
+
+.warning {
+  background-color: #eda934;
 }
 
 .remove-notification {
@@ -426,6 +485,7 @@ a {
   cursor: pointer;
 }
 
+/*  Notifications end */
 paper-button[raised].lights-yellow.active {
   background-color: yellow;
 }
@@ -509,5 +569,15 @@ paper-checkbox.blue {
 @media all and (max-width: 850px) {
   .column {
     width: 300px;
+  }
+
+  .weather-coming-item {
+    margin: 0px;
+  }
+
+  #weather-coming-items {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }

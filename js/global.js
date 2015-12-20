@@ -53,10 +53,10 @@ function updateClock ( ){
     }
  }
 function getDepartures() {
-    newNotification('Fetching the departures');
+    newNotification('Fetching the departures', 'info');
     //Check if the value of traffic-search is set and use it
     var getStation = $('#traffic-search-input').val();
-    var stationID = 7453026;
+    var stationID = 7424920; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
     var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 
     console.log("Getting departures for: " + getStation + " id: " + stationID);
@@ -81,10 +81,10 @@ function getDepartures() {
             $("#traffic-results").html(trafficData);
 
             if (regexContainsErrorText.test(trafficData)) {
-                newNotification('Error getting new departures', "error", 50000);
+                newNotification('Error getting new departures', "error", 10000);
                 currentlyUpdatingTrafic = true; //Changing it to true so that it doesnt continue to update traffic
             } else {
-                newNotification('New departures added');
+                newNotification('New departures added', "success");
                 currentlyUpdatingTrafic = true;
             }
 
@@ -92,7 +92,7 @@ function getDepartures() {
     })
 }
 function getWeather() {
-    newNotification('Fetching the weather');
+    newNotification('Fetching the weather', 'info');
     //View spinning icon and hide the previous weather results
     $('#weather-loading')
         .addClass('weather-loading-before')
@@ -113,16 +113,34 @@ function getWeather() {
         }
     });
 
-  newNotification('Weather updated');
+  newNotification('Weather updated', 'success');
 }
 function newNotification(outputText, type, duration) {
   type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
   duration = typeof duration !== 'undefined' ? duration : 5000;
 
+    var iconTypes = {
+        notifcation:"bell",
+        info:"info",
+        success:"check",
+        error: "ban",
+        warning: "exclamation-triangle",
+    };
+    for(key in iconTypes) {
+        if(iconTypes.hasOwnProperty(type)) {
+            var iconType = iconTypes[type];
+            //do something with value;
+            //console.log(iconType);
+        }
+    }
+
     $('.notifications-container').append(
         "<div class='notification " +type+ "'>\
           <div class='remove-notification icon icon-times'></div>\
-          " + outputText + "\
+          <div class='notification-data'>\
+              <div class='notification-icon icon icon-" + iconType + "'></div>\
+              <div class='notification-text'>" + outputText + "</div>\
+          </div>\
         </div>"
   ).children('.notification')
         .delay(duration)

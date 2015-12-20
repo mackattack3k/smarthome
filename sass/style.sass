@@ -33,6 +33,7 @@ a
 .column
     width: 500px
     +transition(all, 0.2s, linear)
+    animation-direction: alternate
 
 .column-content
     border-top: 5px solid #fff
@@ -138,6 +139,9 @@ a
 .traffic-third
     +flex(1)
 
+.icon-rocket
+    color: $lilly-purple
+    
 /*  Traffic end */
 
 /*  Weather start */
@@ -215,13 +219,20 @@ a
     font-size: 28px
     padding: 6px
 
+.weather-temp
+    font-weight: 500
+.weather-date
+    font-size: 90%
 
 /*  Weather end */
+/*  Notifications start */
 
 .notifications-container
     position: fixed
     bottom: 0
     left: 0
+    width: 250px
+    word-break: break-all
 
 .notification
     position: relative
@@ -234,10 +245,37 @@ a
     +flexbox
     +alignitems(center)
     +justifycontent(center)
-    +no-select
+    //+no-select
     &:hover
         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)
         cursor: default
+
+.notification-data
+    +flexbox
+    +alignitems(center)
+    +justifycontent(space-around)
+    +flexdirection(row)
+    +flexflow(nowrap)
+    width: 100%
+
+.notification-icon
+    +flex(1)
+
+.notification-text
+    +flex(9)
+
+.info
+    background-color: #448aab
+
+.success
+    background-color: #67ab33
+
+.error
+    background-color: rgb(153, 51, 51)
+
+.warning
+    background-color: #eda934
+
 
 .remove-notification
     position: absolute
@@ -245,6 +283,9 @@ a
     top: 3px
     &:hover
         cursor: pointer
+
+
+/*  Notifications end */
 
 paper-button[raised].lights-yellow
     &.active
@@ -315,3 +356,9 @@ paper-checkbox.blue
 @media all and (max-width: 850px)
     .column
         width: 300px
+    .weather-coming-item
+        margin: 0px
+    #weather-coming-items
+        +flexdirection(column)
+
+
