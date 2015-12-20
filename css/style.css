@@ -97,6 +97,14 @@ a {
   margin-top: 12px;
 }
 
+.timestamp {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #bebebe;
+  padding: 2px;
+}
+
 /*  Traffic start */
 .traffic-refresh-manually {
   color: rgba(0, 0, 0, 0.4);

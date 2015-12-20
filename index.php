@@ -74,6 +74,7 @@
 
                 </div>
             </div>
+            <div class="timestamp" id="weather-last-updated"></div>
 
         </div>
     </div>
@@ -94,6 +95,7 @@
                 </div>
 
             </div>
+            <div class="timestamp" id="traffic-last-updated"></div>
         </div>
     </div>
     <!---

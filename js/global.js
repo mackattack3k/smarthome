@@ -87,6 +87,8 @@ function getDepartures() {
                 newNotification('Public transport updated', "success");
                 currentlyUpdatingTrafic = true;
             }
+            var date = new Date();
+            $('#traffic-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
 
         }
     })
@@ -117,6 +119,8 @@ function getWeather() {
             } else {
                 newNotification('Weather updated', "success");
             }
+            var date = new Date();
+            $('#weather-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
         }
     });
 }
@@ -153,7 +157,8 @@ function newNotification(outputText, type, duration) {
             $(this).remove()
         });
 }
-function getTime(dateInput) {
+function getTime(dateInput, format) {
+    format = typeof format !== 'undefined' ? format : "none";
     var day = dateInput.getDate();
     var month = dateInput.getMonth() + 1; // Note the `+ 1` -- months start at zero.
     var year = dateInput.getFullYear();
@@ -168,6 +173,9 @@ function getTime(dateInput) {
     }
     if (hour < 10) {
       hour = "0" + hour;
+    }
+    if (format == "swedish-full"){
+        return year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec;
     }
     return hour+":"+min+":"+sec;
 }
