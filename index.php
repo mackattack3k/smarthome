@@ -1,5 +1,6 @@
 <?php
-require_once 'php/weather.php';
+//require_once 'php/weather.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +20,7 @@ require_once 'php/weather.php';
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Roboto:500,300,400|Open+Sans:300,400' rel='stylesheet'
+    <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,500|Open+Sans:300,400,600' rel='stylesheet'
           type='text/css'>
 
     <!-- Polymer -->
@@ -29,15 +30,15 @@ require_once 'php/weather.php';
     <link rel="import" href="bower_components/paper-styles/paper-styles.html">
 
     <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
-    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
-    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-touch-icon-120x120.png">
+    <link rel="icon" type="image/png" href="favicons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="favicons/favicon-16x16.png" sizes="16x16">
 
     <link rel="manifest" href="/manifest.json">
 
@@ -86,7 +87,7 @@ require_once 'php/weather.php';
             </div>
             <div class="traffic-items">
                 <div id="traffic-search">
-                    <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen"></input>
+                    <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen,"></input>
                 </div>
                 <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
                 <div id="traffic-results">

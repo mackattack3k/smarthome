@@ -45,44 +45,51 @@ function updateClock ( ){
     //Check if there are less than 2 departures left
     //console.log('Checking if we should get new departures.');
     //console.log('currentlyUpdatingTrafic; ' + currentlyUpdatingTrafic);
-    if ($('#traffic-results').children('.traffic-result').length <= 2 && $('#traffic-results').children('.traffic-result').length >= 0 && !currentlyUpdatingTrafic) {
+    var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
+    if (numberOfDepartures <= 2 && !currentlyUpdatingTrafic) {
       currentlyUpdatingTrafic = true;
-      //getDepartures();
-      //console.log('Too few departures, getting departures');
-      newNotification('Too few departure departures. <br/>Getting new ones');
+      console.log('Too few departures, getting departures');
+      getDepartures();
     }
  }
-function getDepartures (){
+function getDepartures() {
     newNotification('Fetching the departures');
     //Check if the value of traffic-search is set and use it
-    var getStation      =       $('#traffic-search-input').val();
-    if (getStation == ''){
-        var station     =       'Åmänningevägen';
-    }else{
-        var station     =       getStation;
-    }
+    var getStation = $('#traffic-search-input').val();
+    var stationID = 7453026;
+    var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 
-    console.log(getStation);
+    console.log("Getting departures for: " + getStation + " id: " + stationID);
 
 
     //Adda spinning refresh icon before loading the departure times. Also removes previous departure times.
-    $('#traffic-loading').addClass("traffic-loading-before");
-    $('#traffic-loading').removeClass("traffic-loading-no-before");
-    $('#traffic-loading').show();
-    $( "#traffic-results" ).html( '' );
+    $('#traffic-loading')
+        .addClass("traffic-loading-before")
+        .removeClass("traffic-loading-no-before")
+        .show();
+    $("#traffic-results").html('');
     $.ajax({
-      url: "functions.php?function=getDepartures&var1=" + getStation,
-      cache: false,
+        url: "php/publicTransport.php",
+        data: {function: "fullHTML", stationid: stationID},
+        cache: false,
+        datatype: 'html',
+        success: function (trafficData) {
+            //Remove spinning refresh icon and output the departure times.
+            $('#traffic-loading').addClass("traffic-loading-no-before")
+                .removeClass("traffic-loading-before")
+                .hide();
+            $("#traffic-results").html(trafficData);
+
+            if (regexContainsErrorText.test(trafficData)) {
+                newNotification('Error getting new departures', "error", 50000);
+                currentlyUpdatingTrafic = true; //Changing it to true so that it doesnt continue to update traffic
+            } else {
+                newNotification('New departures added');
+                currentlyUpdatingTrafic = true;
+            }
+
+        }
     })
-      .done(function( html ) {
-        //Remove spinning refresh icon and output the departure times.
-        $('#traffic-loading').addClass("traffic-loading-no-before");
-        $('#traffic-loading').removeClass("traffic-loading-before");
-        $('#traffic-loading').hide();
-        newNotification('New departures added');
-        $( "#traffic-results" ).html( html );
-        currentlyUpdatingTrafic = false;
-      });
 }
 function getWeather() {
     newNotification('Fetching the weather');
@@ -113,11 +120,10 @@ function newNotification(outputText, type, duration) {
   duration = typeof duration !== 'undefined' ? duration : 5000;
 
     $('.notifications-container').append(
-        "<div class='notification " + type + "'>\
-      <div class='remove-notification icon icon-times'></div>\
-      " + outputText + "\
-    </div>\
-    "
+        "<div class='notification " +type+ "'>\
+          <div class='remove-notification icon icon-times'></div>\
+          " + outputText + "\
+        </div>"
   ).children('.notification')
         .delay(duration)
         .fadeOut(1500, function(){
@@ -173,7 +179,7 @@ $(document).ready(function(){
     updateClock();
     setInterval('updateClock()', 1000);
 
-    //getDepartures();
+    getDepartures();
 
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
@@ -222,7 +228,7 @@ $(document).ready(function(){
         $('#refresh-traffic').removeClass('icon-spin');
       },
       click: function () {//Clicking the refresh icon
-        getDeparture();
+        getDepartures();
       }
     }, '#refresh-traffic');
 
@@ -238,7 +244,9 @@ $(document).ready(function(){
         },
         mouseenter: function () {//Mouse enters the notification
             $(this).children('.notification').stop(true, false).fadeIn(500);
-        },
+        }
+    });
+    $(".notifications-container").on({
         click: function () {//Mouse clicks the remove button
             $(this).parent('.notification').animate( //Animate a fade and remove
                 {
@@ -248,9 +256,9 @@ $(document).ready(function(){
                 'easeInQuart',
                 function () {
                     $(this).remove();
-                }, '.remove-notification');
+                });
         }
-    });
+    }, '.remove-notification');
 
 /*
     $.ajax({
