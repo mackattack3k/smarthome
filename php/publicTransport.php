@@ -93,7 +93,8 @@ class publicTransport
             $stationData = $this->getDepartures($stationID);
             if ( $stationData ){
                 $stationHTMLData = $this->convertDeparturesToHtml($stationData);
-                return $stationHTMLData;
+                echo $stationHTMLData;
+                return true;
             }
             echo "Error: No data returned from Resrobot";
             return false;
