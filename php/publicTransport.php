@@ -162,7 +162,7 @@ class publicTransport
             return $output;
         }
 
-        $findByStationID = "https://api.resrobot.se/departureBoard?key=$resrobotKey&id=$inputSiteID&maxJourneys=10&date=$todaysDate&time=$time&format=json";
+        $findByStationID = "https://api.resrobot.se/departureBoard?key=$resrobotKey&id=$inputSiteID&maxJourneys=8&date=$todaysDate&time=$time&format=json";
 
         if ($this->getDebug() == "true"){
             var_dump("Time now and url for resrobot==".$todaysDate." ".$time."<br/>".$findByStationID);
