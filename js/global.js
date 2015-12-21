@@ -14,8 +14,8 @@ function updateClock ( ){
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
 
     //Check if the time is the same as a departure and remove it
-    $('.traffic-result').each(function(index, el) {
-        //Departureses current hour and minute
+    $('.traffic-result').each(function() {
+        //Departures current hour and minute
         var departureTime          = $(this)
                                   .children('.traffic-third')
                                   .children('.departure-time')
@@ -23,7 +23,7 @@ function updateClock ( ){
         var departureDate = new Date (departureTime);
 
 
-        //console.log(currentTime + ' ' + departureDate); //Used for debugging when the departures arent removed...
+        //console.log(currentTime + ' ' + departureDate); //Used for debugging when the departures aren't removed...
         //If the departure is leaving now -- or -- the browser was idle and the departure has already left
         if (departureDate <= currentTime) {
           $(this).animate( //Animate a fade and remove
@@ -82,7 +82,7 @@ function getDepartures() {
 
             if (regexContainsErrorText.test(trafficData)) {
                 newNotification('Error updating public transport', "error", 10000);
-                currentlyUpdatingTraffic = true; //Changing it to true so that it doesnt continue to update traffic
+                currentlyUpdatingTraffic = true; //Changing it to true so that it doesn't continue to update traffic
             } else {
                 newNotification('Public transport updated', "success");
                 currentlyUpdatingTraffic = false;
@@ -129,17 +129,15 @@ function newNotification(outputText, type, duration) {
   duration = typeof duration !== 'undefined' ? duration : 5000;
 
     var iconTypes = {
-        notifcation:"bell",
+        notification:"bell",
         info:"info",
         success:"check",
         error: "ban",
-        warning: "exclamation-triangle",
+        warning: "exclamation-triangle"
     };
-    for(key in iconTypes) {
+    for(iconTypes.length in iconTypes) {
         if(iconTypes.hasOwnProperty(type)) {
             var iconType = iconTypes[type];
-            //do something with value;
-            //console.log(iconType);
         }
     }
 
@@ -209,7 +207,7 @@ $(document).ready(function(){
         $(this).toggleClass('active');
 
         //Variables to post to the changelamp function
-        var id      =   $(this).attr('id')
+        var id      =   $(this).attr('id');
         var state   =   ($(this).hasClass('active'))? 'on' : 'off';
 
         $.ajax({ url: 'functions.php',
@@ -254,7 +252,8 @@ $(document).ready(function(){
     * Control notifications
     */
 
-    $(".notifications-container").on({
+    var notificationsContainer = $(".notifications-container");
+    notificationsContainer.on({
         mouseleave: function () {//Mouse leaves the notification
             $(this).children('.notification').fadeOut(3000, function () {
                 $(this).remove()
@@ -264,7 +263,7 @@ $(document).ready(function(){
             $(this).children('.notification').stop(true, false).fadeIn(500);
         }
     });
-    $(".notifications-container").on({
+    notificationsContainer.on({
         click: function () {//Mouse clicks the remove button
             $(this).parent('.notification').animate( //Animate a fade and remove
                 {
