@@ -46,7 +46,7 @@ function updateClock ( ){
     //console.log('Checking if we should get new departures.');
     //console.log('currentlyUpdatingTraffic; ' + currentlyUpdatingTraffic);
     var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
-    if (numberOfDepartures <= 2 && !currentlyUpdatingTraffic) {
+    if (numberOfDepartures < 2 && !currentlyUpdatingTraffic) {
       currentlyUpdatingTraffic = true;
       console.log('Too few departures, getting departures');
       getDepartures();

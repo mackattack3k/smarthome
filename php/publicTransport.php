@@ -20,6 +20,7 @@ class publicTransport
 
     public function __construct()
     {
+        date_default_timezone_set('Europe/Stockholm');
         //TODO: Make this a function instead
         if (file_exists(__DIR__ . '/../../api_keys.php')) {
             global $GlobalAPI_Keys;
@@ -144,6 +145,11 @@ class publicTransport
     {
         $resrobotKey = $this->getAPIKEYS()['resrobotKey'];
         $output = null;
+        $now = new DateTime();
+        $todaysDate = $now->format('Y-m-d');
+        $oneMinuteFromNow = $now->modify('+2 minutes');
+        $time = $oneMinuteFromNow->format('H:i');
+
 
         /*
          * ULT = Tunnelbana, BLT = Buss, SLT = Tvärbana
@@ -155,7 +161,12 @@ class publicTransport
             $output = "Error: No site ID in getDepartures()";
             return $output;
         }
-        $findByStationID = "https://api.resrobot.se/departureBoard?key=$resrobotKey&id=$inputSiteID&maxJourneys=10&format=json";
+
+        $findByStationID = "https://api.resrobot.se/departureBoard?key=$resrobotKey&id=$inputSiteID&maxJourneys=10&date=$todaysDate&time=$time&format=json";
+
+        if ($this->getDebug() == "true"){
+            var_dump("Time now and url for resrobot==".$todaysDate." ".$time."<br/>".$findByStationID);
+        }
 
         $departsResultJson = @file_get_contents($findByStationID);
         $departsResultJsonArray = json_decode($departsResultJson, true);
@@ -178,6 +189,7 @@ class publicTransport
         }
 
         $departsResult = $departsResultJson->Departure;
+        $numberOfDeparturesAlreadyLeft = 0;
 
         $transportTypeTranslationArray = new stdClass();
         $transportTypeTranslationArray->ULT = 'train'; //Tunnelbana
@@ -187,7 +199,7 @@ class publicTransport
 
         foreach ($departsResult as $departureArrayKey => $departureInfo) {
             //exit this departure loop if the bus is going to the same station as we are going from (Weird bug from api call)
-            if ($departureInfo->Product->num == '') {
+            if ($departureInfo->direction == $departureInfo->stop) {
                 continue;
             }
 
@@ -202,11 +214,19 @@ class publicTransport
             */
 
             $arrivalStopName = preg_replace('/\s\(.*\)?/', '', $departureInfo->direction);
-            $arrivalTime = substr($lastStopObject->arrTime, 0, 5); //Cutting string since I only need HH:MM
+            $arrivalTime =  isset($lastStopObject->arrTime)? substr($lastStopObject->arrTime, 0, 5) : "???";
             $departTime = substr($departureInfo->time, 0, 5);
             $departDate = $departureInfo->date;
             $lineFullName = $departureInfo->Product->name;
             $line = substr($lineFullName, 4, strlen($arrivalStopName));
+
+            if ( strtotime($departDate." ".$departTime) < time() ){
+                $numberOfDeparturesAlreadyLeft++;
+                if ($numberOfDeparturesAlreadyLeft > 3){
+                    $output = "Error: Wow... this is embarrassing.<br/> Looks like we fetched a few departures that has already left. This should happen.";
+                    break;
+                }
+            }
 
             //Check if the transportation type exists in our translation array and then translate it
             if (isset($transportTypeTranslationArray->$transportationCategory)) {
