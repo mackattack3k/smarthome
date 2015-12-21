@@ -233,6 +233,37 @@ a
 
 /*  Weather end */
 
+/*  Stocks start */
+
+.stock-items
+    +flexbox
+    +justifycontent(space-around)
+    +alignitems(center)
+    +flexdirection(row)
+    +flexwrap(wrap)
+    padding: 20px
+
+.stock-item
+    +flexbox
+    +justifycontent(space-around)
+    +alignitems(center)
+    +flexdirection(column)
+    +flex(1)
+    min-width: 60px
+    max-width: 60px
+    margin: 6px
+    padding: 20px
+    color: white
+    background-color: $bg-grey
+    box-shadow: $material-shadow
+    &.positive
+        background-color: $success-green
+    &.negative
+        background-color: $error-red
+
+
+/*  Stocks end */
+
 /*  Notifications start */
 
 .notifications-container
@@ -277,16 +308,16 @@ a
     +flex(9)
 
 .info
-    background-color: #448aab
+    background-color: $info-blue
 
 .success
-    background-color: #67ab33
+    background-color: $success-green
 
 .error
-    background-color: rgb(153, 51, 51)
+    background-color: $error-red
 
 .warning
-    background-color: #eda934
+    background-color: $warning-orange
 
 
 .remove-notification
@@ -360,6 +391,11 @@ paper-checkbox.blue
 #lights
     border-top-color:  $lilly-purple
     position: relative
+
+#stocks
+    border-top-color:  $lilly-purple
+    position: relative
+    margin-bottom: 20px
 
 /* Column specific end */
 

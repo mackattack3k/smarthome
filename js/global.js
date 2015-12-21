@@ -124,6 +124,37 @@ function getWeather() {
         }
     });
 }
+function getStocks(){
+    newNotification('Updating weather', 'info');
+    //View spinning icon and hide the previous weather results
+    $('#stocks-loading')
+        .addClass('weather-loading-before')
+        .removeClass('.weather-loading-no-before')
+        .css('margin', '20px');
+    //$('.stock-items').hide();
+
+    $.ajax({
+        url: "php/stocks.php",
+        data: {function: "html", debug: "false", stocks: "AAPL,FB,GOOG,TSLA,MSFT"},
+        cache: false,
+        datatype: 'html',
+        success: function (stocksData) {
+            $('#stocks-loading')
+                .addClass('weather-loading-no-before')
+                .removeClass('.weather-loading-before').css('margin', '0px');
+            //View the result
+            $('.stock-items').html(stocksData);
+
+            if (regexContainsErrorText.test(stocksData)) {
+                newNotification('Error getting stocks', "error", 10000);
+            } else {
+                newNotification('Stocks updated', "success");
+            }
+            var date = new Date();
+            $('#stocks-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
+        }
+    });
+}
 function newNotification(outputText, type, duration) {
   type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
   duration = typeof duration !== 'undefined' ? duration : 5000;
@@ -193,12 +224,16 @@ var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 $(document).ready(function(){
 
     updateClock();
-    setInterval('updateClock()', 1000);
+    setInterval('updateClock()', 1000); //Update time every second
 
     getDepartures();
 
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
+
+    getStocks();
+    setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
+
 
 
 

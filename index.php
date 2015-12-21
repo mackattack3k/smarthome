@@ -88,18 +88,28 @@
             </div>
             <div class="traffic-items">
                 <div id="traffic-search">
-                    <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Åmänningevägen,"></input>
+                    <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Årstaberg"></input>
                 </div>
                 <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
                 <div id="traffic-results">
                 </div>
-
             </div>
             <div class="timestamp" id="traffic-last-updated"></div>
         </div>
     </div>
-    <!---
+
         <div class="column column-3">
+            <div id="stocks" class="column-content">
+                <div class="header">
+                    Aktier
+                </div>
+                <div class="stock-items">
+                </div>
+                <div class="timestamp" id="stocks-last-updated">
+                </div>
+            </div>
+
+            <!---
             <div id="lights" class="column-content">
                 <div class="header">
                     Lights
@@ -122,8 +132,9 @@
 
                 </div>
             </div>
+            --->
         </div>
-      --->
+
 
 </div>
 <div class="notifications-container"></div>
