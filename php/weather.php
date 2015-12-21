@@ -30,7 +30,8 @@ class Weather
             require_once(__DIR__ . '/../../api_keys.php');
             $this->setAPIKEYS($GlobalAPI_Keys);
         } else {
-            return "Error: No api keys. Exiting!";
+            echo "<div>Error: No api keys. Exiting!</div>";
+            return false;
         }
 
         if ($htmlCall == "true") {
@@ -66,8 +67,10 @@ class Weather
          */
 
         $currentWeatherData = $this->getCurrentWeather();
+
         if (!$currentWeatherData){
-            return "Error: no current weather data";
+            echo "oh no";
+            //return "Error: no current weather data";
         }
         $currentWeatherHTML = $this->getCurrentWeatherHtml($currentWeatherData);
 
@@ -79,7 +82,7 @@ class Weather
 
         $comingWeatherData = $this->getWeatherComingDays(4);
         if (!$comingWeatherData){
-            return "Error: no coming weather data";
+            //return "Error: no coming weather data";
         }
         $htmlOutput .= $comingWeatherData;
 

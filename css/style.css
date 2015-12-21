@@ -283,6 +283,7 @@ a {
 
 #weather-data {
   width: 70%;
+  margin-bottom: 20px;
 }
 
 .weather-items-header {

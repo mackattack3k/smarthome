@@ -103,8 +103,8 @@ function getWeather() {
     $('.weather-item-container').hide();
 
     $.ajax({
-        url: "php/weather.php?htmlCall",
-        data: {htmlCall: "true"},
+        url: "php/weather.php",
+        data: {htmlCall: "true", debug: "false"},
         cache: false,
         datatype: 'html',
         success: function (trafficData) {
