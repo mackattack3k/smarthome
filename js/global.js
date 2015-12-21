@@ -85,7 +85,7 @@ function getDepartures() {
                 currentlyUpdatingTraffic = true; //Changing it to true so that it doesnt continue to update traffic
             } else {
                 newNotification('Public transport updated', "success");
-                currentlyUpdatingTraffic = true;
+                currentlyUpdatingTraffic = false;
             }
             var date = new Date();
             $('#traffic-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
