@@ -30,7 +30,6 @@ class lights
         $this->setLightID($inputLightID);
         $this->setPihatPath("/home/pi/scripts/pihat/pihat");
 
-
         if ($function == "off") {
             $output = $this->turnLightOff( $this->getLightID() );
             echo $output;
@@ -66,9 +65,10 @@ class lights
     {
         if($inputLight){
             $pihatPath = $this->getPihatPath();
-            $output = "Result: ";
-            $output .= passthru('sudo '.$pihatPath.' --repeats=10 --id=0 --channel='.$inputLight.' --state=1');
-            return $output;
+            $pihatCommand = "sudo $pihatPath --repeats=15 --id=0 --channel='$inputLight' --state=off";
+
+            exec("$pihatCommand 2>&1", $output, $return_var);
+            return $output[0];
         }
         return "Error: No light defined";
     }
@@ -78,8 +78,10 @@ class lights
         if($inputLight){
             $pihatPath = $this->getPihatPath();
             $output = "Result: ";
-            $output .= passthru('sudo '.$pihatPath.' --repeats=10 --id=0 --channel='.$inputLight.' --state=1');
-            return $output;
+
+            passthru('sudo '.$pihatPath.' --repeats=10 --id=0 --channel='.$inputLight.' --state=1', $resultCode);
+
+            return $output." ".$resultCode;
         }
         return "Error: No light defined";
     }
