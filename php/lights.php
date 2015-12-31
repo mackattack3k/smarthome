@@ -67,8 +67,10 @@ class lights
             $pihatCommand = "sudo $pihatPath --repeats=15 --id=0 --channel='$inputLight' --state=$state";
 
             exec("$pihatCommand 2>&1", $output, $return_var);
-            echo $pihatCommand."<br/>";
-            return $output[0];
+            if (is_array($output)){
+                return $output[0]; //Something went wrong
+            }
+            return $output;
         }
         return "Error: No light defined";
     }
