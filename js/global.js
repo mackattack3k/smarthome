@@ -45,6 +45,7 @@ function updateClock ( ){
     //Check if there are less than 2 departures left
     //console.log('Checking if we should get new departures.');
     //console.log('currentlyUpdatingTraffic; ' + currentlyUpdatingTraffic);
+    //TODO: This only works for chrome... wonder why
     var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
     if (numberOfDepartures < 2 && !currentlyUpdatingTraffic) {
       currentlyUpdatingTraffic = true;

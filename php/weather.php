@@ -291,6 +291,7 @@ class Weather
                     $output .= "</div>";
                     $output .= "<div class='weather-coming-details'>";
                         $output .= "<div class='weather-temp'>$dayTemp °</div>";
+                        //TODO: Should output day of week instead of date
                         $output .= "<div class='weather-date'>$dayAndMonth</div>";
                         //$output .= "<div class='weather-desc'>" . $description . "</div>";
                     $output .= "</div>";
