@@ -397,11 +397,12 @@ paper-checkbox.blue
 #lights
     border-top-color:  $lilly-purple
     position: relative
+    margin-bottom: 20px
 
 #stocks
     border-top-color:  $lilly-purple
     position: relative
-    margin-bottom: 20px
+
 
 /* Column specific end */
 
@@ -420,6 +421,10 @@ paper-checkbox.blue
         margin: 0px
     #weather-coming-items
         +flexdirection(column)
-
+@media all and (max-width: 450px)
+    .notifications-container
+        width: 100%
+    .notification
+        margin: 0 0
 
 /* Media queries end */

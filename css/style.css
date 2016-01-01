@@ -635,12 +635,12 @@ paper-checkbox.blue {
 #lights {
   border-top-color: #C2185B;
   position: relative;
+  margin-bottom: 20px;
 }
 
 #stocks {
   border-top-color: #C2185B;
   position: relative;
-  margin-bottom: 20px;
 }
 
 /* Column specific end */
@@ -667,6 +667,15 @@ paper-checkbox.blue {
     -webkit-flex-direction: column;
     -ms-flex-direction: column;
     flex-direction: column;
+  }
+}
+@media all and (max-width: 450px) {
+  .notifications-container {
+    width: 100%;
+  }
+
+  .notification {
+    margin: 0 0;
   }
 }
 /* Media queries end */
