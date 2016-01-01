@@ -56,7 +56,7 @@ function getDepartures() {
     newNotification('Updating public transport', 'info');
     //Check if the value of traffic-search is set and use it
     var getStation = $('#traffic-search-input').val();
-    var stationID = 7424920; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
+    var stationID = 7453026; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
 
 
     console.log("Getting departures for: " + getStation + " id: " + stationID);
@@ -226,7 +226,7 @@ $(document).ready(function(){
     updateClock();
     setInterval('updateClock()', 1000); //Update time every second
 
-    //getDepartures();
+    getDepartures();
 
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
@@ -238,7 +238,7 @@ $(document).ready(function(){
 
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
-    $( ".lights-yellow" ).click(function() {
+    $( ".lights-purple" ).click(function() {
         $(this).toggleClass('active');
 
         //Variables to post to the changelamp function
@@ -272,10 +272,10 @@ $(document).ready(function(){
         console.log(stateText +" "+ state);
 
         if (stateText == "off"){
-            $(".lights-yellow").removeClass('active');
+            $(".lights-purple").removeClass('active');
         } else {
-            $(".lights-yellow").removeClass('active');
-            $(".lights-yellow").addClass('active');
+            $(".lights-purple").removeClass('active');
+            $(".lights-purple").addClass('active');
         }
 
         $.ajax({
