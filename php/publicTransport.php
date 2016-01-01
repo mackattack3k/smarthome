@@ -223,7 +223,7 @@ class publicTransport
             if ( strtotime($departDate." ".$departTime) < time() ){
                 $numberOfDeparturesAlreadyLeft++;
                 if ($numberOfDeparturesAlreadyLeft > 3){
-                    $output = "Error: Wow... this is embarrassing.<br/> Looks like we fetched a few departures that has already left. This should happen.";
+                    $output = "Error: Wow... this is embarrassing.<br/> Looks like we fetched a few departures that has already left. This should not happen.";
                     break;
                 }
             }
