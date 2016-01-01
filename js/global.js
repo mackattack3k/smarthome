@@ -226,7 +226,7 @@ $(document).ready(function(){
     updateClock();
     setInterval('updateClock()', 1000); //Update time every second
 
-    getDepartures();
+    //getDepartures();
 
     getWeather();
     setInterval('getWeather()', 1800000); //getWeather every 30 minutes
@@ -242,31 +242,56 @@ $(document).ready(function(){
         $(this).toggleClass('active');
 
         //Variables to post to the changelamp function
-        var id      =   $(this).attr('id');
-        var state   =   ($(this).hasClass('active'))? 'on' : 'off';
+        var channel      =   $(this).attr('data-channel');
+        var state   =   ($(this).hasClass('active'))? '1' : '0';
 
-        $.ajax({ url: 'functions.php',
-         data: {function: 'editLamps',var1: id, var2: state},
-         type: 'get',
-         success: function(output) {
-                      newNotification(output);
-                  }
+        $.ajax({
+            url: "php/lights.php",
+            data: {function: "toggleLight", debug: "true", channel: channel, state: state},
+            cache: false,
+            datatype: 'html',
+            success: function (lightsData) {
+                console.log(lightsData);
+
+                if (regexContainsErrorText.test(lightsData)) {
+                    newNotification('Error setting light', "error", 10000);
+                } else {
+                    newNotification('Lights updated', "success");
+                }
+            }
         });
     });
 
     //Toggle all the lights buttons and change them in the json file
     $( ".lights-all" ).click(function() {
-        $(".lights-yellow").removeClass('active');
+
 
         //Variables to post to the changelamp function
-        var state   =   $(this).attr('id').substring(4,this.length);
+        var stateText   =   $(this).attr('id').substring(4,this.length);
+        var state = (stateText== "off") ? "0" : "1";
+        console.log(stateText +" "+ state);
 
-        $.ajax({ url: 'functions.php',
-         data: {function: 'editLamps',var1: 'all', var2: state},
-         type: 'get',
-         success: function(output) {
-                      newNotification(output);
-                  }
+        if (stateText == "off"){
+            $(".lights-yellow").removeClass('active');
+        } else {
+            $(".lights-yellow").removeClass('active');
+            $(".lights-yellow").addClass('active');
+        }
+
+        $.ajax({
+            url: "php/lights.php",
+            data: {function: "toggleAllLights", debug: "true", state: state},
+            cache: false,
+            datatype: 'html',
+            success: function (lightsData) {
+                console.log(lightsData);
+
+                if (regexContainsErrorText.test(lightsData)) {
+                    newNotification('Error setting  all lights', "error", 10000);
+                } else {
+                    newNotification('Lights updated', "success");
+                }
+            }
         });
     });
 

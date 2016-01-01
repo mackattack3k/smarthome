@@ -1,5 +1,6 @@
 <?php
 //require_once 'php/weather.php';
+require_once ('php/lights.php');
 
 ?>
 
@@ -109,19 +110,26 @@
                 </div>
             </div>
 
-            <!---
+
             <div id="lights" class="column-content">
                 <div class="header">
                     Lights
                 </div>
                 <div class="items">
-                    <?php //echo htmlLamps(); ?>
-                    <paper-button disabled class="lights-all" id="all-on">All on</paper-button>
+                    <?php
+                    $lights = new lights();
+                    $lights->setDebug(false);
+                    $lights->setJsonLampsFilePath("public_files/lamps.json");
+                    echo $lights->htmlLamps();
+
+                    ?>
+                    <paper-button raised class="lights-all" id="all-on">All on</paper-button>
                     <paper-button raised class="lights-all" id="all-off">All off</paper-button>
 
                 </div>
 
             </div>
+            <!---
             <div id="speakers" class="column-content">
                 <div class="header">
                     Speakers

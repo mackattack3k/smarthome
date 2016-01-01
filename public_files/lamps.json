@@ -1,1 +1,1 @@
-{"lamps":{"livingroom":"off","bedroomleft":"off","bedroomright":"on"}}
+{"lamps":{"lamps":[{"id":"1","channel":"5","name":"Linn\u00e9a","state":"1","edited":{"date":"2016-01-01 18:49:06.000000","timezone_type":3,"timezone":"Europe\/Stockholm"}},{"id":"2","channel":"2","name":"Marcus","state":"1","edited":{"date":"2016-01-01 18:49:06.000000","timezone_type":3,"timezone":"Europe\/Stockholm"}},{"id":"3","channel":"7","name":"Livingroom","state":"1","edited":{"date":"2016-01-01 18:49:06.000000","timezone_type":3,"timezone":"Europe\/Stockholm"}}]}}
