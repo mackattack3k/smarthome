@@ -243,12 +243,13 @@ a
     +flexwrap(wrap)
     padding: 20px
 
+
 .stock-item
     +flexbox
     +justifycontent(space-around)
     +alignitems(center)
     +flexdirection(column)
-    +flex(1)
+    +flexSafari(1, 60px)
     min-width: 60px
     max-width: 60px
     margin: 6px

@@ -36,6 +36,12 @@
   -ms-flex: $flex
   flex: $flex
 
+=flexSafari($flex, $width)
+  -webkit-flex: $flex 0 $width
+  -ms-flex: $flex 0 $width
+  flex: $flex 0 $width
+
+
 =flexwrap($type)
   -webkit-flex-wrap: $type
   -ms-flex-wrap: $type
