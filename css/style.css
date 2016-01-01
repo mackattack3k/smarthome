@@ -446,15 +446,14 @@ a {
   max-width: 60px;
   margin: 6px;
   padding: 20px;
-  color: white;
-  background-color: #E5E5E5;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  font-size: 14px;
 }
 .stock-item.positive {
-  background-color: #67ab33;
+  color: #67ab33;
 }
 .stock-item.negative {
-  background-color: #993333;
+  color: #993333;
 }
 
 /*  Stocks end */
@@ -565,6 +564,11 @@ a {
 /*  Notifications end */
 paper-button[raised].lights-yellow.active {
   background-color: yellow;
+}
+
+paper-button[raised].lights-purple.active {
+  background-color: #C2185B;
+  color: white;
 }
 
 .debug {

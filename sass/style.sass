@@ -253,13 +253,13 @@ a
     max-width: 60px
     margin: 6px
     padding: 20px
-    color: white
-    background-color: $bg-grey
+    //background-color: $bg-grey
     box-shadow: $material-shadow
+    font-size: 14px
     &.positive
-        background-color: $success-green
+        color: $success-green
     &.negative
-        background-color: $error-red
+        color: $error-red
 
 
 /*  Stocks end */
@@ -333,6 +333,11 @@ a
 paper-button[raised].lights-yellow
     &.active
         background-color: yellow
+
+paper-button[raised].lights-purple
+    &.active
+        background-color: $lilly-purple
+        color: white
 
 .debug
     display: none

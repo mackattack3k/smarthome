@@ -261,7 +261,7 @@ class lights
 
     private function newLampButton($properties = "", $channel, $name)
     {
-        $button = "<paper-button raised class='lights-yellow $properties' data-channel='$channel'>".$name."</paper-button>";
+        $button = "<paper-button raised class='lights-purple $properties' data-channel='$channel'>".$name."</paper-button>";
         return $button;
     }
 

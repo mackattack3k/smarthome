@@ -113,7 +113,7 @@ require_once ('php/lights.php');
 
             <div id="lights" class="column-content">
                 <div class="header">
-                    Lights
+                    Belysning
                 </div>
                 <div class="items">
                     <?php
@@ -123,8 +123,8 @@ require_once ('php/lights.php');
                     echo $lights->htmlLamps();
 
                     ?>
-                    <paper-button raised class="lights-all" id="all-on">All on</paper-button>
-                    <paper-button raised class="lights-all" id="all-off">All off</paper-button>
+                    <paper-button raised class="lights-all" id="all-on">På</paper-button>
+                    <paper-button raised class="lights-all" id="all-off">Av</paper-button>
 
                 </div>
 
