@@ -24,11 +24,14 @@ a
 
 /* Classes */
 
-.container
+.column-container
     +flexbox
     +justifycontent(space-around)
     +flexwrap(wrap)
     width: 100%
+    background-color: #E5E5E5
+    box-shadow: $material-shadow
+    height: 100%
 
 .column
     width: 500px
@@ -64,6 +67,50 @@ a
     bottom: 0
     color: #bebebe
     padding: 2px
+
+
+/* Slideout start */
+.slideout-button-container
+    position: absolute
+    top: 5px
+    left: 5px
+    font-size: 22px
+    color: $lilly-purple
+
+.slideout-menu
+    position: fixed
+    left: 0
+    top: 0
+    bottom: 0
+    right: 0
+    z-index: 2
+    width: 260px
+    overflow-y: auto
+    -webkit-overflow-scrolling: touch
+    display: none
+    background-color: whitesmoke
+    border-top: 5px solid $lilly-purple
+
+.slideout-panel
+    position: relative
+    z-index: 3
+    will-change: transform
+
+.slideout-open,
+.slideout-open body,
+.slideout-open .slideout-panel
+    overflow-x: hidden
+
+
+.slideout-open .slideout-menu
+    display: block
+
+.settings-section-list
+    width: 80%
+    margin-left: 7%
+    list-style: none
+
+/* Slideout end */
 
 /*  Traffic start */
 
@@ -348,20 +395,6 @@ paper-button[raised].lights-purple
     left: 0
     background-color: rgba(245, 222, 179, 0.9)
 
-paper-toggle-button.red
-    --paper-toggle-button-checked-bar-color:  red
-    --paper-toggle-button-checked-button-color:  var(--paper-red-500)
-    --paper-toggle-button-checked-ink-color: var(--paper-red-500)
-    --paper-toggle-button-unchecked-bar-color:  var(--paper-red-900)
-    --paper-toggle-button-unchecked-button-color:  var(--paper-red-900)
-    --paper-toggle-button-unchecked-ink-color: var(--paper-red-900)
-
-paper-checkbox.blue
-    --paper-checkbox-checked-color: var(--paper-light-blue-500)
-    --paper-checkbox-checked-ink-color: var(--paper-light-blue-500)
-    --paper-checkbox-unchecked-color: var(--paper-light-blue-900)
-    --paper-checkbox-unchecked-ink-color: var(--paper-light-blue-900)
-
 
 /* Font classes */
 
@@ -403,7 +436,6 @@ paper-checkbox.blue
 #stocks
     border-top-color:  $lilly-purple
     position: relative
-
 
 /* Column specific end */
 

@@ -26,10 +26,11 @@ require_once ('php/lights.php');
 
     <!-- Polymer -->
     <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
+    <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.css">
     <link rel="import" href="bower_components/paper-button/paper-button.html">
     <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
     <link rel="import" href="bower_components/paper-styles/paper-styles.html">
-
+    <link rel="import" href="bower_components/paper-input/paper-input.html">
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-touch-icon-60x60.png">
@@ -53,7 +54,44 @@ require_once ('php/lights.php');
 </head>
 
 <body>
-<div class="container">
+<nav id="settings">
+    <h2>Settings</h2>
+    <section class="settings-section">
+        <!--<h3 class="settings-section-title">Docs</h3>-->
+        <ul class="settings-section-list">
+            <style is="custom-style">
+                paper-input {
+                    --paper-input-container-color: #C2185B;
+                    --paper-input-container-focus-color: #C2185B;
+                    --paper-input-container-invalid-color: rgba(194, 24, 91, 0.25);
+                    --paper-input-container-input-color: black;
+                }
+                paper-toggle-button {
+                    --paper-checkbox-checked-color: #C2185B;
+                    --paper-checkbox-unchecked-background-color: white;
+                    --paper-checkbox-checked-ink-color: #C2185B;
+                    --paper-checkbox-unchecked-color: white;
+                    --paper-checkbox-unchecked-ink-color: #C2185B;
+                }
+            </style>
+            <li><paper-input
+                    pattern="^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$"
+                    label="Latitude"
+                    error="Not a correct coordinate"
+                    onfocusout="validate()"></paper-input></li>
+            <li><paper-input label="Longitude"></paper-input></li>
+            <li><paper-input label="Stocks"></paper-input></li>
+            <li><label for="notifications-toggle">Notifications</label></li>
+            <li><paper-toggle-button id="notifications-toggle">Nooooooots</paper-toggle-button></li>
+            <li><paper-input disabled label="Language"></paper-input></li>
+        </ul>
+    </section>
+</nav>
+
+<div id="panel" class="column-container">
+    <div class="slideout-button-container">
+        <div class="slideout-toggle-button icon icon-bars"></div>
+    </div>
     <div class="column column-1">
         <div id="time" class="column-content">
             <div class="header">
@@ -99,7 +137,7 @@ require_once ('php/lights.php');
         </div>
     </div>
 
-        <div class="column column-3">
+    <div class="column column-3">
             <div id="stocks" class="column-content">
                 <div class="header">
                     Aktier
@@ -142,10 +180,23 @@ require_once ('php/lights.php');
             </div>
             --->
         </div>
-
-
+    <div class="notifications-container"></div>
 </div>
-<div class="notifications-container"></div>
+
 <script src="js/global.js"></script>
+<script src="js/slideout.min.js"></script>
+<script>
+    var slideout = new Slideout({
+        'panel': document.getElementById('panel'),
+        'menu': document.getElementById('settings'),
+        'padding': 260,
+        'tolerance': 70
+    });
+    // Toggle button
+    document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
+        slideout.toggle();
+    });
+    slideout.open();
+</script>
 </body>
 </html>

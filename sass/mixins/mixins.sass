@@ -12,10 +12,10 @@
   -ms-user-select:          none
   user-select:              none
 
-=box-shadow($top, $left, $blur, $color, $inset: "")
-  -webkit-box-shadow: $top $left $blur $color #{$inset}
-  -moz-box-shadow: $top $left $blur $color #{$inset}
-  box-shadow: $top $left $blur $color #{$inset}
+=box-shadow($top, $distance, $blur, $color, $inset: "")
+  -webkit-box-shadow: $top $distance $blur $color #{$inset}
+  -moz-box-shadow: $top $distance $blur $color #{$inset}
+  box-shadow: $top $distance $blur $color #{$inset}
 
 =transition($transition-property, $transition-time, $method)
   -webkit-transition: $transition-property $transition-time $method
