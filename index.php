@@ -185,6 +185,7 @@ require_once ('php/lights.php');
 
 <script src="js/global.js"></script>
 <script src="js/slideout.min.js"></script>
+<script src="js/js-cookie/src/js.cookie.js"></script>
 <script>
     var slideout = new Slideout({
         'panel': document.getElementById('panel'),
