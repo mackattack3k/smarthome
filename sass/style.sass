@@ -68,6 +68,12 @@ a
     color: #bebebe
     padding: 2px
 
+.hover
+    &:hover
+        cursor: pointer
+
+.no-select
+    +no-select
 
 /* Slideout start */
 .slideout-button-container
@@ -76,6 +82,10 @@ a
     left: 5px
     font-size: 22px
     color: $lilly-purple
+
+.slideout-toggle-button
+    &:hover
+        cursor: pointer
 
 .slideout-menu
     position: fixed
@@ -105,10 +115,25 @@ a
 .slideout-open .slideout-menu
     display: block
 
+#settings
+    +flexbox
+    +alignitems(center)
+    +justifycontent(center)
+    +flexdirection(column)
+
+
+.settings-header
+    font-size: 24px
+    color: $lilly-purple
+
 .settings-section-list
-    width: 80%
-    margin-left: 7%
+    //width: 80%
+    //margin-left: 7%
     list-style: none
+
+    
+#notifications-toggle
+    +no-select
 
 /* Slideout end */
 
@@ -272,6 +297,9 @@ a
 .weather-coming-icon
     font-size: 28px
     padding: 6px
+
+.weather-coming-details
+    width: 50px
 
 .weather-temp
     //TODO: Text is too wide and breaks sometimes
@@ -445,7 +473,7 @@ paper-button[raised].lights-purple
     .column
         width: 400px
     .traffic-result
-        width: 260px
+        width: 350px
 
 @media all and (max-width: 850px)
     .column
