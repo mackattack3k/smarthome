@@ -69,7 +69,6 @@ require_once ('php/lights.php');
     <div id="settings">
         <div class="settings-header">Settings</div>
         <section class="settings-section">
-            <!--<h3 class="settings-section-title">Docs</h3>-->
             <ul class="settings-section-list">
                 <style is="custom-style">
                     paper-input {

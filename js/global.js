@@ -19,11 +19,11 @@ function updateClock ( ){
         var departureTime          = $(this)
                                   .children('.traffic-third')
                                   .children('.departure-time')
-                                  .attr('value');
+                                  .attr('data-date');
         var departureDate = new Date (departureTime);
 
-
-        //console.log(currentTime + ' ' + departureDate); //Used for debugging when the departures aren't removed...
+        //console.log("departureTime: " + departureTime)
+        //console.log('currentTime: ' + currentTime + ' departure: ' + departureDate); //Used for debugging when the departures aren't removed...
         //If the departure is leaving now -- or -- the browser was idle and the departure has already left
         if (departureDate <= currentTime) {
           $(this).animate( //Animate a fade and remove
@@ -218,11 +218,11 @@ function setSettingsFromCookies(){
     var cookieNotification = Cookies.get('notifcations');
     if (typeof cookieNotification !== typeof undefined
         && cookieNotification !== false
-        && cookieNotification == "unchecked"
+        && cookieNotification == "checked"
         ) {
-        //Toggle button
+        console.log($( "#notifications-toggle" ));
     }
-    //$( "#notifications-toggle" ).trigger( "click" );
+
 
 }
 
