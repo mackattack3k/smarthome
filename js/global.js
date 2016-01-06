@@ -157,35 +157,40 @@ function getStocks(){
     });
 }
 function newNotification(outputText, type, duration) {
-  type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
-  duration = typeof duration !== 'undefined' ? duration : 5000;
+  var notificationsEnabled = $('#notifications-toggle').attr('checked');
+    //Check if notifcations is enabled
+    if (typeof notificationsEnabled !== typeof undefined && notificationsEnabled !== false) {
+        var type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
+        var duration = typeof duration !== 'undefined' ? duration : 5000;
 
-    var iconTypes = {
-        notification:"bell",
-        info:"info",
-        success:"check",
-        error: "ban",
-        warning: "exclamation-triangle"
-    };
-    for(iconTypes.length in iconTypes) {
-        if(iconTypes.hasOwnProperty(type)) {
-            var iconType = iconTypes[type];
+        var iconTypes = {
+            notification:"bell",
+            info:"info",
+            success:"check",
+            error: "ban",
+            warning: "exclamation-triangle"
+        };
+        for(iconTypes.length in iconTypes) {
+            if(iconTypes.hasOwnProperty(type)) {
+                var iconType = iconTypes[type];
+            }
         }
-    }
 
-    $('.notifications-container').append(
-        "<div class='notification " +type+ "'>\
+        $('.notifications-container').append(
+            "<div class='notification " +type+ "'>\
           <div class='remove-notification icon icon-times'></div>\
           <div class='notification-data'>\
               <div class='notification-icon icon icon-" + iconType + "'></div>\
               <div class='notification-text'>" + outputText + "</div>\
           </div>\
         </div>"
-  ).children('.notification')
-        .delay(duration)
-        .fadeOut(1500, function(){
-            $(this).remove()
-        });
+        ).children('.notification')
+            .delay(duration)
+            .fadeOut(1500, function(){
+                $(this).remove()
+            });
+    }
+
 }
 function getTime(dateInput, format) {
     format = typeof format !== 'undefined' ? format : "none";
@@ -209,6 +214,17 @@ function getTime(dateInput, format) {
     }
     return hour+":"+min+":"+sec;
 }
+function setSettingsFromCookies(){
+    var cookieNotification = Cookies.get('notifcations');
+    if (typeof cookieNotification !== typeof undefined
+        && cookieNotification !== false
+        && cookieNotification == "unchecked"
+        ) {
+        //Toggle button
+    }
+    //$( "#notifications-toggle" ).trigger( "click" );
+
+}
 
 
 /*
@@ -223,6 +239,7 @@ var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 */
 
 $(document).ready(function(){
+    setSettingsFromCookies();
 
     updateClock();
     setInterval('updateClock()', 1000); //Update time every second
@@ -338,6 +355,14 @@ $(document).ready(function(){
         }
     }, '.remove-notification');
 
+    var toggle = document.querySelector('#notifications-toggle');
+    toggle.addEventListener('change', function () {
+        if (this.checked) {
+            Cookies.set('notifcations', "checked");
+        } else {
+            Cookies.set('notifcations', "unchecked");
+        }
+    });
 /*
     $.ajax({
         url: 'https://minasidor.jamtkraft.se/Api/ServiceProxy/Login',
