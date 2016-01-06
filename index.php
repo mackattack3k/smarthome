@@ -135,57 +135,57 @@ require_once ('php/lights.php');
     </div>
 </nav>
 
-<div id="panel" class="column-container">
+<div id="panel">
     <div class="slideout-button-container">
         <div class="slideout-toggle-button icon icon-bars"></div>
     </div>
-    <div class="column column-1">
-        <div id="time" class="column-content">
-            <div class="header">
-                <div id="currenttime" class="super-duper-big-font">
+    <div class="column-container">
+
+        <div class="column column-1">
+            <div id="time" class="column-content">
+                <div class="header">
+                    <div id="currenttime" class="super-duper-big-font">
+                    </div>
+                    <div id="currentday" class="big-font">
+                    </div>
+                    <div id="currentdate" class="big-font">
+                    </div>
                 </div>
-                <div id="currentday" class="big-font">
+            </div>
+            <div id="weather" class="column-content second-content">
+                <div class="header">
+                    Väder
                 </div>
-                <div id="currentdate" class="big-font">
+                <div class="weather-items">
+                    <div id="weather-loading" class="icon icon-refresh icon-4x icon-spin"></div>
+                    <div id="weather-data">
+
+                    </div>
                 </div>
+                <div class="timestamp" id="weather-last-updated"></div>
+
             </div>
         </div>
-        <div id="weather" class="column-content">
-            <div class="header">
-                Väder
-            </div>
-            <div class="weather-items">
-                <div id="weather-loading" class="icon icon-refresh icon-4x icon-spin"></div>
-                <div id="weather-data">
-
+        <div class="column column-2">
+            <div id="traffic" class="column-content">
+                <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
+                    <!--TODO: Change this to paper-spinner-->
                 </div>
+                <div class="header">
+                    Trafik
+                </div>
+                <div class="traffic-items">
+                    <div id="traffic-search">
+                        <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Årstaberg"></input>
+                    </div>
+                    <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
+                    <div id="traffic-results">
+                    </div>
+                </div>
+                <div class="timestamp" id="traffic-last-updated"></div>
             </div>
-            <div class="timestamp" id="weather-last-updated"></div>
-
         </div>
-    </div>
-
-    <div class="column column-2">
-        <div id="traffic" class="column-content">
-            <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
-                <!--TODO: Change this to paper-spinner-->
-            </div>
-            <div class="header">
-                Trafik
-            </div>
-            <div class="traffic-items">
-                <div id="traffic-search">
-                    <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Årstaberg"></input>
-                </div>
-                <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
-                <div id="traffic-results">
-                </div>
-            </div>
-            <div class="timestamp" id="traffic-last-updated"></div>
-        </div>
-    </div>
-
-    <div class="column column-3">
+        <div class="column column-3">
             <div id="stocks" class="column-content">
                 <div class="header">
                     Aktier
@@ -197,7 +197,7 @@ require_once ('php/lights.php');
             </div>
 
 
-            <div id="lights" class="column-content">
+            <div id="lights" class="column-content second-content">
                 <div class="header">
                     Belysning
                 </div>
@@ -228,7 +228,8 @@ require_once ('php/lights.php');
             </div>
             --->
         </div>
-    <div class="notifications-container"></div>
+        <div class="notifications-container"></div>
+    </div>
 </div>
 
 <script src="js/global.js"></script>
