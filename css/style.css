@@ -337,6 +337,10 @@ a {
   flex: 1;
 }
 
+.departure-time {
+  font-weight: 600;
+}
+
 .icon-rocket {
   color: #C2185B;
 }

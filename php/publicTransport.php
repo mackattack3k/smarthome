@@ -248,8 +248,8 @@ class publicTransport
             $output .=  "<div class='traffic-destination'>" . $arrivalStopName . "</div>";
             $output .=  "</div>";
             $output .=  "<div class='traffic-third'>";
-            $output .=  "<div class='traffic-time departure-time' value='$departDate $departTime'>avgår $departTime</div>";
-            $output .=  "<div class='traffic-time arrival-time'>framme $arrivalTime</div>";
+            $output .=  "<div class='traffic-time departure-time' value='$departDate $departTime'>$departTime</div>";
+            $output .=  "<div class='traffic-time arrival-time'>$arrivalTime</div>";
             $output .=  "</div>";
             $output .=  "</div>";
         }
