@@ -245,7 +245,7 @@ require_once ('php/lights.php');
     document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
         slideout.toggle();
     });
-    slideout.open();
+    //slideout.open();
 </script>
 </body>
 </html>
