@@ -281,7 +281,7 @@ class Weather
             $icon = $dayInfo->weather{0}->id;
             $date = $dayInfo->dt;
             $dayAndMonth = gmdate("d/m", $date);
-            $dw = date( "w", $date);
+            $dayOfWeek = date( "w", $date);
             $dagar = array(
                 "Söndag",
                 "Måndag",
@@ -302,7 +302,7 @@ class Weather
                     $output .= "<div class='weather-coming-details'>";
                         $output .= "<div class='weather-temp'>$dayTemp °</div>";
                         //TODO: Should output day of week instead of date
-                        $output .= "<div class='weather-date'>$dagar[$dw]</div>";
+                        $output .= "<div class='weather-date'>$dagar[$dayOfWeek]</div>";
                         //$output .= "<div class='weather-desc'>" . $description . "</div>";
                     $output .= "</div>";
                 $output .= "</div>";
