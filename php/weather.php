@@ -69,8 +69,7 @@ class Weather
         $currentWeatherData = $this->getCurrentWeather();
 
         if (!$currentWeatherData){
-            echo "oh no";
-            //return "Error: no current weather data";
+            return "Error: no current weather data";
         }
         $currentWeatherHTML = $this->getCurrentWeatherHtml($currentWeatherData);
 
@@ -204,6 +203,9 @@ class Weather
 
         $dayOrNight = $this->getDayOrNight($lat, $lon);
 
+        /* TODO: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
+        * Get name of coordinates
+        */
 
         $icon = $weather['weather']['0']['id'];
         $temp = round($weather['main']['temp'], 1);

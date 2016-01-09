@@ -116,10 +116,14 @@ function getWeather() {
         .removeClass('.weather-loading-no-before')
         .css('margin', '20px');
     $('.weather-item-container').hide();
+    var latitude = Cookies.get('latitude-input');
+    var longitude = Cookies.get('longitude-input');
 
     $.ajax({
         url: "php/weather.php",
-        data: {htmlCall: "true", debug: "false"},
+        data: {
+            htmlCall: "true", debug: debugSetting,
+            lat: latitude, lon: longitude},
         cache: false,
         datatype: 'html',
         success: function (trafficData) {
@@ -273,7 +277,7 @@ function setSettingsFromCookies(){
 
                 if (cookieKey == 'longitude-input' ||  cookieKey == 'latitude-input'){
                     //If its a gps cookie you can remove the auto button. Unsure about this
-                    $('#auto-gps-button').hide();
+                    //$('#auto-gps-button').hide();
                 }
             }
         }
@@ -283,6 +287,9 @@ function setSettingsFromCookies(){
         && cookiesStation !== false
         && cookiesStation !== null
     ) {
+        if (stationInput.selected == cookiesStation){
+            return;
+        }
         stationInput.select(cookiesStation);
     }
 
@@ -393,7 +400,8 @@ $(document).ready(function(){
         else {
             newNotification("Sorry, your browser does not support geolocation services.", "error");
         }
-        $(this).hide();
+        //$(this).hide();
+        getWeather();
 
     });
 
@@ -491,7 +499,6 @@ $(document).ready(function(){
     /*
     * Control notifications
     */
-
     var notificationsContainer = $(".notifications-container");
     notificationsContainer.on({
         mouseleave: function () {//Mouse leaves the notification
