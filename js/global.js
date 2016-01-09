@@ -390,7 +390,7 @@ $(document).ready(function(){
     document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
         slideout.toggle();
     });
-    slideout.open();
+    //slideout.open();
 
     $('#auto-gps-button').click(function(){
         if (navigator.geolocation) {
