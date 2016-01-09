@@ -223,6 +223,12 @@ function getTime(dateInput, format) {
     if (hour < 10) {
       hour = "0" + hour;
     }
+    if (day < 10) {
+        day = "0" + day;
+    }
+    if (month < 10) {
+        month = "0" + month;
+    }
     if (format == "swedish-full"){
         return year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec;
     }
