@@ -243,6 +243,7 @@ class publicTransport
             */
             //TODO: Output data for stops in each departure
             $output .=  "<div class='traffic-result $transportationCategory'>";
+            $output .= "<paper-ripple></paper-ripple>";
             $output .=  "<div class='traffic-first'>";
             $output .=  "<div class='icon icon-".strtolower($translatedTransportType)." icon-2x'></div>";
             $output .=  "<div class='traffic-line'>$line</div>";

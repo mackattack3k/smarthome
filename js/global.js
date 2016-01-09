@@ -56,11 +56,25 @@ function updateClock ( ){
 function getDepartures() {
     newNotification('Updating public transport', 'info');
     //Check if the value of traffic-search is set and use it
-    var getStation = $('#traffic-search-input').val();
-    var stationID = 7453026; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
+    var defaultStationName = 'Åmänningevägen';
+    var defaultStationID = 7453026; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
+    var stationInfo = document.querySelector('#station-menu').selected;
+    var stationIDFromSettings = stationInfo.substring(stationInfo.length-7,stationInfo.length);
+    var stationNameFromSettings = stationInfo.substring(0,stationInfo.length-8);
+    var stationName = defaultStationName;
+    var stationID = defaultStationID;
+
+    if (stationIDFromSettings !== undefined || stationIDFromSettings !== '' ||
+        stationIDFromSettings !== null || stationNameFromSettings !== undefined ||
+        stationNameFromSettings !== '' || stationNameFromSettings !== null){
+
+        stationID = stationIDFromSettings;
+        stationName = stationNameFromSettings;
+    }
+    $('#traffic-search-input').html(stationName);
 
 
-    console.log("Getting departures for: " + getStation + " id: " + stationID);
+    console.log("Getting departures for: " + stationName + " id: " + stationID);
 
 
     //Adda spinning refresh icon before loading the departure times. Also removes previous departure times.
@@ -223,7 +237,62 @@ function setSettingsFromCookies(){
         console.log($( "#notifications-toggle" ));
     }
 
+    /* Regular inputs */
+    var cookiesStocks = Cookies.get('stocks-input');
+    var cookiesNumberOfDepartures = Cookies.get('numberofdepartures-input');
+    var cookiesStation = Cookies.get('station-input');
+    var cookieLatitude = Cookies.get('latitude-input');
+    var cookieLongitude = Cookies.get('longitude-input');
+    var cookiesTimezone = Cookies.get('timezone-input');
 
+    var cookiesObject = {
+        "stocks-input": cookiesStocks,
+        "numberofdepartures-input": cookiesNumberOfDepartures,
+        "latitude-input": cookieLatitude,
+        "longitude-input": cookieLongitude,
+        "timezone-input": cookiesTimezone
+    };
+
+    var cookie;
+    for (var cookieKey in cookiesObject) {
+        if (cookiesObject.hasOwnProperty(cookieKey)) {
+            cookie = cookiesObject[cookieKey];
+            if (typeof cookie !== typeof undefined
+                && cookie !== false
+                && cookie !== null
+            ) {
+                //Set input to cookie
+                document.getElementById(cookieKey).value = cookie;
+
+                if (cookieKey == 'longitude-input' ||  cookieKey == 'latitude-input'){
+                    //If its a gps cookie you can remove the auto button. Unsure about this
+                    $('#auto-gps-button').hide();
+                }
+            }
+        }
+    }
+    var stationInput = document.querySelector('#station-menu');
+    if (typeof cookiesStation !== typeof undefined
+        && cookiesStation !== false
+        && cookiesStation !== null
+    ) {
+        stationInput.select(cookiesStation);
+    }
+
+
+}
+function gpsSuccess(position) {
+    var longitude = position.coords.longitude;
+    var latitude = position.coords.latitude;
+    document.getElementById('longitude-input').value = longitude;
+    Cookies.set('longitude-input', longitude);
+    document.getElementById('latitude-input').value = latitude;
+    Cookies.set('latitude-input', latitude);
+}
+function gpsFail() {
+    // Could not obtain location
+    newNotification("Could not get coordinates. Is your browser allowing 'navigator.geolocation*'?"
+        , "error", 10000);
 }
 
 
@@ -239,6 +308,37 @@ var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 */
 
 $(document).ready(function(){
+    /*
+     * Settings slideout menu
+     */
+    var slideout = new Slideout({
+        'panel': document.getElementById('panel'),
+        'menu': document.getElementById('slide-menu'),
+        'padding': 260,
+        'tolerance': 70
+    });
+    // Toggle button
+    document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
+        slideout.toggle();
+    });
+    slideout.open();
+
+    $('#auto-gps-button').click(function(){
+        if (navigator.geolocation) {
+            // Call getCurrentPosition with success and failure callbacks
+            navigator.geolocation.getCurrentPosition(gpsSuccess, gpsFail);
+        }
+        else {
+            newNotification("Sorry, your browser does not support geolocation services.", "error");
+        }
+        $(this).hide();
+
+    });
+
+    /*
+    * Start updating things
+    */
+
     setSettingsFromCookies();
 
     updateClock();
@@ -355,14 +455,58 @@ $(document).ready(function(){
         }
     }, '.remove-notification');
 
-    var toggle = document.querySelector('#notifications-toggle');
-    toggle.addEventListener('change', function () {
+    /* Notifcations toggle */
+    var notificationsToggle = document.querySelector('#notifications-toggle');
+    notificationsToggle.addEventListener('change', function () {
         if (this.checked) {
             Cookies.set('notifcations', "checked");
         } else {
             Cookies.set('notifcations', "unchecked");
         }
     });
+
+    /* Notifcations toggle */
+    var debugToggle = document.querySelector('#debug-toggle');
+    debugToggle.addEventListener('change', function () {
+        if (this.checked) {
+            Cookies.set('debug', "on");
+        } else {
+            Cookies.set('debug', "off");
+        }
+    });
+
+    var stationMenu = document.querySelector("#station-menu");
+    stationMenu.addEventListener("iron-select", function(){
+        Cookies.set('station-input', stationMenu.selected);
+        getDepartures();
+    });
+
+
+    var timer;
+    $('.settings-input').on('input', function(){
+        clearTimeout(timer);
+        var value = $(this).val();
+        var fullID = $(this).attr('id');
+        var id = fullID.substring(0,fullID.length-6);
+        var isValid = !$(this).attr('invalid');
+
+        timer = setTimeout(function() {
+            if (isValid){
+                Cookies.set(fullID, value);
+                console.log("Cookie: " + fullID + " val:" + value);
+            }
+
+        }, 2000);
+        console.log(isValid);
+
+
+
+        //setCookie();
+
+    });
+
+
+
 /*
     $.ajax({
         url: 'https://minasidor.jamtkraft.se/Api/ServiceProxy/Login',

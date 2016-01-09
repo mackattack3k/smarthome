@@ -110,6 +110,10 @@ body {
   user-select: none;
 }
 
+.lillypurple {
+  color: #C2185B;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -200,6 +204,10 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+#auto-gps-button {
+  margin-top: 10px;
 }
 
 /* Slideout end */
@@ -298,6 +306,7 @@ body {
   -webkit-flex-flow: nowrap;
   -ms-flex-flow: nowrap;
   flex-flow: nowrap;
+  position: relative;
   box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   margin-bottom: 8px;
   height: 60px;

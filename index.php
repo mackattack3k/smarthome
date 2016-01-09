@@ -34,13 +34,19 @@ require_once ('php/lights.php');
     <link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
     <link rel="import" href="bower_components/paper-item/paper-item.html">
     <link rel="import" href="bower_components/paper-tooltip/paper-tooltip.html">
+    <link rel="import" href="bower_components/paper-input/paper-textarea.html">
+    <link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
+    <link rel="import" href="bower_components/paper-menu/paper-menu.html">
     <link rel="import" href="bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
     <link rel="import" href="bower_components/iron-dropdown/iron-dropdown.html">
     <link rel="import" href="bower_components/iron-behaviors/iron-control-state.html">
     <link rel="import" href="bower_components/iron-behaviors/iron-button-state.html">
     <link rel="import" href="bower_components/iron-dropdown/iron-dropdown.html">
-
-
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/iron-icons/device-icons.html">
+    <link rel="import" href="bower_components/iron-selector/iron-selector.html">
+    <link rel="import" href="bower_components/iron-selector/iron-selectable.html">
+    <link rel="import" href="bower_components/iron-selector/iron-selection.html">
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-touch-icon-57x57.png">
@@ -77,6 +83,13 @@ require_once ('php/lights.php');
                         --paper-input-container-invalid-color: rgba(194, 24, 91, 0.25);
                         --paper-input-container-input-color: black;
                     }
+                    paper-textarea {
+                        --paper-input-container-color: #C2185B;
+                        --paper-input-container-focus-color: #C2185B;
+                        --paper-input-container-invalid-color: rgba(194, 24, 91, 0.25);
+                        --paper-input-container-input-color: black;
+
+                    }
                     paper-toggle-button {
                         --paper-toggle-button-checked-bar-color: #C2185B;
                         --paper-toggle-button-checked-ink-color: white;
@@ -90,34 +103,59 @@ require_once ('php/lights.php');
 
                     }
                 </style>
-                <li><paper-input
+                <li><paper-textarea
+                        id="stocks-input"
+                        class="settings-input"
+                        style="width: 100%"
                         label="Stocks"
                         pattern="^([a-zA-Z]{2,6})+(,[a-zA-Z]{2,6})*$"
-                        onfocusout="validate()">
-                    </paper-input>
+                        error-message="Invalid format (STOCK1,STOCK2,...)"
+                        auto-validate>
+                    </paper-textarea>
                     <paper-tooltip position="bottom" offset="10">eg AAPL,GOOG,MSFT</paper-tooltip>
                 </li>
                 <li><paper-input
+                        id="numberofdepartures-input"
+                        class="settings-input"
                         label="Number of departures"
-                        pattern="^\d*$"
-                        onfocusout="validate()"></paper-input></li>
-                <li><paper-dropdown-menu label="Station">
-                        <paper-menu class="dropdown-content">
-                            <paper-item>Gullmarsplan</paper-item>
-                            <paper-item>Sulvägen</paper-item>
-                            <paper-item>Årstaberg</paper-item>
-                            <paper-item>Åmänningevägen</paper-item>
+                        allowed-pattern="^\d*$"
+                        error-message="Numbers only!"
+                        auto-validate></paper-input></li>
+                <li><paper-dropdown-menu
+                        id="station-input"
+                        class="settings-input"
+                        label="Station">
+                        <paper-menu
+                            id="station-menu"
+                            class="dropdown-content"
+                            selected="amanningevagen,7453026"
+                            attr-for-selected="data-value">
+                            <paper-item data-value="Gullmarsplan,7421705">Gullmarsplan</paper-item>
+                            <paper-item data-value="Sulvägen,7465488">Sulvägen</paper-item>
+                            <paper-item data-value="Åmänningevägen,7453026">Åmänningevägen</paper-item>
+                            <paper-item data-value="Årstaberg,7424920">Årstaberg</paper-item>
                         </paper-menu>
-                    </paper-dropdown-menu></li>
+                    </paper-dropdown-menu>
+                </li>
                 <li><paper-input
+                        id="latitude-input"
+                        class="settings-input"
                         label="Latitude"
-                        pattern="^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$"
-                        onfocusout="validate()"></paper-input></li>
+                        pattern="^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$"
+                        onfocusout="validate()"></paper-input>
+                </li>
                 <li><paper-input
+                        id="longitude-input"
+                        class="settings-input"
                         label="Longitude"
-                        pattern="^(\-?\d+(\.\d+)?),\s*(\-?\d+(\.\d+)?)$"
+                        pattern="^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$"
                         onfocusout="validate()"></paper-input></li>
+                <paper-button raised id="auto-gps-button" class="lillypurple">
+                    <iron-icon icon="device:gps-fixed"></iron-icon> Auto
+                </paper-button>
                 <li><paper-input
+                        id="timezone-input"
+                        class="settings-input"
                         label="Timezone"
                         pattern="^\d*$"
                         onfocusout="validate()"></paper-input></li>
@@ -175,7 +213,7 @@ require_once ('php/lights.php');
                 </div>
                 <div class="traffic-items">
                     <div id="traffic-search">
-                        <input type="text" id="traffic-search-input" class="traffic-input" placeholder="Sök på station" value="Årstaberg"></input>
+                        <div id="traffic-search-input" class="traffic-input">Åmänningevägen</div>
                     </div>
                     <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
                     <div id="traffic-results">
@@ -234,18 +272,5 @@ require_once ('php/lights.php');
 <script src="js/global.js"></script>
 <script src="js/slideout.min.js"></script>
 <script src="js/js-cookie/src/js.cookie.js"></script>
-<script>
-    var slideout = new Slideout({
-        'panel': document.getElementById('panel'),
-        'menu': document.getElementById('slide-menu'),
-        'padding': 260,
-        'tolerance': 70
-    });
-    // Toggle button
-    document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
-        slideout.toggle();
-    });
-    //slideout.open();
-</script>
 </body>
 </html>
