@@ -73,9 +73,7 @@ function getDepartures() {
     }
     $('#traffic-search-input').html(stationName);
 
-
     debugLog("Getting departures for: " + stationName + " id: " + stationID);
-
 
     //Adda spinning refresh icon before loading the departure times. Also removes previous departure times.
     $('#traffic-loading').show();

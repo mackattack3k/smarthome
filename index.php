@@ -118,19 +118,23 @@ require_once ('php/lights.php');
                         id="stocks-input"
                         class="settings-input"
                         label="Aktier"
-                        pattern="^([a-zA-Z]{2,6}){1}(,[a-zA-Z]{2,6})*$"
+                        pattern="^([a-zA-Z]{2,8}){1}(,[a-zA-Z]{2,8})*$"
                         error-message="Invalid format (STOCK1,STOCK2,...)"
                         oninput="validate()">
                     </paper-input>
-                    <paper-tooltip position="bottom" offset="10">eg AAPL,GOOG,MSFT</paper-tooltip>
+                    <paper-tooltip position="bottom" offset="10">tex AAPL,GOOG,MSFT</paper-tooltip>
                 </li>
                 <li><paper-input
+                        disabled
                         id="numberofdepartures-input"
                         class="settings-input"
                         label="Antal avgångar"
-                        allowed-pattern="^\d*$"
-                        error-message="Numbers only!"
-                        oninput="validate()"></paper-input></li>
+                        pattern="^([4-9]|1([0-2]))$"
+                        error-message="Enter a number between 4 and 12"
+                        oninput="validate()">
+                    </paper-input>
+
+                </li>
                 <li><paper-dropdown-menu
                         id="station-input"
                         class="settings-input"
