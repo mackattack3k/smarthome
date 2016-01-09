@@ -231,8 +231,17 @@ function setSettingsFromCookies(){
         && cookieNotification !== false
         && cookieNotification == "checked"
         ) {
-        debugLog($( "#notifications-toggle" ));
+        $('#notifications-toggle').prop('active', true);
     }
+
+    var cookieDebug = Cookies.get('debug');
+    if (typeof cookieDebug !== typeof undefined
+        && cookieDebug !== false
+        && cookieDebug == "on"
+    ) {
+        $('#debug-toggle').prop('active', true);
+    }
+
 
     /* Regular inputs */
     var cookiesStocks = Cookies.get('stocks-input');
