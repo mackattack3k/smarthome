@@ -22,8 +22,8 @@ function updateClock ( ){
                                   .attr('data-date');
         var departureDate = new Date (departureTime);
 
-        //console.log("departureTime: " + departureTime)
-        //console.log('currentTime: ' + currentTime + ' departure: ' + departureDate); //Used for debugging when the departures aren't removed...
+        //debugLog("departureTime: " + departureTime)
+        //debugLog('currentTime: ' + currentTime + ' departure: ' + departureDate); //Used for debugging when the departures aren't removed...
         //If the departure is leaving now -- or -- the browser was idle and the departure has already left
         if (departureDate <= currentTime) {
           $(this).animate( //Animate a fade and remove
@@ -43,13 +43,13 @@ function updateClock ( ){
     });
 
     //Check if there are less than 2 departures left
-    //console.log('Checking if we should get new departures.');
-    //console.log('currentlyUpdatingTraffic; ' + currentlyUpdatingTraffic);
+    //debugLog('Checking if we should get new departures.');
+    //debugLog('currentlyUpdatingTraffic; ' + currentlyUpdatingTraffic);
     //TODO: This only works for chrome... wonder why
     var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
     if (numberOfDepartures < 2 && !currentlyUpdatingTraffic) {
       currentlyUpdatingTraffic = true;
-      console.log('Too few departures, getting departures');
+      debugLog('Too few departures, getting departures');
       getDepartures();
     }
  }
@@ -74,7 +74,7 @@ function getDepartures() {
     $('#traffic-search-input').html(stationName);
 
 
-    console.log("Getting departures for: " + stationName + " id: " + stationID);
+    debugLog("Getting departures for: " + stationName + " id: " + stationID);
 
 
     //Adda spinning refresh icon before loading the departure times. Also removes previous departure times.
@@ -234,7 +234,7 @@ function setSettingsFromCookies(){
         && cookieNotification !== false
         && cookieNotification == "checked"
         ) {
-        console.log($( "#notifications-toggle" ));
+        debugLog($( "#notifications-toggle" ));
     }
 
     /* Regular inputs */
@@ -300,6 +300,53 @@ function debugLog(inputText){
         console.log(inputText);
     }
 }
+function showSavingSettings(element){
+    clearTimeout(savingSettingsTimer);
+    clearTimeout(settingsCompleteTimer);
+    $('#saving-settings-card').stop().fadeTo(0, 100);
+    $('#saving-settings-icon-success').hide();
+    $('#saving-settings-icon-error').hide();
+    $('#saving-settings-spinner').show();
+    $('#saving-settings-text').html("Sparar inställningar");
+
+    if (typeof element !== typeof undefined && element !== ''){
+        var value = element.val();
+        var fullID = element.attr('id');
+        var id = fullID.substring(0,fullID.length-6);
+        var isValid = document.querySelector('#'+fullID).validate();
+    } else {
+        isValid = true;
+    }
+
+
+    $('#saving-settings-card').css({"display":"-webkit-box",
+        "display":"-webkit-flex",
+        "display":"-moz-flex",
+        "display":"-ms-flexbox",
+        "display":"flex"});
+
+    savingSettingsTimer = setTimeout(function() {
+        if (isValid){
+            if (typeof value !== typeof undefined){
+                //Sometimes we show the spinner but setting the cookie separate.
+                // So this is only used when not setting cookies separately
+                Cookies.set(fullID, value);
+                debugLog("Cookie: " + fullID + " val:" + value);
+            }
+            //Show a checkmark when cookies has been set
+            $('#saving-settings-spinner').hide();
+            $('#saving-settings-icon-success').show();
+            settingsCompleteTimer = setTimeout(function() {
+                //After the checkmark has been show for 2 seconds we remove the card
+                $('#saving-settings-card').fadeOut(1500);
+            }, 2000);
+        } else {
+            $('#saving-settings-spinner').hide();
+            $('#saving-settings-icon-error').show();
+            $('#saving-settings-text').html("Felaktig inmatning");
+        }
+    }, 1000);
+}
 
 
 /*
@@ -309,6 +356,8 @@ function debugLog(inputText){
 var currentlyUpdatingTraffic = true;
 var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 var debugSetting = false;
+var savingSettingsTimer;
+var settingsCompleteTimer;
 
 /*
 * End of global variable scope
@@ -376,7 +425,7 @@ $(document).ready(function(){
             cache: false,
             datatype: 'html',
             success: function (lightsData) {
-                console.log(lightsData);
+                debugLog(lightsData);
 
                 if (regexContainsErrorText.test(lightsData)) {
                     newNotification('Error setting light', "error", 10000);
@@ -394,7 +443,7 @@ $(document).ready(function(){
         //Variables to post to the changelamp function
         var stateText   =   $(this).attr('id').substring(4,this.length);
         var state = (stateText== "off") ? "0" : "1";
-        console.log(stateText +" "+ state);
+        debugLog(stateText +" "+ state);
 
         if (stateText == "off"){
             $(".lights-purple").removeClass('active');
@@ -409,7 +458,7 @@ $(document).ready(function(){
             cache: false,
             datatype: 'html',
             success: function (lightsData) {
-                console.log(lightsData);
+                debugLog(lightsData);
 
                 if (regexContainsErrorText.test(lightsData)) {
                     newNotification('Error setting  all lights', "error", 10000);
@@ -476,8 +525,10 @@ $(document).ready(function(){
     var debugToggle = document.querySelector('#debug-toggle');
     debugToggle.addEventListener('change', function () {
         if (this.checked) {
+            debugSetting = true;
             Cookies.set('debug', "on");
         } else {
+            debugSetting = false;
             Cookies.set('debug', "off");
         }
     });
@@ -485,54 +536,17 @@ $(document).ready(function(){
     var stationMenu = document.querySelector("#station-menu");
     stationMenu.addEventListener("iron-select", function(){
         //Might want to do something with on-iron-select="handleSelect" on the html element instead
+        showSavingSettings();
         Cookies.set('station-input', stationMenu.selected);
         currentlyUpdatingTraffic = true;
         getDepartures();
     });
 
-
-    var savingSettingsTimer;
-    var settingsCompleteTimer;
-
     $('.settings-input').on('input', function(){
-        clearTimeout(savingSettingsTimer);
-        clearTimeout(settingsCompleteTimer);
-        $('#saving-settings-card').stop().fadeTo(0, 100);
-        $('#saving-settings-icon-success').hide();
-        $('#saving-settings-icon-error').hide();
-        $('#saving-settings-spinner').show();
-        $('#saving-settings-text').html("Sparar inställningar");
-
-        var value = $(this).val();
-        var fullID = $(this).attr('id');
-        var id = fullID.substring(0,fullID.length-6);
-        var isValid = document.querySelector('#'+fullID).validate();
-
-
-        $('#saving-settings-card').css({"display":"-webkit-box",
-        "display":"-webkit-flex",
-        "display":"-moz-flex",
-        "display":"-ms-flexbox",
-        "display":"flex"});
-
-        savingSettingsTimer = setTimeout(function() {
-            if (isValid){
-                Cookies.set(fullID, value);
-                debugLog("Cookie: " + fullID + " val:" + value);
-                //Show a checkmark when cookies has been set
-                $('#saving-settings-spinner').hide();
-                $('#saving-settings-icon-success').show();
-                settingsCompleteTimer = setTimeout(function() {
-                    //After the checkmark has been show for 2 seconds we remove the card
-                    $('#saving-settings-card').fadeOut(1500);
-                }, 2000);
-            } else {
-                $('#saving-settings-spinner').hide();
-                $('#saving-settings-icon-error').show();
-                $('#saving-settings-text').html("Felaktig inmatning");
-            }
-        }, 1000);
+        showSavingSettings($(this));
     });
+
+
 
 
 
@@ -542,7 +556,7 @@ $(document).ready(function(){
         type: 'POST',
         success: function(res) {
             var headline = $(res.responseText).find('a.tsh').text();
-            console.log(res);
+            debugLog(res);
         }
     });
 */

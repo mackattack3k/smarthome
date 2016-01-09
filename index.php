@@ -163,7 +163,7 @@ require_once ('php/lights.php');
                         id="timezone-input"
                         class="settings-input"
                         label="Tidzon"
-                        pattern="^\d*$"
+                        pattern=".*"
                         oninput="validate()"></paper-input></li>
                 <li><paper-toggle-button
                         class="hover no-select"
