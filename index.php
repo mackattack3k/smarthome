@@ -109,6 +109,10 @@ require_once ('php/lights.php');
                         --paper-spinner-layer-3-color: #C2185B;
                         --paper-spinner-layer-4-color: #C2185B;
                     }
+                    paper-spinner.loading-icon{
+                        width: 100px;
+                        height: 100px;
+                    }
                 </style>
                 <li><paper-input
                         id="stocks-input"
@@ -157,7 +161,7 @@ require_once ('php/lights.php');
                         pattern="^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$"
                         oninput="validate()"></paper-input></li>
                 <paper-button raised id="auto-gps-button" class="lillypurple">
-                    <iron-icon icon="device:gps-fixed"></iron-icon> Hämta
+                    <iron-icon icon="device:gps-fixed"></iron-icon> Hämta koordinater
                 </paper-button>
                 <li><paper-input
                         id="timezone-input"
@@ -207,9 +211,8 @@ require_once ('php/lights.php');
                     Väder
                 </div>
                 <div class="weather-items">
-                    <div id="weather-loading" class="icon icon-refresh icon-4x icon-spin"></div>
+                    <paper-spinner active id="weather-loading" class="loading-icon"></paper-spinner>
                     <div id="weather-data">
-
                     </div>
                 </div>
                 <div class="timestamp" id="weather-last-updated"></div>
@@ -219,7 +222,6 @@ require_once ('php/lights.php');
         <div class="column column-2">
             <div id="traffic" class="column-content">
                 <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
-                    <!--TODO: Change this to paper-spinner-->
                 </div>
                 <div class="header">
                     Trafik
@@ -228,7 +230,7 @@ require_once ('php/lights.php');
                     <div id="traffic-search">
                         <div id="traffic-search-input" class="traffic-input">Åmänningevägen</div>
                     </div>
-                    <div id="traffic-loading" class="icon icon-refresh icon-4x icon-spin"></div>
+                    <paper-spinner active id="traffic-loading" class="loading-icon"></paper-spinner>
                     <div id="traffic-results">
                     </div>
                 </div>

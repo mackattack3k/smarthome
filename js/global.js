@@ -78,10 +78,7 @@ function getDepartures() {
 
 
     //Adda spinning refresh icon before loading the departure times. Also removes previous departure times.
-    $('#traffic-loading')
-        .addClass("traffic-loading-before")
-        .removeClass("traffic-loading-no-before")
-        .show();
+    $('#traffic-loading').show();
     $("#traffic-results").html('');
     $.ajax({
         url: "php/publicTransport.php",
@@ -90,9 +87,7 @@ function getDepartures() {
         datatype: 'html',
         success: function (trafficData) {
             //Remove spinning refresh icon and output the departure times.
-            $('#traffic-loading').addClass("traffic-loading-no-before")
-                .removeClass("traffic-loading-before")
-                .hide();
+            $('#traffic-loading').hide();
             $("#traffic-results").html(trafficData);
 
             if (regexContainsErrorText.test(trafficData)) {
@@ -111,10 +106,7 @@ function getDepartures() {
 function getWeather() {
     newNotification('Updating weather', 'info');
     //View spinning icon and hide the previous weather results
-    $('#weather-loading')
-        .addClass('weather-loading-before')
-        .removeClass('.weather-loading-no-before')
-        .css('margin', '20px');
+    $('#weather-loading').show();
     $('.weather-item-container').hide();
     var latitude = Cookies.get('latitude-input');
     var longitude = Cookies.get('longitude-input');
@@ -127,9 +119,7 @@ function getWeather() {
         cache: false,
         datatype: 'html',
         success: function (trafficData) {
-            $('#weather-loading')
-                .addClass('weather-loading-no-before')
-                .removeClass('.weather-loading-before').css('margin', '0px');
+            $('#weather-loading').hide();
             //View the result
             $('#weather-data').html(trafficData);
 
@@ -390,7 +380,7 @@ $(document).ready(function(){
     document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
         slideout.toggle();
     });
-    //slideout.open();
+    slideout.open();
 
     $('#auto-gps-button').click(function(){
         if (navigator.geolocation) {
