@@ -15,6 +15,7 @@ class Weather
     public $measurements;
     public $lang;
     public $debug;
+    public $timezone;
     public $allUnits = array();
     public $API_KEYS = array();
 
@@ -22,8 +23,10 @@ class Weather
     {
         $htmlCall = isset($_GET['htmlCall']) ? $_GET['htmlCall'] : false;
         $debug = isset($_GET['debug']) ? $_GET['debug'] : false;
+        $timezone = isset($_GET['timezone']) ? $_GET['timezone'] : "Europe/Stockholm";
 
         $this->setDebug($debug);
+        $this->setTimezone($timezone);
 
         if (file_exists(__DIR__ . '/../../api_keys.php')) {
             global $GlobalAPI_Keys;
@@ -71,7 +74,11 @@ class Weather
         if (!$currentWeatherData){
             return "Error: no current weather data";
         }
-        $currentWeatherHTML = $this->getCurrentWeatherHtml($currentWeatherData);
+        $town = $this->getTownFromCoords();
+        if (!$town || $town == ''){
+            $town = '???';
+        }
+        $currentWeatherHTML = $this->getCurrentWeatherHtml($currentWeatherData, $town);
 
         $htmlOutput = $currentWeatherHTML;
 
@@ -93,7 +100,7 @@ class Weather
     {
         /* Establish some global variables for the weather functions */
         $weatherApiKey = $this->getAPIKEYS()['weatherApiKey'];
-        date_default_timezone_set('Europe/Stockholm');
+        date_default_timezone_set( $this->getTimezone() );
         $lat = $this->getLat();
         $lon = $this->getLon();
         $units = $this->getMeasurements();
@@ -173,6 +180,16 @@ class Weather
         $this->lang = $lang;
     }
 
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
+    public function getTimezone()
+    {
+        return $this->timezone;
+    }
+
     public function getDebug()
     {
         return $this->debug;
@@ -196,22 +213,18 @@ class Weather
 
     }
 
-    public function getCurrentWeatherHtml($weather)
+    public function getCurrentWeatherHtml($weather, $town)
     {
         $lat = $this->getLat();
         $lon = $this->getLon();
 
         $dayOrNight = $this->getDayOrNight($lat, $lon);
 
-        /* TODO: http://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&sensor=true
-        * Get name of coordinates
-        */
-
         $icon = $weather['weather']['0']['id'];
         $temp = round($weather['main']['temp'], 1);
         $desc = strtolower($weather['weather']['0']['description']);
 
-        $output = "<div class='weather-items-header'>Just nu</div>";
+        $output = "<div class='weather-items-header'>Just nu i $town</div>";
         $output .= "<div id=\"weather-current-item\">";
             $output .= "<div class='weather-current'>";
                 $output .= "<div class=\"weather-current-icon\">";
@@ -356,6 +369,29 @@ class Weather
             "lang" => $this->getLang(),
             "debug" => $this->getDebug(),
         ];
+    }
+
+    public function getTownFromCoords()
+    {
+        /*
+        * Get name of coordinates
+        */
+
+        $lat = $this->getLat();
+        $lon = $this->getLon();
+
+        $mapsURL = "http://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lon&sensor=true";
+        $mapsResult = file_get_contents($mapsURL);
+        $mapsJsonArray = json_decode($mapsResult, true);
+        if( empty( $mapsJsonArray ) )
+        {
+            return false;
+        }
+        if ($this->getDebug()){
+            //print_r($mapsJsonArray);
+        }
+        return $mapsJsonArray['results'][0]['address_components'][4]['long_name'];
+
     }
 
 }

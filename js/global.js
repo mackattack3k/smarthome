@@ -108,14 +108,16 @@ function getWeather() {
     //View spinning icon and hide the previous weather results
     $('#weather-loading').show();
     $('.weather-item-container').hide();
-    var latitude = Cookies.get('latitude-input');
-    var longitude = Cookies.get('longitude-input');
+    var latitude = $('#latitude-input').val();
+    var longitude = $('#longitude-input').val();
+    var timezone = $('#timezone-input').val();
 
     $.ajax({
         url: "php/weather.php",
         data: {
             htmlCall: "true", debug: debugSetting,
-            lat: latitude, lon: longitude},
+            lat: latitude, lon: longitude,
+            timezone: timezone},
         cache: false,
         datatype: 'html',
         success: function (trafficData) {
@@ -292,6 +294,7 @@ function gpsSuccess(position) {
     Cookies.set('longitude-input', longitude);
     document.getElementById('latitude-input').value = latitude;
     Cookies.set('latitude-input', latitude);
+    getWeather();
 }
 function gpsFail() {
     // Could not obtain location
@@ -391,8 +394,6 @@ $(document).ready(function(){
             newNotification("Sorry, your browser does not support geolocation services.", "error");
         }
         //$(this).hide();
-        getWeather();
-
     });
 
     /*
