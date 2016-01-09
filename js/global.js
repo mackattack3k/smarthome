@@ -260,6 +260,7 @@ function setSettingsFromCookies(){
             if (typeof cookie !== typeof undefined
                 && cookie !== false
                 && cookie !== null
+                && cookie !== ''
             ) {
                 //Set input to cookie
                 document.getElementById(cookieKey).value = cookie;
@@ -294,6 +295,11 @@ function gpsFail() {
     newNotification("Could not get coordinates. Is your browser allowing 'navigator.geolocation*'?"
         , "error", 10000);
 }
+function debugLog(inputText){
+    if (debugSetting === true) {
+        console.log(inputText);
+    }
+}
 
 
 /*
@@ -302,6 +308,7 @@ function gpsFail() {
 
 var currentlyUpdatingTraffic = true;
 var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
+var debugSetting = false;
 
 /*
 * End of global variable scope
@@ -477,32 +484,54 @@ $(document).ready(function(){
 
     var stationMenu = document.querySelector("#station-menu");
     stationMenu.addEventListener("iron-select", function(){
+        //Might want to do something with on-iron-select="handleSelect" on the html element instead
         Cookies.set('station-input', stationMenu.selected);
+        currentlyUpdatingTraffic = true;
         getDepartures();
     });
 
 
-    var timer;
+    var savingSettingsTimer;
+    var settingsCompleteTimer;
+
     $('.settings-input').on('input', function(){
-        clearTimeout(timer);
+        clearTimeout(savingSettingsTimer);
+        clearTimeout(settingsCompleteTimer);
+        $('#saving-settings-card').stop().fadeTo(0, 100);
+        $('#saving-settings-icon-success').hide();
+        $('#saving-settings-icon-error').hide();
+        $('#saving-settings-spinner').show();
+        $('#saving-settings-text').html("Sparar inställningar");
+
         var value = $(this).val();
         var fullID = $(this).attr('id');
         var id = fullID.substring(0,fullID.length-6);
-        var isValid = !$(this).attr('invalid');
+        var isValid = document.querySelector('#'+fullID).validate();
 
-        timer = setTimeout(function() {
+
+        $('#saving-settings-card').css({"display":"-webkit-box",
+        "display":"-webkit-flex",
+        "display":"-moz-flex",
+        "display":"-ms-flexbox",
+        "display":"flex"});
+
+        savingSettingsTimer = setTimeout(function() {
             if (isValid){
                 Cookies.set(fullID, value);
-                console.log("Cookie: " + fullID + " val:" + value);
+                debugLog("Cookie: " + fullID + " val:" + value);
+                //Show a checkmark when cookies has been set
+                $('#saving-settings-spinner').hide();
+                $('#saving-settings-icon-success').show();
+                settingsCompleteTimer = setTimeout(function() {
+                    //After the checkmark has been show for 2 seconds we remove the card
+                    $('#saving-settings-card').fadeOut(1500);
+                }, 2000);
+            } else {
+                $('#saving-settings-spinner').hide();
+                $('#saving-settings-icon-error').show();
+                $('#saving-settings-text').html("Felaktig inmatning");
             }
-
-        }, 2000);
-        console.log(isValid);
-
-
-
-        //setCookie();
-
+        }, 1000);
     });
 
 

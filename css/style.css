@@ -210,6 +210,36 @@ body {
   margin-top: 10px;
 }
 
+#saving-settings-card {
+  display: none;
+  margin-top: 20px;
+  height: 60px;
+  font-size: 16px;
+  padding: 5px;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: space-around;
+  justify-content: space-around;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-flow: nowrap;
+  -ms-flex-flow: nowrap;
+  flex-flow: nowrap;
+}
+
+#saving-settings-icon-success {
+  color: #C2185B;
+  display: none;
+}
+
+#saving-settings-icon-error {
+  color: #C2185B;
+  display: none;
+}
+
 /* Slideout end */
 /*  Traffic start */
 .traffic-refresh-manually {

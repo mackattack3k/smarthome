@@ -37,6 +37,8 @@ require_once ('php/lights.php');
     <link rel="import" href="bower_components/paper-input/paper-textarea.html">
     <link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
     <link rel="import" href="bower_components/paper-menu/paper-menu.html">
+    <link rel="import" href="bower_components/paper-material/paper-material.html">
+    <link rel="import" href="bower_components/paper-spinner/paper-spinner.html">
     <link rel="import" href="bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
     <link rel="import" href="bower_components/iron-dropdown/iron-dropdown.html">
     <link rel="import" href="bower_components/iron-behaviors/iron-control-state.html">
@@ -100,27 +102,31 @@ require_once ('php/lights.php');
                     paper-dropdown-menu {
                         --paper-input-container-color: #C2185B;
                         --paper-input-container-focus-color: #C2185B;
-
+                    }
+                    paper-spinner {
+                        --paper-spinner-layer-1-color: #C2185B;
+                        --paper-spinner-layer-2-color: #C2185B;
+                        --paper-spinner-layer-3-color: #C2185B;
+                        --paper-spinner-layer-4-color: #C2185B;
                     }
                 </style>
-                <li><paper-textarea
+                <li><paper-input
                         id="stocks-input"
                         class="settings-input"
-                        style="width: 100%"
-                        label="Stocks"
-                        pattern="^([a-zA-Z]{2,6})+(,[a-zA-Z]{2,6})*$"
+                        label="Aktier"
+                        pattern="^([a-zA-Z]{2,6}){1}(,[a-zA-Z]{2,6})*$"
                         error-message="Invalid format (STOCK1,STOCK2,...)"
-                        auto-validate>
-                    </paper-textarea>
+                        oninput="validate()">
+                    </paper-input>
                     <paper-tooltip position="bottom" offset="10">eg AAPL,GOOG,MSFT</paper-tooltip>
                 </li>
                 <li><paper-input
                         id="numberofdepartures-input"
                         class="settings-input"
-                        label="Number of departures"
+                        label="Antal avgångar"
                         allowed-pattern="^\d*$"
                         error-message="Numbers only!"
-                        auto-validate></paper-input></li>
+                        oninput="validate()"></paper-input></li>
                 <li><paper-dropdown-menu
                         id="station-input"
                         class="settings-input"
@@ -128,7 +134,7 @@ require_once ('php/lights.php');
                         <paper-menu
                             id="station-menu"
                             class="dropdown-content"
-                            selected="amanningevagen,7453026"
+                            selected="Åmänningevägen,7453026"
                             attr-for-selected="data-value">
                             <paper-item data-value="Gullmarsplan,7421705">Gullmarsplan</paper-item>
                             <paper-item data-value="Sulvägen,7465488">Sulvägen</paper-item>
@@ -140,33 +146,40 @@ require_once ('php/lights.php');
                 <li><paper-input
                         id="latitude-input"
                         class="settings-input"
-                        label="Latitude"
+                        label="Latitud"
                         pattern="^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$"
-                        onfocusout="validate()"></paper-input>
+                        oninput="validate()"></paper-input>
                 </li>
                 <li><paper-input
                         id="longitude-input"
                         class="settings-input"
-                        label="Longitude"
+                        label="Longitud"
                         pattern="^(\-?\d+(\.\d+)?).\s*(\-?\d+(\.\d+)?)$"
-                        onfocusout="validate()"></paper-input></li>
+                        oninput="validate()"></paper-input></li>
                 <paper-button raised id="auto-gps-button" class="lillypurple">
-                    <iron-icon icon="device:gps-fixed"></iron-icon> Auto
+                    <iron-icon icon="device:gps-fixed"></iron-icon> Hämta
                 </paper-button>
                 <li><paper-input
                         id="timezone-input"
                         class="settings-input"
-                        label="Timezone"
+                        label="Tidzon"
                         pattern="^\d*$"
-                        onfocusout="validate()"></paper-input></li>
+                        oninput="validate()"></paper-input></li>
                 <li><paper-toggle-button
                         class="hover no-select"
-                        id="notifications-toggle">Notifications</paper-toggle-button></li>
+                        id="notifications-toggle">Notifieringar</paper-toggle-button></li>
                 <li><paper-toggle-button
                         class="hover no-select"
                         id="debug-toggle">Debug</paper-toggle-button></li>
-                <li><paper-input disabled label="Language"></paper-input></li>
+                <li><paper-input disabled label="Språk"></paper-input></li>
                 <!--TODO: Create checkboxes to enable or disable columns/info-->
+                <!--TODO: Create a spinner for when settings are saved to cookie-->
+                <paper-material elevation="1" id="saving-settings-card">
+                    <paper-spinner active id="saving-settings-spinner"></paper-spinner>
+                    <iron-icon id="saving-settings-icon-success" icon="icons:check"></iron-icon>
+                    <iron-icon id="saving-settings-icon-error" icon="icons:error-outline"></iron-icon>
+                    <div id="saving-settings-text">Sparar inställningar</div>
+                </paper-material>
             </ul>
         </section>
     </div>
