@@ -260,7 +260,6 @@ body {
 
 #traffic-loading {
   margin-top: 20px;
-  color: #595959;
 }
 
 .traffic-loading-no-before::before {
@@ -776,6 +775,17 @@ paper-button[raised].lights-purple.active {
 #stocks {
   border-top-color: #C2185B;
   position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
 }
 
 /* Column specific end */

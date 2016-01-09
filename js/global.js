@@ -138,21 +138,18 @@ function getWeather() {
 function getStocks(){
     newNotification('Updating weather', 'info');
     //View spinning icon and hide the previous weather results
-    $('#stocks-loading')
-        .addClass('weather-loading-before')
-        .removeClass('.weather-loading-no-before')
-        .css('margin', '20px');
+    $('#stocks-loading').show();
     //$('.stock-items').hide();
+    var stocksInput = $('#stocks-input').val();
+    var stocks = stocksInput !== '' ? stocksInput : "AAPL,FB,GOOG,TSLA,MSFT";
 
     $.ajax({
         url: "php/stocks.php",
-        data: {function: "html", debug: "false", stocks: "AAPL,FB,GOOG,TSLA,MSFT"},
+        data: {function: "html", debug: "false", stocks: stocks},
         cache: false,
         datatype: 'html',
         success: function (stocksData) {
-            $('#stocks-loading')
-                .addClass('weather-loading-no-before')
-                .removeClass('.weather-loading-before').css('margin', '0px');
+            $('#stocks-loading').hide();
             //View the result
             $('.stock-items').html(stocksData);
 
@@ -338,6 +335,9 @@ function showSavingSettings(element){
                 // So this is only used when not setting cookies separately
                 Cookies.set(fullID, value);
                 debugLog("Cookie: " + fullID + " val:" + value);
+            }
+            if (fullID == 'stocks-input'){
+                getStocks();
             }
             //Show a checkmark when cookies has been set
             $('#saving-settings-spinner').hide();

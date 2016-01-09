@@ -242,6 +242,7 @@ require_once ('php/lights.php');
                 <div class="header">
                     Aktier
                 </div>
+                <paper-spinner active id="stocks-loading" class="loading-icon" ></paper-spinner>
                 <div class="stock-items">
                 </div>
                 <div class="timestamp" id="stocks-last-updated">
