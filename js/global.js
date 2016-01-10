@@ -314,7 +314,9 @@ function debugLog(inputText){
 function showSavingSettings(element){
     clearTimeout(savingSettingsTimer);
     clearTimeout(settingsCompleteTimer);
-    //$('#saving-settings-card').stop().fadeTo(0, 100);
+    var savingCard = $('#saving-settings-card');
+    savingCard.addClass('flexbox');
+    savingCard.stop().fadeTo(0, 100);
     $('#saving-settings-icon-success').hide();
     $('#saving-settings-icon-error').hide();
     $('#saving-settings-spinner').show();
@@ -328,10 +330,7 @@ function showSavingSettings(element){
     } else {
         isValid = true;
     }
-
-
-    $('#saving-settings-card').addClass('flexbox');
-
+    
     savingSettingsTimer = setTimeout(function() {
         if (isValid){
             if (typeof value !== typeof undefined){
@@ -348,7 +347,7 @@ function showSavingSettings(element){
             $('#saving-settings-icon-success').show();
             settingsCompleteTimer = setTimeout(function() {
                 //After the checkmark has been show for 2 seconds we remove the card
-                //.fadeOut(1500);
+                savingCard.fadeOut(1500);
             }, 2000);
         } else {
             $('#saving-settings-spinner').hide();
