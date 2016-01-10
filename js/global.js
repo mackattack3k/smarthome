@@ -1,3 +1,4 @@
+var startTime = new Date();
 function updateClock ( ){
     var currentTime = new Date ();
     var weekday = new Array(7);
@@ -237,7 +238,7 @@ function setSettingsFromCookies(){
     var cookieDebug = Cookies.get('debug');
     if (typeof cookieDebug !== typeof undefined
         && cookieDebug !== false
-        && cookieDebug == "on"
+        && cookieDebug !== "false"
     ) {
         $('#debug-toggle').prop('active', true);
     }
@@ -313,7 +314,7 @@ function debugLog(inputText){
 function showSavingSettings(element){
     clearTimeout(savingSettingsTimer);
     clearTimeout(settingsCompleteTimer);
-    $('#saving-settings-card').stop().fadeTo(0, 100);
+    //$('#saving-settings-card').stop().fadeTo(0, 100);
     $('#saving-settings-icon-success').hide();
     $('#saving-settings-icon-error').hide();
     $('#saving-settings-spinner').show();
@@ -329,11 +330,7 @@ function showSavingSettings(element){
     }
 
 
-    $('#saving-settings-card').css({"display":"-webkit-box",
-        "display":"-webkit-flex",
-        "display":"-moz-flex",
-        "display":"-ms-flexbox",
-        "display":"flex"});
+    $('#saving-settings-card').addClass('flexbox');
 
     savingSettingsTimer = setTimeout(function() {
         if (isValid){
@@ -351,7 +348,7 @@ function showSavingSettings(element){
             $('#saving-settings-icon-success').show();
             settingsCompleteTimer = setTimeout(function() {
                 //After the checkmark has been show for 2 seconds we remove the card
-                $('#saving-settings-card').fadeOut(1500);
+                //.fadeOut(1500);
             }, 2000);
         } else {
             $('#saving-settings-spinner').hide();
@@ -368,7 +365,7 @@ function showSavingSettings(element){
 
 var currentlyUpdatingTraffic = true;
 var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
-var debugSetting = false;
+var debugSetting = Cookies.get('debug') === 'true';
 var savingSettingsTimer;
 var settingsCompleteTimer;
 
@@ -377,6 +374,8 @@ var settingsCompleteTimer;
 */
 
 $(document).ready(function(){
+    var readyTime = new Date() - startTime;
+    debugLog("document.ready: " + readyTime +" ms");
     /*
      * Settings slideout menu
      */
@@ -409,7 +408,8 @@ $(document).ready(function(){
 
     window.addEventListener('WebComponentsReady', function(e){
         setSettingsFromCookies();
-        console.log('polymer ready');
+        var polymerTime  = new Date()-startTime;
+        debugLog('polymer ready: ' + polymerTime + " ms");
 
         updateClock();
         setInterval('updateClock()', 1000); //Update time every second
@@ -421,6 +421,8 @@ $(document).ready(function(){
 
         getStocks();
         setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
+        var completeTime = new Date() - startTime;
+        console.log("everything completed: " + completeTime + " ms");
     });
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
@@ -537,10 +539,10 @@ $(document).ready(function(){
     debugToggle.addEventListener('change', function () {
         if (this.checked) {
             debugSetting = true;
-            Cookies.set('debug', "on");
+            Cookies.set('debug', "true");
         } else {
             debugSetting = false;
-            Cookies.set('debug', "off");
+            Cookies.set('debug', "false");
         }
     });
 

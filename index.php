@@ -176,14 +176,13 @@ require_once ('php/lights.php');
                         id="debug-toggle">Debug</paper-toggle-button></li>
                 <li><paper-input disabled label="Språk"></paper-input></li>
                 <!--TODO: Create checkboxes to enable or disable columns/info-->
-                <!--TODO: Create a spinner for when settings are saved to cookie-->
-                <paper-material elevation="1" id="saving-settings-card">
-                    <paper-spinner active id="saving-settings-spinner"></paper-spinner>
-                    <iron-icon id="saving-settings-icon-success" icon="icons:check"></iron-icon>
-                    <iron-icon id="saving-settings-icon-error" icon="icons:error-outline"></iron-icon>
-                    <div id="saving-settings-text">Sparar inställningar</div>
-                </paper-material>
             </ul>
+            <paper-material elevation="1" id="saving-settings-card">
+                <div><paper-spinner active id="saving-settings-spinner"></paper-spinner></div>
+                <iron-icon id="saving-settings-icon-success" icon="icons:check"></iron-icon>
+                <iron-icon id="saving-settings-icon-error" icon="icons:error-outline"></iron-icon>
+                <div id="saving-settings-text">Sparar inställningar</div>
+            </paper-material>
         </section>
     </div>
 </nav>
@@ -284,8 +283,8 @@ require_once ('php/lights.php');
     </div>
 </div>
 
-<script src="js/global.js"></script>
 <script src="js/slideout.min.js"></script>
 <script src="js/js-cookie/src/js.cookie.js"></script>
+<script src="js/global.js"></script>
 </body>
 </html>
