@@ -407,21 +407,21 @@ $(document).ready(function(){
     * Start updating things
     */
 
-    setSettingsFromCookies();
+    window.addEventListener('WebComponentsReady', function(e){
+        setSettingsFromCookies();
+        console.log('polymer ready');
 
-    updateClock();
-    setInterval('updateClock()', 1000); //Update time every second
+        updateClock();
+        setInterval('updateClock()', 1000); //Update time every second
 
-    getDepartures();
+        getDepartures();
 
-    getWeather();
-    setInterval('getWeather()', 1800000); //getWeather every 30 minutes
+        getWeather();
+        setInterval('getWeather()', 1800000); //getWeather every 30 minutes
 
-    getStocks();
-    setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
-
-
-
+        getStocks();
+        setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
+    });
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
     $( ".lights-purple" ).click(function() {

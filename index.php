@@ -28,10 +28,8 @@ require_once ('php/lights.php');
     <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
     <link rel="import" href="bower_components/paper-button/paper-button.html">
     <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
-    <link rel="import" href="bower_components/paper-styles/paper-styles.html">
     <link rel="import" href="bower_components/paper-input/paper-input.html">
     <link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-    <link rel="import" href="bower_components/paper-listbox/paper-listbox.html">
     <link rel="import" href="bower_components/paper-item/paper-item.html">
     <link rel="import" href="bower_components/paper-tooltip/paper-tooltip.html">
     <link rel="import" href="bower_components/paper-input/paper-textarea.html">
@@ -39,15 +37,12 @@ require_once ('php/lights.php');
     <link rel="import" href="bower_components/paper-menu/paper-menu.html">
     <link rel="import" href="bower_components/paper-material/paper-material.html">
     <link rel="import" href="bower_components/paper-spinner/paper-spinner.html">
-    <link rel="import" href="bower_components/iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
     <link rel="import" href="bower_components/iron-dropdown/iron-dropdown.html">
-    <link rel="import" href="bower_components/iron-behaviors/iron-control-state.html">
     <link rel="import" href="bower_components/iron-behaviors/iron-button-state.html">
     <link rel="import" href="bower_components/iron-dropdown/iron-dropdown.html">
     <link rel="import" href="bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="bower_components/iron-icons/device-icons.html">
     <link rel="import" href="bower_components/iron-selector/iron-selector.html">
-    <link rel="import" href="bower_components/iron-selector/iron-selectable.html">
     <link rel="import" href="bower_components/iron-selector/iron-selection.html">
 
     <!-- Favicon -->
