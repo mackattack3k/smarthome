@@ -177,7 +177,7 @@ require_once ('php/lights.php');
                 <li><paper-input disabled label="Språk"></paper-input></li>
                 <!--TODO: Create checkboxes to enable or disable columns/info-->
             </ul>
-            <paper-material elevation="1" id="saving-settings-card">
+            <paper-material elevation="1" id="saving-settings-card" class="hidden">
                 <div><paper-spinner active id="saving-settings-spinner"></paper-spinner></div>
                 <iron-icon id="saving-settings-icon-success" icon="icons:check"></iron-icon>
                 <iron-icon id="saving-settings-icon-error" icon="icons:error-outline"></iron-icon>

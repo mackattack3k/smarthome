@@ -312,11 +312,11 @@ function debugLog(inputText){
     }
 }
 function showSavingSettings(element){
+    debugLog("showing settings savings card");
     clearTimeout(savingSettingsTimer);
     clearTimeout(settingsCompleteTimer);
     var savingCard = $('#saving-settings-card');
-    savingCard.addClass('flexbox');
-    savingCard.stop().fadeTo(0, 100);
+    savingCard.removeClass('hidden');
     $('#saving-settings-icon-success').hide();
     $('#saving-settings-icon-error').hide();
     $('#saving-settings-spinner').show();
@@ -330,7 +330,7 @@ function showSavingSettings(element){
     } else {
         isValid = true;
     }
-    
+
     savingSettingsTimer = setTimeout(function() {
         if (isValid){
             if (typeof value !== typeof undefined){
@@ -347,7 +347,7 @@ function showSavingSettings(element){
             $('#saving-settings-icon-success').show();
             settingsCompleteTimer = setTimeout(function() {
                 //After the checkmark has been show for 2 seconds we remove the card
-                savingCard.fadeOut(1500);
+                savingCard.addClass('hidden');
             }, 2000);
         } else {
             $('#saving-settings-spinner').hide();
@@ -388,7 +388,9 @@ $(document).ready(function(){
     document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
         slideout.toggle();
     });
-    slideout.open();
+    if (debugSetting){
+        slideout.open();
+    }
 
     $('#auto-gps-button').click(function(){
         if (navigator.geolocation) {
@@ -554,7 +556,7 @@ $(document).ready(function(){
         getDepartures();
     });
 
-    $('.settings-input').on('input', function(){
+    $('.settings-input').on('keyup', function(){
         showSavingSettings($(this));
     });
 
