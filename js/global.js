@@ -1,6 +1,6 @@
 var startTime = new Date();
-function updateClock ( ){
-    var currentTime = new Date ();
+function updateClock() {
+    var currentTime = new Date();
     var weekday = new Array(7);
     weekday[0] = "Söndag";
     weekday[1] = "Måndag";
@@ -15,31 +15,31 @@ function updateClock ( ){
     $("#currentdate").html(currentTime.toLocaleDateString('sv-SE'));
 
     //Check if the time is the same as a departure and remove it
-    $('.traffic-result').each(function() {
+    $('.traffic-result').each(function () {
         //Departures current hour and minute
-        var departureTime          = $(this)
-                                  .children('.traffic-third')
-                                  .children('.departure-time')
-                                  .attr('data-date');
-        var departureDate = new Date (departureTime);
+        var departureTime = $(this)
+            .children('.traffic-third')
+            .children('.departure-time')
+            .attr('data-date');
+        var departureDate = new Date(departureTime);
 
         //debugLog("departureTime: " + departureTime)
         //debugLog('currentTime: ' + currentTime + ' departure: ' + departureDate); //Used for debugging when the departures aren't removed...
         //If the departure is leaving now -- or -- the browser was idle and the departure has already left
         if (departureDate <= currentTime) {
-          $(this).animate( //Animate a fade and remove
-            {
-              bottom: '0px',
-              opacity: 0.25,
-              height: 'toggle',
-              padding: '0px',
-              margin: '0px'
-            },
-            1500,
-            'easeInQuart',
-            function () {
-            $(this).remove();
-          });
+            $(this).animate( //Animate a fade and remove
+                {
+                    bottom: '0px',
+                    opacity: 0.25,
+                    height: 'toggle',
+                    padding: '0px',
+                    margin: '0px'
+                },
+                1500,
+                'easeInQuart',
+                function () {
+                    $(this).remove();
+                });
         }
     });
 
@@ -49,25 +49,26 @@ function updateClock ( ){
     //TODO: This only works for chrome... wonder why
     var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
     if (numberOfDepartures < 2 && !currentlyUpdatingTraffic) {
-      currentlyUpdatingTraffic = true;
-      debugLog('Too few departures, getting departures');
-      getDepartures();
+        currentlyUpdatingTraffic = true;
+        debugLog('Too few departures, getting departures');
+        getDepartures();
     }
- }
+}
 function getDepartures() {
+    //TODO: validate stationID before ajax
     newNotification('Updating public transport', 'info');
     //Check if the value of traffic-search is set and use it
     var defaultStationName = 'Åmänningevägen';
     var defaultStationID = 7453026; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
     var stationInfo = document.querySelector('#station-menu').selected;
-    var stationIDFromSettings = stationInfo.substring(stationInfo.length-7,stationInfo.length);
-    var stationNameFromSettings = stationInfo.substring(0,stationInfo.length-8);
+    var stationIDFromSettings = stationInfo.substring(stationInfo.length - 7, stationInfo.length);
+    var stationNameFromSettings = stationInfo.substring(0, stationInfo.length - 8);
     var stationName = defaultStationName;
     var stationID = defaultStationID;
 
     if (stationIDFromSettings !== undefined || stationIDFromSettings !== '' ||
         stationIDFromSettings !== null || stationNameFromSettings !== undefined ||
-        stationNameFromSettings !== '' || stationNameFromSettings !== null){
+        stationNameFromSettings !== '' || stationNameFromSettings !== null) {
 
         stationID = stationIDFromSettings;
         stationName = stationNameFromSettings;
@@ -97,7 +98,7 @@ function getDepartures() {
                 currentlyUpdatingTraffic = false;
             }
             var date = new Date();
-            $('#traffic-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
+            $('#traffic-last-updated').html("Senast uppdaterad: " + getTime(date, 'swedish-full'));
 
         }
     })
@@ -111,12 +112,15 @@ function getWeather() {
     var longitude = $('#longitude-input').val();
     var timezone = $('#timezone-input').val();
 
+    //TODO: validate coordinates and timezone before ajax
+
     $.ajax({
         url: "php/weather.php",
         data: {
             htmlCall: "true", debug: debugSetting,
             lat: latitude, lon: longitude,
-            timezone: timezone},
+            timezone: timezone
+        },
         cache: false,
         datatype: 'html',
         success: function (trafficData) {
@@ -130,17 +134,18 @@ function getWeather() {
                 newNotification('Weather updated', "success");
             }
             var date = new Date();
-            $('#weather-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
+            $('#weather-last-updated').html("Senast uppdaterad: " + getTime(date, 'swedish-full'));
         }
     });
 }
-function getStocks(){
+function getStocks() {
     newNotification('Updating weather', 'info');
     //View spinning icon and hide the previous weather results
     $('#stocks-loading').show();
     //$('.stock-items').hide();
     var stocksInput = $('#stocks-input').val();
     var stocks = stocksInput !== '' ? stocksInput : "AAPL,FB,GOOG,TSLA,MSFT";
+    //TODO: validate stocks before ajax
 
     $.ajax({
         url: "php/stocks.php",
@@ -158,32 +163,32 @@ function getStocks(){
                 newNotification('Stocks updated', "success");
             }
             var date = new Date();
-            $('#stocks-last-updated').html("Senast uppdaterad: "+getTime(date,'swedish-full'));
+            $('#stocks-last-updated').html("Senast uppdaterad: " + getTime(date, 'swedish-full'));
         }
     });
 }
 function newNotification(outputText, type, duration) {
-  var notificationsEnabled = $('#notifications-toggle').attr('checked');
+    var notificationsEnabled = $('#notifications-toggle').attr('checked');
     //Check if notifcations is enabled
     if (typeof notificationsEnabled !== typeof undefined && notificationsEnabled !== false) {
         var type = typeof type !== 'undefined' ? type : 'info'; //Default type of notification
         var duration = typeof duration !== 'undefined' ? duration : 5000;
 
         var iconTypes = {
-            notification:"bell",
-            info:"info",
-            success:"check",
+            notification: "bell",
+            info: "info",
+            success: "check",
             error: "ban",
             warning: "exclamation-triangle"
         };
-        for(iconTypes.length in iconTypes) {
-            if(iconTypes.hasOwnProperty(type)) {
+        for (iconTypes.length in iconTypes) {
+            if (iconTypes.hasOwnProperty(type)) {
                 var iconType = iconTypes[type];
             }
         }
 
         $('.notifications-container').append(
-            "<div class='notification " +type+ "'>\
+            "<div class='notification " + type + "'>\
           <div class='remove-notification icon icon-times'></div>\
           <div class='notification-data'>\
               <div class='notification-icon icon icon-" + iconType + "'></div>\
@@ -192,7 +197,7 @@ function newNotification(outputText, type, duration) {
         </div>"
         ).children('.notification')
             .delay(duration)
-            .fadeOut(1500, function(){
+            .fadeOut(1500, function () {
                 $(this).remove()
             });
     }
@@ -207,13 +212,13 @@ function getTime(dateInput, format) {
     var min = dateInput.getMinutes();
     var sec = dateInput.getSeconds();
     if (sec < 10) {
-      sec = "0" + sec;
+        sec = "0" + sec;
     }
     if (min < 10) {
-      min = "0" + min;
+        min = "0" + min;
     }
     if (hour < 10) {
-      hour = "0" + hour;
+        hour = "0" + hour;
     }
     if (day < 10) {
         day = "0" + day;
@@ -221,17 +226,17 @@ function getTime(dateInput, format) {
     if (month < 10) {
         month = "0" + month;
     }
-    if (format == "swedish-full"){
-        return year+"-"+month+"-"+day+" "+hour+":"+min+":"+sec;
+    if (format == "swedish-full") {
+        return year + "-" + month + "-" + day + " " + hour + ":" + min + ":" + sec;
     }
-    return hour+":"+min+":"+sec;
+    return hour + ":" + min + ":" + sec;
 }
-function setSettingsFromCookies(){
+function setSettingsFromCookies() {
     var cookieNotification = Cookies.get('notifcations');
     if (typeof cookieNotification !== typeof undefined
         && cookieNotification !== false
         && cookieNotification == "checked"
-        ) {
+    ) {
         $('#notifications-toggle').prop('active', true);
     }
 
@@ -272,7 +277,7 @@ function setSettingsFromCookies(){
                 //Set input to cookie
                 document.getElementById(cookieKey).value = cookie;
 
-                if (cookieKey == 'longitude-input' ||  cookieKey == 'latitude-input'){
+                if (cookieKey == 'longitude-input' || cookieKey == 'latitude-input') {
                     //If its a gps cookie you can remove the auto button. Unsure about this
                     //$('#auto-gps-button').hide();
                 }
@@ -284,7 +289,7 @@ function setSettingsFromCookies(){
         && cookiesStation !== false
         && cookiesStation !== null
     ) {
-        if (stationInput.selected == cookiesStation){
+        if (stationInput.selected == cookiesStation) {
             return;
         }
         stationInput.select(cookiesStation);
@@ -306,12 +311,12 @@ function gpsFail() {
     newNotification("Could not get coordinates. Is your browser allowing 'navigator.geolocation*'?"
         , "error", 10000);
 }
-function debugLog(inputText){
+function debugLog(inputText) {
     if (debugSetting === true) {
         console.log(inputText);
     }
 }
-function showSavingSettings(element){
+function showSavingSettings(element) {
     debugLog("showing settings savings card");
     clearTimeout(savingSettingsTimer);
     clearTimeout(settingsCompleteTimer);
@@ -322,30 +327,30 @@ function showSavingSettings(element){
     $('#saving-settings-spinner').show();
     $('#saving-settings-text').html("Sparar inställningar");
 
-    if (typeof element !== typeof undefined && element !== ''){
+    if (typeof element !== typeof undefined && element !== '') {
         var value = element.val();
         var fullID = element.attr('id');
-        var id = fullID.substring(0,fullID.length-6);
-        var isValid = document.querySelector('#'+fullID).validate();
+        var id = fullID.substring(0, fullID.length - 6);
+        var isValid = document.querySelector('#' + fullID).validate();
     } else {
         isValid = true;
     }
 
-    savingSettingsTimer = setTimeout(function() {
-        if (isValid){
-            if (typeof value !== typeof undefined){
+    savingSettingsTimer = setTimeout(function () {
+        if (isValid) {
+            if (typeof value !== typeof undefined) {
                 //Sometimes we show the spinner but setting the cookie separate.
                 // So this is only used when not setting cookies separately
                 Cookies.set(fullID, value);
                 debugLog("Cookie: " + fullID + " val:" + value);
             }
-            if (fullID == 'stocks-input'){
+            if (fullID == 'stocks-input') {
                 getStocks();
             }
             //Show a checkmark when cookies has been set
             $('#saving-settings-spinner').hide();
             $('#saving-settings-icon-success').show();
-            settingsCompleteTimer = setTimeout(function() {
+            settingsCompleteTimer = setTimeout(function () {
                 //After the checkmark has been show for 2 seconds we remove the card
                 savingCard.addClass('hidden');
             }, 2000);
@@ -359,8 +364,8 @@ function showSavingSettings(element){
 
 
 /*
-* Global scope variables
-*/
+ * Global scope variables
+ */
 
 var currentlyUpdatingTraffic = true;
 var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
@@ -369,12 +374,12 @@ var savingSettingsTimer;
 var settingsCompleteTimer;
 
 /*
-* End of global variable scope
-*/
+ * End of global variable scope
+ */
 
-$(document).ready(function(){
+$(document).ready(function () {
     var readyTime = new Date() - startTime;
-    debugLog("document.ready: " + readyTime +" ms");
+    debugLog("document.ready: " + readyTime + " ms");
     /*
      * Settings slideout menu
      */
@@ -385,14 +390,14 @@ $(document).ready(function(){
         'tolerance': 70
     });
     // Toggle button
-    document.querySelector('.slideout-toggle-button').addEventListener('click', function() {
+    document.querySelector('.slideout-toggle-button').addEventListener('click', function () {
         slideout.toggle();
     });
-    if (debugSetting){
+    if (debugSetting) {
         slideout.open();
     }
 
-    $('#auto-gps-button').click(function(){
+    $('#auto-gps-button').click(function () {
         if (navigator.geolocation) {
             // Call getCurrentPosition with success and failure callbacks
             navigator.geolocation.getCurrentPosition(gpsSuccess, gpsFail);
@@ -404,12 +409,12 @@ $(document).ready(function(){
     });
 
     /*
-    * Start updating things
-    */
+     * Start updating things
+     */
 
-    window.addEventListener('WebComponentsReady', function(e){
+    window.addEventListener('WebComponentsReady', function (e) {
         setSettingsFromCookies();
-        var polymerTime  = new Date()-startTime;
+        var polymerTime = new Date() - startTime;
         debugLog('polymer ready: ' + polymerTime + " ms");
 
         updateClock();
@@ -427,12 +432,12 @@ $(document).ready(function(){
     });
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
-    $( ".lights-purple" ).click(function() {
+    $(".lights-purple").click(function () {
         $(this).toggleClass('active');
 
         //Variables to post to the changelamp function
-        var channel      =   $(this).attr('data-channel');
-        var state   =   ($(this).hasClass('active'))? '1' : '0';
+        var channel = $(this).attr('data-channel');
+        var state = ($(this).hasClass('active')) ? '1' : '0';
 
         $.ajax({
             url: "php/lights.php",
@@ -452,15 +457,15 @@ $(document).ready(function(){
     });
 
     //Toggle all the lights buttons and change them in the json file
-    $( ".lights-all" ).click(function() {
+    $(".lights-all").click(function () {
 
 
         //Variables to post to the changelamp function
-        var stateText   =   $(this).attr('id').substring(4,this.length);
-        var state = (stateText== "off") ? "0" : "1";
-        debugLog(stateText +" "+ state);
+        var stateText = $(this).attr('id').substring(4, this.length);
+        var state = (stateText == "off") ? "0" : "1";
+        debugLog(stateText + " " + state);
 
-        if (stateText == "off"){
+        if (stateText == "off") {
             $(".lights-purple").removeClass('active');
         } else {
             $(".lights-purple").removeClass('active');
@@ -486,20 +491,20 @@ $(document).ready(function(){
 
     //When the refresh on traffic column is pressed. Update departure and animate it for a short while
     $(".column-content").on({
-      mouseenter: function () {//Mouse enters the refresh icon
-        $('#refresh-traffic').addClass('icon-spin');
-      },
-      mouseleave: function () {//Mouse leaves the refresh icon
-        $('#refresh-traffic').removeClass('icon-spin');
-      },
-      click: function () {//Clicking the refresh icon
-        getDepartures();
-      }
+        mouseenter: function () {//Mouse enters the refresh icon
+            $('#refresh-traffic').addClass('icon-spin');
+        },
+        mouseleave: function () {//Mouse leaves the refresh icon
+            $('#refresh-traffic').removeClass('icon-spin');
+        },
+        click: function () {//Clicking the refresh icon
+            getDepartures();
+        }
     }, '#refresh-traffic');
 
     /*
-    * Control notifications
-    */
+     * Control notifications
+     */
     var notificationsContainer = $(".notifications-container");
     notificationsContainer.on({
         mouseleave: function () {//Mouse leaves the notification
@@ -548,7 +553,7 @@ $(document).ready(function(){
     });
 
     var stationMenu = document.querySelector("#station-menu");
-    stationMenu.addEventListener("iron-select", function(){
+    stationMenu.addEventListener("iron-select", function () {
         //Might want to do something with on-iron-select="handleSelect" on the html element instead
         showSavingSettings();
         Cookies.set('station-input', stationMenu.selected);
@@ -556,24 +561,21 @@ $(document).ready(function(){
         getDepartures();
     });
 
-    $('.settings-input').on('keyup', function(){
+    $('.settings-input').on('keyup', function () {
         showSavingSettings($(this));
     });
 
 
-
-
-
-/*
-    $.ajax({
-        url: 'https://minasidor.jamtkraft.se/Api/ServiceProxy/Login',
-        type: 'POST',
-        success: function(res) {
-            var headline = $(res.responseText).find('a.tsh').text();
-            debugLog(res);
-        }
-    });
-*/
+    /*
+     $.ajax({
+     url: 'https://minasidor.jamtkraft.se/Api/ServiceProxy/Login',
+     type: 'POST',
+     success: function(res) {
+     var headline = $(res.responseText).find('a.tsh').text();
+     debugLog(res);
+     }
+     });
+     */
 
 
 });
