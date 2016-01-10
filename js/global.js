@@ -428,7 +428,7 @@ $(document).ready(function () {
         getStocks();
         setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
         var completeTime = new Date() - startTime;
-        console.log("everything completed: " + completeTime + " ms");
+        debugLog("everything completed: " + completeTime + " ms");
     });
 
     //Toggle the class when a lights button is clicked (this changes the bg-color) and change the state in the json file
