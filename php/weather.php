@@ -23,7 +23,7 @@ class Weather
     {
         $htmlCall = isset($_GET['htmlCall']) ? $_GET['htmlCall'] : false;
         $debug = isset($_GET['debug']) ? $_GET['debug'] : false;
-        $timezone = isset($_GET['timezone']) ? $_GET['timezone'] : "Europe/Stockholm";
+        $timezone = isset($_GET['timezone']) && $_GET['timezone'] != ''? $_GET['timezone'] : "Europe/Stockholm";
 
         $this->setDebug($debug);
         $this->setTimezone($timezone);
@@ -52,8 +52,8 @@ class Weather
          * Get the variables
          */
 
-        $lat = isset($_GET['lat']) ? $_GET['lat'] : "59.298604";
-        $lon = isset($_GET['lon']) ? $_GET['lon'] : "18.047111";
+        $lat = isset($_GET['lat']) && $_GET['lat'] != '' ? $_GET['lat'] : "59.298604";
+        $lon = isset($_GET['lon']) && $_GET['lon'] != '' ? $_GET['lon'] : "18.047111";
         $measurements = isset($_GET['measurements']) ? $_GET['measurements'] : 'metric';
         $lang = isset($_GET['lang']) ? $_GET['lang'] : 'se';
         $debug = $this->getDebug();
