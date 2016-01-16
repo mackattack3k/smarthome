@@ -27,7 +27,7 @@ function updateClock() {
         //debugLog('currentTime: ' + currentTime + ' departure: ' + departureDate); //Used for debugging when the departures aren't removed...
         //If the departure is leaving now -- or -- the browser was idle and the departure has already left
         if (departureDate <= currentTime) {
-            /*$(this).animate( //Animate a fade and remove
+            $(this).animate( //Animate a fade and remove
                 {
                     bottom: '0px',
                     opacity: 0.25,
@@ -40,7 +40,6 @@ function updateClock() {
                 function () {
                     $(this).remove();
                 });
-                */
         }
     });
 
