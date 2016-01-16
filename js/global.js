@@ -119,8 +119,6 @@ function getWeather() {
         console.log("its truuu");
     }
 
-    //TODO: validate coordinates and timezone before ajax
-
     $.ajax({
         url: "php/weather.php",
         data: {
@@ -153,6 +151,12 @@ function getStocks() {
     var stocksInput = $('#stocks-input').val();
     var stocks = stocksInput !== '' ? stocksInput : "AAPL,FB,GOOG,TSLA,MSFT";
     //TODO: validate stocks before ajax
+    var stocksRegex = /^([a-zA-Z]{2,8}){1}(,[a-zA-Z]{2,8})*$/;
+
+    if (!stocksRegex.test(stocks)) {
+        newNotification('Invalid stocks input', "error", 10000);
+        return;
+    }
 
     $.ajax({
         url: "php/stocks.php",
