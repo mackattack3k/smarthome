@@ -108,6 +108,9 @@ require_once ('php/lights.php');
                         width: 100px;
                         height: 100px;
                     }
+                    paper-ripple {
+                        color: #C2185B;
+                    }
                 </style>
                 <li><paper-input
                         id="stocks-input"

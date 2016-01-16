@@ -185,7 +185,7 @@ class publicTransport
             $output .= "Error: No data in convertDeparturesToHtml";
         }
         if ( $this->getDebug() == "true" ){
-            $output .= print_r($departsResultJson);
+            //$output .= print_r($departsResultJson);
         }
 
         $departsResult = $departsResultJson->Departure;
@@ -241,7 +241,28 @@ class publicTransport
             /*
             * Output the HTML
             */
-            //TODO: Output data for stops in each departure
+            $htmlStops = null;
+
+            foreach ($stops as $stopKey => $stop){
+                $stopDepartureTime =  isset($stop->arrTime)? substr($stop->arrTime, 0, 5) : "???";
+                $stopName = ($stop->name != "")? preg_replace('/\s\(.*\)?/', '', $stop->name) : $arrivalStopName;
+                $stopTimeClass = "";
+                if ($stopKey == 0){
+                    $stopDepartureTime = $departTime;
+                    $stopTimeClass = " bold";
+                }
+
+
+                $htmlStops .= "<div class='traffic-stop'>";
+                    $htmlStops .= "<div class='traffic-stop-name'>";
+                        $htmlStops .= $stopName;
+                    $htmlStops .= "</div>";
+                    $htmlStops .= "<div class='traffic-stop-time$stopTimeClass'>";
+                        $htmlStops .= $stopDepartureTime;
+                    $htmlStops .= "</div>";
+                $htmlStops .= "</div>";
+            }
+
             $output .=  "<div class='traffic-result $transportationCategory'>";
             $output .= "<paper-ripple></paper-ripple>";
             $output .=  "<div class='traffic-first'>";
@@ -254,6 +275,9 @@ class publicTransport
             $output .=  "<div class='traffic-third'>";
             $output .=  "<div class='traffic-time departure-time' data-date='$ISODate'>$departTime</div>";
             $output .=  "<div class='traffic-time arrival-time'>$arrivalTime</div>";
+            $output .=  "</div>";
+            $output .=  "<div class='traffic-stops'>";
+                $output .= $htmlStops;
             $output .=  "</div>";
             $output .=  "</div>";
         }

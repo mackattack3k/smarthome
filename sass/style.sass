@@ -84,7 +84,10 @@ body
 
 .hidden
     display: none!important
-    
+
+.bold
+    font-weight: 600
+
 /* Random classes end  */
 
 /* Slideout start */
@@ -231,12 +234,12 @@ body
     +alignitems(center)
     +justifycontent(space-around)
     +flexdirection(row)
-    +flexflow(nowrap)
+    +flexwrap(wrap)
 
     position: relative
     box-shadow: $material-shadow
     margin-bottom: 8px
-    height: 60px
+    min-height: 60px
     width: 360px
     &:hover
         cursor: pointer
@@ -253,8 +256,32 @@ body
 
 .traffic-third
     +flex(1)
+
 .departure-time
     font-weight: 600
+    
+.traffic-stops
+    +flex(3)
+    +flexbox
+    +alignitems(flex-start)
+    +justifycontent(center)
+    +flexdirection(column)
+    padding: 20px 0px 20px 0px
+    display: none
+
+.traffic-stop
+    +flexbox
+    +alignitems(center)
+    +justifycontent(center)
+    +flexdirection(row)
+    width: 100%
+
+.traffic-stop-name
+    +flex(2)
+
+.traffic-stop-time
+    +flex(1)
+
 
 
 .icon-rocket
