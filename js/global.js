@@ -150,7 +150,6 @@ function getStocks() {
     //$('.stock-items').hide();
     var stocksInput = $('#stocks-input').val();
     var stocks = stocksInput !== '' ? stocksInput : "AAPL,FB,GOOG,TSLA,MSFT";
-    //TODO: validate stocks before ajax
     var stocksRegex = /^([a-zA-Z]{2,8}){1}(,[a-zA-Z]{2,8})*$/;
 
     if (!stocksRegex.test(stocks)) {
