@@ -100,6 +100,11 @@ class Weather
     {
         /* Establish some global variables for the weather functions */
         $weatherApiKey = $this->getAPIKEYS()['weatherApiKey'];
+
+        if ( !$this->isValidTimezone( $this->getTimezone() ) ){
+            echo "Incorrect timezone<br />";
+            return false;
+        }
         date_default_timezone_set( $this->getTimezone() );
         $lat = $this->getLat();
         $lon = $this->getLon();
@@ -338,7 +343,6 @@ class Weather
         return ($today == $inputTime);
     }
 
-
     public function getAllUnits()
     {
         return $this->allUnits;
@@ -392,6 +396,10 @@ class Weather
         }
         return $mapsJsonArray['results'][0]['address_components'][4]['long_name'];
 
+    }
+
+    function isValidTimezone($timezone) {
+        return in_array($timezone, timezone_identifiers_list());
     }
 
 }

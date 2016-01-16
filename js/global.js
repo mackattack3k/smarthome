@@ -46,7 +46,6 @@ function updateClock() {
     //Check if there are less than 2 departures left
     //debugLog('Checking if we should get new departures.');
     //debugLog('currentlyUpdatingTraffic; ' + currentlyUpdatingTraffic);
-    //TODO: This only works for chrome... wonder why
     var numberOfDepartures = $('#traffic-results').children('.traffic-result').length;
     if (numberOfDepartures < 2 && !currentlyUpdatingTraffic) {
         currentlyUpdatingTraffic = true;
@@ -55,7 +54,6 @@ function updateClock() {
     }
 }
 function getDepartures() {
-    //TODO: validate stationID before ajax
     newNotification('Updating public transport', 'info');
     //Check if the value of traffic-search is set and use it
     var defaultStationName = 'Åmänningevägen';
@@ -108,9 +106,18 @@ function getWeather() {
     //View spinning icon and hide the previous weather results
     $('#weather-loading').show();
     $('.weather-item-container').hide();
-    var latitude = $('#latitude-input').val();
-    var longitude = $('#longitude-input').val();
-    var timezone = $('#timezone-input').val();
+
+    var latitude = document.querySelector('#latitude-input');
+    var longitude = document.querySelector('#longitude-input');
+    var timezone = document.querySelector('#timezone-input');
+
+    var latitudeValue = latitude.value;
+    var longitudeValue = longitude.value;
+    var timezoneValue = timezone.value;
+
+    if ( !latitude.validate() || !longitude.validate() ){
+        console.log("its truuu");
+    }
 
     //TODO: validate coordinates and timezone before ajax
 
@@ -118,8 +125,8 @@ function getWeather() {
         url: "php/weather.php",
         data: {
             htmlCall: "true", debug: debugSetting,
-            lat: latitude, lon: longitude,
-            timezone: timezone
+            lat: latitudeValue, lon: longitudeValue,
+            timezone: timezoneValue
         },
         cache: false,
         datatype: 'html',
