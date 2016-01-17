@@ -111,6 +111,13 @@ require_once ('php/lights.php');
                     paper-ripple {
                         color: #C2185B;
                     }
+                    paper-checkbox {
+                        --paper-checkbox-checked-color: #C2185B;
+                        --paper-checkbox-checked-ink-color: #C2185B;
+                        --paper-checkbox-unchecked-color: #C2185B;
+                        --paper-checkbox-unchecked-ink-color: #C2185B;
+                        --paper-checkbox-label-color: black;
+                    }
                 </style>
                 <li><paper-input
                         id="stocks-input"
@@ -180,6 +187,13 @@ require_once ('php/lights.php');
                 <li><paper-input disabled label="Språk"></paper-input></li>
                 <!--TODO: Create checkboxes to enable or disable columns/info-->
             </ul>
+            <div id="modules-toggles">
+                <paper-checkbox checked class="module-toggle">Time</paper-checkbox>
+                <paper-checkbox checked class="module-toggle">Weather</paper-checkbox>
+                <paper-checkbox checked class="module-toggle">Traffic</paper-checkbox>
+                <paper-checkbox checked class="module-toggle">Stocks</paper-checkbox>
+                <paper-checkbox checked class="module-toggle">Lights</paper-checkbox>
+            </div>
             <paper-material elevation="1" id="saving-settings-card" class="hidden">
                 <div><paper-spinner active id="saving-settings-spinner"></paper-spinner></div>
                 <iron-icon id="saving-settings-icon-success" icon="icons:check"></iron-icon>
@@ -282,8 +296,8 @@ require_once ('php/lights.php');
             </div>
             --->
         </div>
-        <div class="notifications-container"></div>
     </div>
+    <div class="notifications-container"></div>
 </div>
 
 <script src="js/slideout.min.js"></script>
