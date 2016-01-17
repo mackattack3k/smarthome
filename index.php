@@ -292,13 +292,13 @@ require_once ('php/lights.php');
     <div class="notifications-container"></div>
 </div>
 <!-- Scripts -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-<script src="https://use.fonticons.com/03ff41d1.js"></script>
+<script src="js/jquery.2.1.4.min.js"></script>
+<script src="js/jquery-ui.1.11.4.min.js"></script>
+<script src="js/fonticons.js"></script>
 <script src="js/xdomainajax.js" charset="utf-8"></script>
 <script src="js/slideout.min.js"></script>
 <script src="js/js-cookie/src/js.cookie.js"></script>
-<script src="js/global.js"></script>
+<script src="js/global.min.js"></script>
 </body>
 </html>
