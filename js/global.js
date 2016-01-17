@@ -54,9 +54,15 @@ function updateClock() {
     }
 }
 function getDepartures() {
-    currentlyUpdatingTraffic == true;
+    var trafficToggle = Cookies.get('traffic-toggle');
+    if (trafficToggle == "false"){
+        debugLog("Trying to update weather but the toggle is not checked");
+        return;
+    }
+    currentlyUpdatingTraffic = true;
     newNotification('Updating public transport', 'info');
     //Check if the value of traffic-search is set and use it
+
     var defaultStationName = 'Åmänningevägen';
     var defaultStationID = 7453026; //Åmänningevägen = 7453026, Årstaberg station = 7424920, Gullmarsplan = 7421705
     var stationInfo = document.querySelector('#station-menu').selected;
@@ -103,6 +109,13 @@ function getDepartures() {
     })
 }
 function getWeather() {
+    var weatherToggle = Cookies.get('weather-toggle');
+    if (weatherToggle == "false"){
+        debugLog("Trying to update weather but the toggle is not checked");
+        return;
+    }
+
+
     newNotification('Updating weather', 'info');
     //View spinning icon and hide the previous weather results
     $('#weather-loading').show();
@@ -145,8 +158,15 @@ function getWeather() {
     });
 }
 function getStocks() {
+    var stocksToggle = Cookies.get('stocks-toggle');
+    if (stocksToggle == "false"){
+        debugLog("Trying to update weather but the toggle is not checked");
+        return;
+    }
+
     newNotification('Updating weather', 'info');
     //View spinning icon and hide the previous weather results
+    $('.stock-items').html('');
     $('#stocks-loading').show();
     //$('.stock-items').hide();
     var stocksInput = $('#stocks-input').val();
@@ -267,13 +287,23 @@ function setSettingsFromCookies() {
     var cookieLatitude = Cookies.get('latitude-input');
     var cookieLongitude = Cookies.get('longitude-input');
     var cookiesTimezone = Cookies.get('timezone-input');
+    var cookiesTimeToggle = Cookies.get('time-toggle');
+    var cookiesWeatherToggle = Cookies.get('weather-toggle');
+    var cookiesTrafficToggle = Cookies.get('traffic-toggle');
+    var cookiesStocksToggle = Cookies.get('stocks-toggle');
+    var cookiesLightsToggle = Cookies.get('lights-toggle');
 
     var cookiesObject = {
         "stocks-input": cookiesStocks,
         "numberofdepartures-input": cookiesNumberOfDepartures,
         "latitude-input": cookieLatitude,
         "longitude-input": cookieLongitude,
-        "timezone-input": cookiesTimezone
+        "timezone-input": cookiesTimezone,
+        "time-toggle": cookiesTimeToggle,
+        "weather-toggle": cookiesWeatherToggle,
+        "traffic-toggle": cookiesTrafficToggle,
+        "stocks-toggle": cookiesStocksToggle,
+        "lights-toggle": cookiesLightsToggle
     };
 
     var cookie;
@@ -285,8 +315,14 @@ function setSettingsFromCookies() {
                 && cookie !== null
                 && cookie !== ''
             ) {
-                //Set input to cookie
-                document.getElementById(cookieKey).value = cookie;
+                if ((cookieKey.indexOf('-input') > -1)){
+                    //This is a input field cookie
+                    document.getElementById(cookieKey).value = cookie;
+                }
+                if ((cookieKey.indexOf('-toggle') > -1) && cookie == "false"){
+                    //This is a toggle cookie
+                    document.getElementById(cookieKey).click();
+                }
 
                 if (cookieKey == 'longitude-input' || cookieKey == 'latitude-input') {
                     //If its a gps cookie you can remove the auto button. Unsure about this
@@ -436,7 +472,7 @@ $(document).ready(function () {
         getWeather();
         setInterval('getWeather()', 1800000); //getWeather every 30 minutes
 
-        getStocks();
+        //getStocks();
         setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
         var completeTime = new Date() - startTime;
         debugLog("everything completed: " + completeTime + " ms");
@@ -584,6 +620,55 @@ $(document).ready(function () {
         }
     }, '.traffic-result');
 
+    $('.module-toggle').on('click', function(){
+        showSavingSettings();
+        var id = $(this).children('#checkboxLabel').html().toLowerCase();
+        var checked = $(this).attr('aria-checked');
+
+        var timeToggle = document.querySelector('#time-toggle');
+        var weatherToggle = document.querySelector('#weather-toggle');
+        var trafficToggle = document.querySelector('#traffic-toggle');
+        var stocksToggle = document.querySelector('#stocks-toggle');
+        var lightsToggle = document.querySelector('#lights-toggle');
+
+        var column1 = $('#column-1');
+        var column2 = $('#column-2');
+        var column3 = $('#column-3');
+
+        $('#'+id).toggle();
+        Cookies.set(id+"-toggle", checked);
+
+        if (checked == "true"){
+            console.log(checked);
+            console.log(id);
+            if (id == 'weather'){
+                getWeather();
+            }
+            if (id == 'traffic'){
+                getDepartures();
+            }
+            if (id == 'stocks'){
+                getStocks();
+            }
+        }
+
+        if ( timeToggle.checked || weatherToggle.checked ){
+            column1.show();
+        } else {
+            column1.hide();
+        }
+        if ( trafficToggle.checked ){
+            column2.show();
+        } else {
+            column2.hide();
+        }
+        if ( stocksToggle.checked || lightsToggle.checked ){
+            column3.show();
+        } else {
+            column3.hide();
+        }
+
+    });
 
     /*
      $.ajax({

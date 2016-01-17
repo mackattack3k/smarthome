@@ -180,11 +180,11 @@ require_once ('php/lights.php');
                 <!--TODO: Create checkboxes to enable or disable columns/info-->
             </ul>
             <div id="modules-toggles">
-                <paper-checkbox checked class="module-toggle">Time</paper-checkbox>
-                <paper-checkbox checked class="module-toggle">Weather</paper-checkbox>
-                <paper-checkbox checked class="module-toggle">Traffic</paper-checkbox>
-                <paper-checkbox checked class="module-toggle">Stocks</paper-checkbox>
-                <paper-checkbox checked class="module-toggle">Lights</paper-checkbox>
+                <paper-checkbox checked id="time-toggle" class="module-toggle">Time</paper-checkbox>
+                <paper-checkbox checked id="weather-toggle" class="module-toggle">Weather</paper-checkbox>
+                <paper-checkbox checked id="traffic-toggle" class="module-toggle">Traffic</paper-checkbox>
+                <paper-checkbox checked id="stocks-toggle" class="module-toggle">Stocks</paper-checkbox>
+                <paper-checkbox checked id="lights-toggle" class="module-toggle">Lights</paper-checkbox>
             </div>
             <paper-material elevation="1" id="saving-settings-card" class="hidden">
                 <div><paper-spinner active id="saving-settings-spinner"></paper-spinner></div>
@@ -202,7 +202,7 @@ require_once ('php/lights.php');
     </div>
     <div class="column-container">
 
-        <div class="column column-1">
+        <div class="column" id="column-1">
             <div id="time" class="column-content">
                 <div class="header">
                     <div id="currenttime" class="super-duper-big-font">
@@ -226,7 +226,7 @@ require_once ('php/lights.php');
 
             </div>
         </div>
-        <div class="column column-2">
+        <div class="column" id="column-2">
             <div id="traffic" class="column-content">
                 <div class="traffic-refresh-manually icon icon-refresh icon-2x" id="refresh-traffic">
                 </div>
@@ -244,7 +244,7 @@ require_once ('php/lights.php');
                 <div class="timestamp" id="traffic-last-updated"></div>
             </div>
         </div>
-        <div class="column column-3">
+        <div class="column" id="column-3">
             <div id="stocks" class="column-content">
                 <div class="header">
                     Aktier
