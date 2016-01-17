@@ -472,7 +472,7 @@ $(document).ready(function () {
         getWeather();
         setInterval('getWeather()', 1800000); //getWeather every 30 minutes
 
-        //getStocks();
+        getStocks();
         setInterval('getStocks()', 1800000); //Get stocks every 30 minutes
         var completeTime = new Date() - startTime;
         debugLog("everything completed: " + completeTime + " ms");
