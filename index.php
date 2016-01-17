@@ -8,7 +8,7 @@ require_once ('php/lights.php');
 <html lang="">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes">
     <meta name="msapplication-TileColor" content="#ffc40d">
     <meta name="theme-color" content="#ffffff">
 
@@ -55,15 +55,7 @@ require_once ('php/lights.php');
     <link rel="icon" type="image/png" href="favicons/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="favicons/favicon-96x96.png" sizes="96x96">
     <link rel="icon" type="image/png" href="favicons/favicon-16x16.png" sizes="16x16">
-
     <link rel="manifest" href="/manifest.json">
-
-    <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="https://use.fonticons.com/03ff41d1.js"></script>
-    <script src="js/xdomainajax.js" charset="utf-8"></script>
 
 </head>
 
@@ -299,7 +291,12 @@ require_once ('php/lights.php');
     </div>
     <div class="notifications-container"></div>
 </div>
-
+<!-- Scripts -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<script src="https://use.fonticons.com/03ff41d1.js"></script>
+<script src="js/xdomainajax.js" charset="utf-8"></script>
 <script src="js/slideout.min.js"></script>
 <script src="js/js-cookie/src/js.cookie.js"></script>
 <script src="js/global.js"></script>
