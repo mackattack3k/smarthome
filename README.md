@@ -19,6 +19,7 @@ You need som sort of PHP server. I would suggest Nginx or lighttpd.
 
 ###### PLugins:
 1. Pihat ( https://github.com/txt3rob/RPI-Control ). Install at /home/pi/pihat. This is for controlling the lights via 433MHz.
+
 ###### API keys:
 1. [Openweathermap](http://openweathermap.org/api) only needed for more accuarcy.
 2. [Resrobot](http://Openweathermap.org) for public transport (Sweden only)
