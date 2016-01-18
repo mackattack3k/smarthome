@@ -18,7 +18,7 @@ The ID for the station is available from resrobot api. I will probably create so
 ## Requirements
 You need som sort of PHP server. I would suggest Nginx or lighttpd.
 
-###### PLugins:
+###### Plugins:
 1. [Pihat](https://github.com/txt3rob/RPI-Control). Install at /home/pi/pihat. This is for controlling the lights via 433MHz.
 
 ###### API keys:
