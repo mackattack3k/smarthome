@@ -123,7 +123,7 @@ class lights
         }
         if($inputLightChannel){
             $pihatPath = $this->getPihatPath();
-            $pihatCommand = "sudo $pihatPath --repeats=15 --id=0 --channel='$inputLightChannel' --state=$state";
+            $pihatCommand = "sudo $pihatPath --repeats=3 --id=0 --channel='$inputLightChannel' --state=$state";
 
             exec("$pihatCommand 2>&1", $output, $return_var);
 
