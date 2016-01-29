@@ -128,7 +128,7 @@ class lights
             exec("$pihatCommand 2>&1", $output, $return_var);
 
             if (is_array($output)){
-                //return $output[0]; //Something went wrong
+                echo $output[0]; //We got an output... yay!
             }
             $changeLampStateResponse = $this->setLampState();
 
