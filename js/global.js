@@ -164,7 +164,7 @@ function getStocks() {
         return;
     }
 
-    newNotification('Updating weather', 'info');
+    newNotification('Updating stocks', 'info');
     //View spinning icon and hide the previous weather results
     $('.stock-items').html('');
     $('#stocks-loading').show();
