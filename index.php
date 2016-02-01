@@ -180,11 +180,11 @@ require_once ('php/lights.php');
                 <!--TODO: Create checkboxes to enable or disable columns/info-->
             </ul>
             <div id="modules-toggles">
-                <paper-checkbox checked id="time-toggle" class="module-toggle">Time</paper-checkbox>
-                <paper-checkbox checked id="weather-toggle" class="module-toggle">Weather</paper-checkbox>
-                <paper-checkbox checked id="traffic-toggle" class="module-toggle">Traffic</paper-checkbox>
-                <paper-checkbox checked id="stocks-toggle" class="module-toggle">Stocks</paper-checkbox>
-                <paper-checkbox checked id="lights-toggle" class="module-toggle">Lights</paper-checkbox>
+                <paper-checkbox checked id="stocks-toggle" class="module-toggle">Aktier</paper-checkbox>
+                <paper-checkbox checked id="lights-toggle" class="module-toggle">Belysning</paper-checkbox>
+                <paper-checkbox checked id="time-toggle" class="module-toggle">Tid</paper-checkbox>
+                <paper-checkbox checked id="weather-toggle" class="module-toggle">Väder</paper-checkbox>
+                <paper-checkbox checked id="traffic-toggle" class="module-toggle">Trafik</paper-checkbox>
             </div>
             <paper-material elevation="1" id="saving-settings-card" class="hidden">
                 <div><paper-spinner active id="saving-settings-spinner"></paper-spinner></div>
