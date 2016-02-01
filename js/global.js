@@ -60,7 +60,7 @@ function getDepartures() {
         return;
     }
     currentlyUpdatingTraffic = true;
-    newNotification('Updating public transport', 'info');
+    newNotification('Uppdaterar trafik', 'info');
     //Check if the value of traffic-search is set and use it
 
     var defaultStationName = 'Åmänningevägen';
@@ -96,10 +96,10 @@ function getDepartures() {
             $("#traffic-results").html(trafficData);
 
             if (regexContainsErrorText.test(trafficData)) {
-                newNotification('Error updating public transport', "error", 10000);
+                newNotification('Fel vid uppdatering av trafik', "error", 10000);
                 currentlyUpdatingTraffic = true; //Changing it to true so that it doesn't continue to update traffic
             } else {
-                newNotification('Public transport updated', "success");
+                newNotification('Trafik uppdaterad', "success");
                 currentlyUpdatingTraffic = false;
             }
             var date = new Date();
@@ -116,7 +116,7 @@ function getWeather() {
     }
 
 
-    newNotification('Updating weather', 'info');
+    newNotification('Uppdaterar vädret', 'info');
     //View spinning icon and hide the previous weather results
     $('#weather-loading').show();
     $('.weather-item-container').hide();
@@ -148,9 +148,9 @@ function getWeather() {
             $('#weather-data').html(trafficData);
 
             if (regexContainsErrorText.test(trafficData)) {
-                newNotification('Error getting weather', "error", 10000);
+                newNotification('Fel vid hämtning av väder', "error", 10000);
             } else {
-                newNotification('Weather updated', "success");
+                newNotification('Vädret uppdaterat', "success");
             }
             var date = new Date();
             $('#weather-last-updated').html("Senast uppdaterad: " + getTime(date, 'swedish-full'));
@@ -164,7 +164,7 @@ function getStocks() {
         return;
     }
 
-    newNotification('Updating stocks', 'info');
+    newNotification('Uppdaterar aktier', 'info');
     //View spinning icon and hide the previous weather results
     $('.stock-items').html('');
     $('#stocks-loading').show();
@@ -174,7 +174,7 @@ function getStocks() {
     var stocksRegex = /^([a-zA-Z]{2,8}){1}(,[a-zA-Z]{2,8})*$/;
 
     if (!stocksRegex.test(stocks)) {
-        newNotification('Invalid stocks input', "error", 10000);
+        newNotification('Felaktig inmatning av aktier', "error", 10000);
         return;
     }
 
@@ -189,9 +189,9 @@ function getStocks() {
             $('.stock-items').html(stocksData);
 
             if (regexContainsErrorText.test(stocksData)) {
-                newNotification('Error getting stocks', "error", 10000);
+                newNotification('Fel vid hämtning av aktier', "error", 10000);
             } else {
-                newNotification('Stocks updated', "success");
+                newNotification('Aktier uppdaterade', "success");
             }
             var date = new Date();
             $('#stocks-last-updated').html("Senast uppdaterad: " + getTime(date, 'swedish-full'));
@@ -355,7 +355,7 @@ function gpsSuccess(position) {
 }
 function gpsFail() {
     // Could not obtain location
-    newNotification("Could not get coordinates. Is your browser allowing 'navigator.geolocation*'?"
+    newNotification("Kunde inte hämta koordinater. Tillåter din webbläsare 'navigator.geolocation*'?"
         , "error", 10000);
 }
 function debugLog(inputText) {
@@ -450,7 +450,7 @@ $(document).ready(function () {
             navigator.geolocation.getCurrentPosition(gpsSuccess, gpsFail);
         }
         else {
-            newNotification("Sorry, your browser does not support geolocation services.", "error");
+            newNotification("Tyvärr så stödjer inte din webbläsare geo location", "error");
         }
         //$(this).hide();
     });
@@ -495,9 +495,9 @@ $(document).ready(function () {
                 debugLog(lightsData);
 
                 if (regexContainsErrorText.test(lightsData)) {
-                    newNotification('Error setting light', "error", 10000);
+                    newNotification('Fel vid ändring av belysning', "error", 10000);
                 } else {
-                    newNotification('Lights updated', "success");
+                    newNotification('Belysning uppdaterad', "success");
                 }
             }
         });
@@ -528,9 +528,9 @@ $(document).ready(function () {
                 debugLog(lightsData);
 
                 if (regexContainsErrorText.test(lightsData)) {
-                    newNotification('Error setting  all lights', "error", 10000);
+                    newNotification('Fel vid ändring av all belysning', "error", 10000);
                 } else {
-                    newNotification('Lights updated', "success");
+                    newNotification('Belysning uppdaterad', "success");
                 }
             }
         });
@@ -622,8 +622,11 @@ $(document).ready(function () {
 
     $('.module-toggle').on('click', function(){
         showSavingSettings();
-        var id = $(this).children('#checkboxLabel').html().toLowerCase();
+        var fullID = $(this).attr('id');
+        var id = fullID.substr(0,fullID.length-7);
         var checked = $(this).attr('aria-checked');
+
+        debugLog("Clicked id: " + id + " checked: " + checked);
 
         var timeToggle = document.querySelector('#time-toggle');
         var weatherToggle = document.querySelector('#weather-toggle');
@@ -639,8 +642,6 @@ $(document).ready(function () {
         Cookies.set(id+"-toggle", checked);
 
         if (checked == "true"){
-            console.log(checked);
-            console.log(id);
             if (id == 'weather'){
                 getWeather();
             }
@@ -653,9 +654,9 @@ $(document).ready(function () {
         }
 
         if ( timeToggle.checked || weatherToggle.checked ){
-            column1.show();
+            column3.show();
         } else {
-            column1.hide();
+            column3.hide();
         }
         if ( trafficToggle.checked ){
             column2.show();
@@ -663,9 +664,9 @@ $(document).ready(function () {
             column2.hide();
         }
         if ( stocksToggle.checked || lightsToggle.checked ){
-            column3.show();
+            column1.show();
         } else {
-            column3.hide();
+            column1.hide();
         }
 
     });
