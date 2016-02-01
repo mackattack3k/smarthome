@@ -203,26 +203,33 @@ require_once ('php/lights.php');
     <div class="column-container">
 
         <div class="column" id="column-1">
-            <div id="time" class="column-content">
+            <div id="stocks" class="column-content">
                 <div class="header">
-                    <div id="currenttime" class="super-duper-big-font">
-                    </div>
-                    <div id="currentday" class="big-font">
-                    </div>
-                    <div id="currentdate" class="big-font">
-                    </div>
+                    Aktier
+                </div>
+                <paper-spinner active id="stocks-loading" class="loading-icon" ></paper-spinner>
+                <div class="stock-items">
+                </div>
+                <div class="timestamp" id="stocks-last-updated">
                 </div>
             </div>
-            <div id="weather" class="column-content second-content">
+
+            <div id="lights" class="column-content second-content">
                 <div class="header">
-                    Väder
+                    Belysning
                 </div>
-                <div class="weather-items">
-                    <paper-spinner active id="weather-loading" class="loading-icon"></paper-spinner>
-                    <div id="weather-data">
-                    </div>
+                <div class="items">
+                    <?php
+                    $lights = new lights();
+                    $lights->setDebug(false);
+                    $lights->setJsonLampsFilePath("public_files/lamps.json");
+                    echo $lights->htmlLamps();
+
+                    ?>
+                    <paper-button raised class="lights-all" id="all-on">På</paper-button>
+                    <paper-button raised class="lights-all" id="all-off">Av</paper-button>
+
                 </div>
-                <div class="timestamp" id="weather-last-updated"></div>
 
             </div>
         </div>
@@ -245,34 +252,27 @@ require_once ('php/lights.php');
             </div>
         </div>
         <div class="column" id="column-3">
-            <div id="stocks" class="column-content">
+            <div id="time" class="column-content">
                 <div class="header">
-                    Aktier
-                </div>
-                <paper-spinner active id="stocks-loading" class="loading-icon" ></paper-spinner>
-                <div class="stock-items">
-                </div>
-                <div class="timestamp" id="stocks-last-updated">
+                    <div id="currenttime" class="super-duper-big-font">
+                    </div>
+                    <div id="currentday" class="big-font">
+                    </div>
+                    <div id="currentdate" class="big-font">
+                    </div>
                 </div>
             </div>
 
-
-            <div id="lights" class="column-content second-content">
+            <div id="weather" class="column-content second-content">
                 <div class="header">
-                    Belysning
+                    Väder
                 </div>
-                <div class="items">
-                    <?php
-                    $lights = new lights();
-                    $lights->setDebug(false);
-                    $lights->setJsonLampsFilePath("public_files/lamps.json");
-                    echo $lights->htmlLamps();
-
-                    ?>
-                    <paper-button raised class="lights-all" id="all-on">På</paper-button>
-                    <paper-button raised class="lights-all" id="all-off">Av</paper-button>
-
+                <div class="weather-items">
+                    <paper-spinner active id="weather-loading" class="loading-icon"></paper-spinner>
+                    <div id="weather-data">
+                    </div>
                 </div>
+                <div class="timestamp" id="weather-last-updated"></div>
 
             </div>
             <!---
