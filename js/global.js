@@ -102,8 +102,10 @@ function getDepartures() {
                 newNotification('Trafik uppdaterad', "success");
                 currentlyUpdatingTraffic = false;
             }
-            var date = new Date();
-            $('#traffic-last-updated').html("Senast uppdaterad: " + getTime(date, 'swedish-full'));
+            trafficLastUpdated = new Date();
+            trafficLastUpdatedSwedishFormat = getTime(trafficLastUpdated, 'swedish-full');
+            $('#traffic-last-updated').html("Senast uppdaterad: " + trafficLastUpdatedSwedishFormat);
+            console.log(trafficLastUpdatedSwedishFormat);
 
         }
     })
@@ -414,11 +416,16 @@ function showSavingSettings(element) {
  * Global scope variables
  */
 
-var currentlyUpdatingTraffic = true;
 var regexContainsErrorText = /\b[Ee][Rr][Rr][Oo][Rr]\b/;
 var debugSetting = Cookies.get('debug') === 'true';
 var savingSettingsTimer;
 var settingsCompleteTimer;
+
+/* Traffic variables */
+var currentlyUpdatingTraffic = true;
+var trafficLastUpdated;
+var trafficLastUpdatedSwedishFormat;
+
 
 /*
  * End of global variable scope
