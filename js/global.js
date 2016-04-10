@@ -53,9 +53,10 @@ function updateClock() {
         getDepartures();
     }
 
-    var minutesSinceTrafficUpdated = Math.round((currentTime-trafficLastUpdated)/6000);
+    var minutesSinceTrafficUpdated = Math.round((currentTime-trafficLastUpdated)/120000);
+    debugLog(minutesSinceTrafficUpdated);
     if (minutesSinceTrafficUpdated >= 20 && !currentlyUpdatingTraffic){
-        debugLog('It has been way too long since traffic was updated');
+        debugLog('It has been way too long since traffic was updated. Updating it now');
         debugLog(minutesSinceTrafficUpdated);
         getDepartures();
     }
@@ -429,7 +430,7 @@ var settingsCompleteTimer;
 
 /* Traffic variables */
 var currentlyUpdatingTraffic = true;
-var trafficLastUpdated;
+var trafficLastUpdated = new Date();
 var trafficLastUpdatedSwedishFormat;
 
 
