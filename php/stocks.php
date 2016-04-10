@@ -156,7 +156,7 @@ class stocks
 
             $output .= "<div class='stock-item ".$convertedChangeType."'>";
             $output .= "<div class='stock-symbol'>".$symbol."</div>";
-            $output .= "<div class='stock-ask'>".$askPrice."</div>";
+            $output .= "<div class='stock-ask'>".$askPrice."$</div>";
             $output .= "<div class='stock-change'>".$change."</div>";
             $output .= "<div class='stock-change-percent'>".$changeInPercent."</div>";
             $output .= "</div>";
@@ -180,8 +180,8 @@ class stocks
 
                 $output .= "<div class='stock-item ".$convertedChangeType."'>";
                 $output .= "<div class='stock-symbol'>".$symbol."</div>";
-                $output .= "<div class='stock-ask'>".$askPrice."</div>";
-                $output .= "<div class='stock-change'>".$change."</div>";
+                $output .= "<div class='stock-ask'>".$askPrice."$</div>";
+                $output .= "<div class='stock-change'>".$change."$</div>";
                 $output .= "<div class='stock-change-percent'>".$changeInPercent."</div>";
                 $output .= "</div>";
             }

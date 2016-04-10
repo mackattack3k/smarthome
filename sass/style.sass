@@ -396,7 +396,7 @@ body
     +flexbox
     +justifycontent(space-around)
     +alignitems(center)
-    +flexdirection(row)
+    +flexdirection(column)
     +flexwrap(wrap)
     padding: 20px
 
@@ -405,12 +405,12 @@ body
     +flexbox
     +justifycontent(space-around)
     +alignitems(center)
-    +flexdirection(column)
+    +flexdirection(row)
     +flexSafari(1, 60px)
-    min-width: 60px
-    max-width: 60px
+    width: 310px
+    height: 40px
     margin: 6px
-    padding: 20px
+    padding: 0px 20px
     //background-color: $bg-grey
     box-shadow: $material-shadow
     font-size: 14px
@@ -563,6 +563,8 @@ paper-button[raised].lights-purple
         width: 400px
     .traffic-result
         width: 350px
+    .stock-item
+        width: 310px
 
 @media all and (max-width: 850px)
     .column
@@ -573,6 +575,9 @@ paper-button[raised].lights-purple
         +flexdirection(column)
     .traffic-result
         width: 250px
+    .stock-item
+        width: 210px
+
 @media all and (max-width: 450px)
     .notifications-container
         width: 100%
