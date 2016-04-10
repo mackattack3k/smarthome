@@ -53,7 +53,7 @@ function updateClock() {
         getDepartures();
     }
 
-    var minutesSinceTrafficUpdated = Math.round((currentTime-trafficLastUpdated)/120000);
+    var minutesSinceTrafficUpdated = Math.round((currentTime-trafficLastUpdated)/60000);
     debugLog(minutesSinceTrafficUpdated);
     if (minutesSinceTrafficUpdated >= 20 && !currentlyUpdatingTraffic){
         debugLog('It has been way too long since traffic was updated. Updating it now');

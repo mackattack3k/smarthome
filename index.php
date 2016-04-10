@@ -299,6 +299,6 @@ require_once ('php/lights.php');
 <script src="js/xdomainajax.js" charset="utf-8"></script>
 <script src="js/slideout.min.js"></script>
 <script src="js/js-cookie/src/js.cookie.js"></script>
-<script src="js/global.min.js"></script>
+<script src="js/global.js"></script>
 </body>
 </html>
