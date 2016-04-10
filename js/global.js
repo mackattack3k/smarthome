@@ -52,6 +52,13 @@ function updateClock() {
         debugLog('Too few departures, getting departures');
         getDepartures();
     }
+
+    var minutesSinceTrafficUpdated = Math.round((currentTime-trafficLastUpdated)/6000);
+    if (minutesSinceTrafficUpdated >= 20 && !currentlyUpdatingTraffic){
+        debugLog('It has been way too long since traffic was updated');
+        debugLog(minutesSinceTrafficUpdated);
+        getDepartures();
+    }
 }
 function getDepartures() {
     var trafficToggle = Cookies.get('traffic-toggle');
@@ -105,7 +112,6 @@ function getDepartures() {
             trafficLastUpdated = new Date();
             trafficLastUpdatedSwedishFormat = getTime(trafficLastUpdated, 'swedish-full');
             $('#traffic-last-updated').html("Senast uppdaterad: " + trafficLastUpdatedSwedishFormat);
-            console.log(trafficLastUpdatedSwedishFormat);
 
         }
     })
