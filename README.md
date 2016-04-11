@@ -1,6 +1,8 @@
 # Smarthome
 This project started as a simple weather website. It is now more of a dashboard for with information regarding my home and also controlling lights.
 
+![Screenshot](/screenshot.png?raw=true "Screenshot")
+
 # Configs
 Most of the settings is done in the slide out menu to the left.
 
@@ -31,7 +33,19 @@ You need to place a file with api keys in your root directory.
 The file name must be named api_keys.php and have the following format:
 ```
 <?php
-$resrobotKey    =   'keyHere';
-$weatherApiKey  =   'keyHere';
+
+/* Openweathermap API KEYS */
+
+$GlobalAPI_Keys['weatherApiKey'] = "keyhere";
+
+/* SL API KEYS */
+$GlobalAPI_Keys['searchTripApiKey'] = 'keyhere';
+$GlobalAPI_Keys['stolpTidtabeller'] = 'keyhere';
+$GlobalAPI_Keys['realtidsinformation'] = 'keyhere';
+$GlobalAPI_Keys['realtidsInformation3'] = 'keyhere';
+$GlobalAPI_Keys['platsuppslagKey'] = 'keyherec';
+$GlobalAPI_Keys['resrobotKey'] = 'keyhere';
+$GlobalAPI_Keys['resrobotSearchKey'] = 'keyhere';
+
 ?>
 ```
